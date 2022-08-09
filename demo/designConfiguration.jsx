@@ -1,5 +1,6 @@
 import React from "react";
 import App from "../src/App";
+import List from "../src/components/designConfiguration/index"
 import "./mockComponentCenter";
 
 const DesignConfiguration = (props) => {
@@ -11,7 +12,8 @@ const DesignConfiguration = (props) => {
     configuration:
       '{"size":"middle", "placeholder": "123", "allowClear": true }',
   };
-  return <App {...customConfig} type="designConfiguration" />;
+  // return <App {...customConfig} type="designConfiguration" />;
+  return <List {...customConfig} type="designConfiguration" />;
 };
 
 DesignConfiguration.propTypes = {};

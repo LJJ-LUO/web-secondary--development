@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Row, Col , Modal, Button } from "antd";
-import { getAssetJSONForProduct } from './../../api/asset';
+import { Modal } from "antd";
+import moments from 'moment'
+import { queryWarnPicture } from './../../api/asset';
 
 import './index.less';
 
@@ -11,65 +12,70 @@ const List = ({
   dataId,
   deleteData
 }) => {
-
-  const { width } = customParams;
-
-  const [ JsonContent, setJsonContent ] = useState('');
-
-  useEffect(() => {
-    handleClick();
-  }, [])
-
-  const handleClick = async () => {
-    try {
-      const { data } = await getAssetJSONForProduct(dataId);
-      const formatedJson = JSON.stringify(data?.params || {}, null, 4);
-      setJsonContent(formatedJson);
-    } catch (error) {
-      setJsonContent('');
-    }
-    
-    setModalVisible(true);
-  }
+  console.log('111111111111',{
+    dataSource,
+    customParams,
+    dataId,
+    deleteData
+  });
+  const width = customParams.width ? customParams.width : 600;
+  const deviceName = customParams.deviceName ? customParams.deviceName : "deviceName";
+  const alarm_content = customParams.alarm_content ? customParams.alarm_content : "alarm_content";
+  const reportTime = customParams.reportTime ? customParams.reportTime : "reportTime";
+  const deviceId = customParams.deviceId ? customParams.deviceId : "deviceId";
+  const alarm_picture_info = customParams.alarm_picture_info ? customParams.alarm_picture_info : "alarm_picture_info";
+  const picUrl = customParams.picUrl ? customParams.picUrl : 'picUrl';
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [alarmInfo, setAlarmInfo] = useState({});
+  const [alarmUrl, setAlarmUrl] = useState({});
 
 
-  const handleDownLoad = async () => {
-    downloadEvt('模型文件.json');
+  useEffect(() => {
+    setModalVisible(true);
+    handleClick()
+  }, [])
+
+  // useEffect(() => {
+  //   handleClick()
+  // }, [modalVisible])
+
+  const handleClick = async () => {
+    let item = {};
+    dataSource.forEach(val => {
+      let systemType = val.systemType;
+      item[systemType] = val.value.value;
+    });
+    setAlarmInfo(item)
+    console.log('item',item);
+    const params = {
+      devId: item[deviceId],
+      eveId: item[alarm_picture_info]
+    }
+    try {
+      const { data } = await queryWarnPicture(params)
+      setAlarmUrl(data)
+      console.log(data,alarmInfo);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  const downloadEvt = fileName =>  {
-    const Link = document.createElement('a');
-    Link.download = fileName;
-    Link.style.display = 'none';
-    // 字符内容转变成blob地址
-    const blob = new Blob([JsonContent]);
-    Link.href = URL.createObjectURL(blob);
-    // 触发点击
-    document.body.appendChild(Link);
-    Link.click();
-    // 然后移除
-    document.body.removeChild(Link);
+  const destroyflvPlayer = () =>{
+    setModalVisible(false)
   }
-
-
 
   return (
-    
-    <Modal title="查看物模型" visible={modalVisible} footer={null} onCancel={()=> setModalVisible(false)} className="tranfer-table-filter-modal" width={width}>
-      <Row>
-        <Col span={24}>
-          <pre className="json-content">{JsonContent}</pre>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={24} className="btn-container">
-          <Button type="primary" onClick={handleDownLoad}>导出模型文件</Button>
-        </Col>
-      </Row>
-    </Modal>     
-    
+    <>
+      <Modal title={alarmUrl[deviceName]} visible={modalVisible} destroyOnClose={true} footer={null} closable={false} onCancel={destroyflvPlayer} className="tranfer-table-filter-modal" width={width}>
+        <div className="dia_content">
+          <img className="event_img" src={alarmUrl[picUrl]} alt=""/>
+          <span className="event_con">事件：{alarmInfo[alarm_content]}</span>
+          <span className="event_con">时间：{moments(alarmInfo[reportTime]).format('YYYY-MM-DD HH:mm:ss')}</span>
+          <span className="event_con">点位：{alarmUrl[deviceName]}</span>
+        </div>
+      </Modal>
+    </> 
   );
 };
 
