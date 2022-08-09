@@ -3,7 +3,7 @@
     <!-- icon-class="el-icon-arrow-right"  v-if="nsTreeShow" :default-expanded-keys="[expandedKey]"-->
     <el-tree default-expand-all ref="nsTree" node-key="data_id" :data="treeData" :props="defaultProps"
       :highlight-current="true" :render-content="renderContent" :current-node-key="expandedKey"
-      @node-click="handleNodeClick"></el-tree>
+      @node-click="handleNodeClick" empty-text="" :expand-on-click-node="false"></el-tree>
   </div>
 </template>
 
@@ -58,7 +58,6 @@ export default {
     this.getData(); // 一级
     // console.log('customConfig====================>', this.customConfig);
     // console.log('treeData====================>', this.treeData);
-
   },
   methods: {
     handleNodeClick(data) {
@@ -82,9 +81,6 @@ export default {
             listId: this.selectItem.listId,
           },
         });
-
-
-
     },
     treeSeekId(parentArr, id) {
       if (parentArr.child && parentArr.child.length != 0) {
@@ -158,8 +154,9 @@ export default {
           },
         });
     },
-    async getData() {
+    getData() {
       let that = this;
+      let flag = [];
       let idArray = [
         {
           // id: "1e2dd93f-4fba-48d9-8de7-d990f31cfd2e",
@@ -193,7 +190,7 @@ export default {
         },
       ]
       for (let i = 0; i < idArray.length; i++) {
-        await getAssetById(idArray[i].id).then(res => {
+        getAssetById(idArray[i].id).then(res => {
           let words = idArray[i].word;
           let keys = idArray[i].key;
           let key = res.data[0];
@@ -206,11 +203,14 @@ export default {
             })
             return obj;
           });
+          flag.push('1')
+          if (flag.length == idArray.length) {
+            this.allData()
+          }
         }).catch(arr => {
           console.log(arr);
         });
       }
-      this.allData()
     },
     allData() {
       this.fourData?.forEach(x => {
@@ -281,6 +281,9 @@ export default {
 
 
       this.reanderTree();
+      this.$nextTick(()=>{
+        this.editPadding();
+      })
     },
     renderContent(h, { node, data, store }) {
       return (
@@ -288,6 +291,16 @@ export default {
           {node.label}
         </div>
       )
+    },
+    editPadding(){
+      let eleList = document.querySelectorAll(".el-tree-node__content")
+        // console.log("eleList",eleList);
+      for (let index = 0; index < eleList.length; index++) {
+        const element = eleList[index];
+        element.style.paddingLeft = Number(element.style.paddingLeft.slice(0,-2)) / 2 + "px";
+        // let aa = element.style.paddingLeft.slice(0,-2)
+        // console.log('aa',aa);
+      }
     },
     do_EventCenter_getId(params) {
       console.log('默认选中', params);
