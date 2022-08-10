@@ -6,8 +6,15 @@ export const getAssetJSONForProduct = id =>
 export const downloadAssetJSONForProduct = id =>
   request.get(`iot/product/downloadAssetJSONForProduct?productId=${id}`);
 
-    /* 
-  * 告警事件图片接口
+/**
+ * 查询资产
+ * @param id 资产ID
+ */
+export const queryAssetById = (id,params) => {
+  return request.post(`/asset/getAssetData?asset_id=${id}&count=99999&pageNum=1&pageSize=10`, params);
+}
+
+  /* 
   * @param deviceId：设备ID
   * @param eventId：事件ID
   */

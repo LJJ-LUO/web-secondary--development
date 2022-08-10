@@ -4,8 +4,8 @@ import '@@/core/devScripts';
 import { plugin } from './core/plugin';
 import './core/pluginRegister';
 import { createHistory } from './core/history';
-import { ApplyPluginsType } from 'D:/workTest/web-secondary--development/node_modules/_@umijs_runtime@3.5.32@@umijs/runtime';
-import { renderClient } from 'D:/workTest/web-secondary--development/node_modules/_@umijs_renderer-react@3.5.32@@umijs/renderer-react/dist/index.js';
+import { ApplyPluginsType } from 'D:/workTest/数睿二开/web-secondary--development/node_modules/_@umijs_runtime@3.5.32@@umijs/runtime';
+import { renderClient } from 'D:/workTest/数睿二开/web-secondary--development/node_modules/_@umijs_renderer-react@3.5.32@@umijs/renderer-react/dist/index.js';
 import { getRoutes } from './core/routes';
 
 

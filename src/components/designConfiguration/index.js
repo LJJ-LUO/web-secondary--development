@@ -30,9 +30,12 @@ const DesignConfiguration = ({ changeConfiguration, configuration }) => {
         <Form.Item label="宽度：" name="width" initialValue={520}>
           <InputNumber />
         </Form.Item>
-        {/* <Form.Item label="高度：" name="height" initialValue={640}>
-          <InputNumber />
-        </Form.Item> */}
+        <Form.Item label="告警资产ID:" name="assetId" initialValue={"2f6f3e9b3897472a8af1069fd477ace4"}>
+          <Input placeholder="输入告警事件资产表ID" />
+        </Form.Item>
+        <Form.Item label="告警详情主键:" name="data_id" initialValue={"data_id"}>
+          <Input placeholder="输入告警详情主键key值" />
+        </Form.Item>
         <Form.Item label="点位字段：" name="deviceName" initialValue={"deviceName"}>
           <Input placeholder="输入对应字段key值" />
         </Form.Item>

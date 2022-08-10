@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React from 'react';
-import { ApplyPluginsType } from 'D:/workTest/web-secondary--development/node_modules/_@umijs_runtime@3.5.32@@umijs/runtime';
+import { ApplyPluginsType } from 'D:/workTest/数睿二开/web-secondary--development/node_modules/_@umijs_runtime@3.5.32@@umijs/runtime';
 import * as umiExports from './umiExports';
 import { plugin } from './plugin';
 
@@ -12,8 +12,7 @@ export function getRoutes() {
     "wrappers": [require('../dumi/layout').default],
     "component": ((props) => {
         const React = require('react');
-        const { default: getDemoRenderArgs } = require('D:/workTest/web-secondary--development/node_modules/_@umijs_preset-dumi@1.1.47@@umijs/preset-dumi/lib/plugins/features/demo/getDemoRenderArgs');
-        const { default: Previewer } = require('dumi-theme-default/es/builtins/Previewer.js');
+        const { default: getDemoRenderArgs } = require('D:/workTest/数睿二开/web-secondary--development/node_modules/_@umijs_preset-dumi@1.1.47@@umijs/preset-dumi/lib/plugins/features/demo/getDemoRenderArgs');
         const { usePrefersColor, context } = require('dumi/theme');
 
         
@@ -55,12 +54,11 @@ export function getRoutes() {
     "__dumiRoot": true,
     "layout": false,
     "path": "/",
-    "wrappers": [require('../dumi/layout').default, require('D:/workTest/web-secondary--development/node_modules/_dumi-theme-default@1.1.23@dumi-theme-default/es/layout.js').default],
+    "wrappers": [require('../dumi/layout').default, require('D:/workTest/数睿二开/web-secondary--development/node_modules/_dumi-theme-default@1.1.23@dumi-theme-default/es/layout.js').default],
     "routes": [
       {
         "path": "/reporting/快速开始/1",
-        "component": require('D:/workTest/web-secondary--development/dumi/docs/1.快速开始.md').default,
-        "exact": true,
+        "component": require('D:/workTest/数睿二开/web-secondary--development/dumi/docs/1.快速开始.md').default,
         "meta": {
           "filePath": "dumi/docs/1.快速开始.md",
           "updatedTime": 1657784076000,
@@ -96,7 +94,7 @@ export function getRoutes() {
       },
       {
         "path": "/reporting/如何开发插件/2",
-        "component": require('D:/workTest/web-secondary--development/dumi/docs/2.开发插件.md').default,
+        "component": require('D:/workTest/数睿二开/web-secondary--development/dumi/docs/2.开发插件.md').default,
         "exact": true,
         "meta": {
           "filePath": "dumi/docs/2.开发插件.md",
@@ -149,8 +147,7 @@ export function getRoutes() {
       },
       {
         "path": "/reporting/如何使用插件/3",
-        "component": require('D:/workTest/web-secondary--development/dumi/docs/3.使用插件.md').default,
-        "exact": true,
+        "component": require('D:/workTest/数睿二开/web-secondary--development/dumi/docs/3.使用插件.md').default,
         "meta": {
           "filePath": "dumi/docs/3.使用插件.md",
           "updatedTime": 1657784076000,
@@ -170,8 +167,7 @@ export function getRoutes() {
       },
       {
         "path": "/reporting/API/4",
-        "component": require('D:/workTest/web-secondary--development/dumi/docs/4.API.md').default,
-        "exact": true,
+        "component": require('D:/workTest/数睿二开/web-secondary--development/dumi/docs/4.API.md').default,
         "meta": {
           "filePath": "dumi/docs/4.API.md",
           "updatedTime": 1657784076000,
@@ -282,8 +278,7 @@ export function getRoutes() {
       },
       {
         "path": "/",
-        "component": require('D:/workTest/web-secondary--development/dumi/docs/index.md').default,
-        "exact": true,
+        "component": require('D:/workTest/数睿二开/web-secondary--development/dumi/docs/index.md').default,
         "meta": {
           "filePath": "dumi/docs/index.md",
           "updatedTime": 1657784076000,
@@ -322,8 +317,7 @@ export function getRoutes() {
       },
       {
         "path": "/reporting/dev/快速预览",
-        "component": require('D:/workTest/web-secondary--development/dumi/docs/快速预览.md').default,
-        "exact": true,
+        "component": require('D:/workTest/数睿二开/web-secondary--development/dumi/docs/快速预览.md').default,
         "meta": {
           "filePath": "dumi/docs/快速预览.md",
           "updatedTime": 1660032070000,

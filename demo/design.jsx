@@ -12,8 +12,11 @@ const PreviewComponent = (props) => {
     component: {},
     componentCenter,
     eventCenter,
+    dataSource: [],
     customParams: {
       width: 600,
+      assetId: "2f6f3e9b3897472a8af1069fd477ace4",
+      data_id:"data_id",
       deviceName: "deviceName",
       alarm_content: "alarm_content",
       reportTime: "reportTime",

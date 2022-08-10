@@ -1,7 +1,5 @@
 // @ts-nocheck
-import { createBrowserHistory, History } from 'D:/workTest/web-secondary--development/node_modules/_@umijs_runtime@3.5.32@@umijs/runtime';
-
-let options = {
+import { createBrowserHistory, History } from 'D:/workTest/数睿二开/web-secondary--development/node_modules/_@umijs_runtime@3.5.32@@umijs/runtime';
   "basename": "/"
 };
 if ((<any>window).routerBase) {

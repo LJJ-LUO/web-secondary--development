@@ -5,7 +5,7 @@ import qs from "querystringify";
 let apiContextPath = "";
 if (process.env.NODE_ENV === "development") {
   document.cookie =
-    "token=eyJhbGciOiJIUzI1NiJ9.eyJsb2dpblRpbWVzdGFtcCI6MTY2MDAxNjQ2MjI0MywidXNlcklkIjoiMTIzNDU2Nzg5MCJ9.LgjONdIKrhwrnyTEcuFp2DltkPQCBJpVO56F3sMTlWo";
+    "token=eyJhbGciOiJIUzI1NiJ9.eyJsb2dpblRpbWVzdGFtcCI6MTY2MDA5OTE3ODg2NywidXNlcklkIjoiMTIzNDU2Nzg5MCJ9.Xb3lDk2ZaYgEh3m02xenhKeE5YBHzFlSGwNqvdujJEA";
   document.cookie =
     "refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJsb2dpblRpbWVzdGFtcCI6MTY2MDAxNjQ2MjI0NH0.6hK4NpoxwoV2bhbihsInDTCMoSdLxrUeF2n3TVU7mUU";
   document.cookie = "username=admin";
@@ -29,6 +29,7 @@ instance.defaults.headers.post["Content-Type"] = "application/json";
 
 instance.interceptors.response.use(
   (response) => {
+    // console.log('response',response);
     let { data } = response;
     if (typeof data === "string") {
       data = JSON.parse(data);
