@@ -1,5 +1,5 @@
 import Vue from "vue";
-import ButtonChange from "./App.vue";
+import App from "./App.vue";
 // 按需引入组件，引入方式见https://element.eleme.cn/#/zh-CN/component/quickstart#an-xu-yin-ru
 
 if (process.env.NODE_ENV !== "production") {
@@ -54,7 +54,7 @@ if (process.env.NODE_ENV !== "production") {
 
   new Vue({
     render: h => {
-      return <ButtonChange customConfig={customConfig}/>;
+      return <App customConfig={customConfig}/>;
     },
   }).$mount("#app");
 } else {
@@ -71,7 +71,7 @@ if (process.env.NODE_ENV !== "production") {
       const div = document.createElement("div");
       dom.appendChild(div);
       new Vue({
-        render: h => <ButtonChange {...{props}} />,
+        render: h => <App {...{props}} />,
       }).$mount(div);
     }
   );

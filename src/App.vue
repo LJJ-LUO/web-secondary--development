@@ -1,6 +1,6 @@
 <template>
   <!-- 定义外层容器标识，宽高百分百 -->
-  <div :id="identification" style="width: 100%;height: 100%">
+  <div :id="identification" style="width: 100%;height: 100%" :ref="identification">
     <!-- 不可删除-->
     <el-radio-group v-model="defaultValue" v-for="item in buttons" @change="handleValueChange">
       <el-radio-button :label="item.label"></el-radio-button>
@@ -47,7 +47,7 @@ export default {
       eventActionDefine
     );
     let {buttons, id} = this.customConfig
-    let componentName = this.$vnode.tag.split("-").pop()
+    let componentName = this.$vnode.tag.split("-").pop().toLowerCase()
     this.identification = id ? `secondary_${componentName}_${id}` : `secondary_${componentName}_${utils.generateUUID()}`
     //用于定义接收用户输入
     this.buttons = JSON.parse(buttons).data;
