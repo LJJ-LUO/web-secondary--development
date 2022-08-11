@@ -1,7 +1,7 @@
 <template>
   <div class="nanShan_tree">
-    <!-- icon-class="el-icon-arrow-right"  v-if="nsTreeShow" :default-expanded-keys="[expandedKey]"-->
-    <el-tree default-expand-all ref="nsTree" node-key="data_id" :data="treeData" :props="defaultProps"
+    <!-- icon-class="el-icon-arrow-right"  v-if="nsTreeShow" :default-expanded-keys="[expandedKey]"  default-expand-all-->
+    <el-tree ref="nsTree" node-key="data_id" :data="treeData" :props="defaultProps"
       :highlight-current="true" :render-content="renderContent" :current-node-key="expandedKey"
       @node-click="handleNodeClick" empty-text="" :expand-on-click-node="false"></el-tree>
   </div>
@@ -254,6 +254,7 @@ export default {
         child: this.oneData
       }]
       this.treeData = root;
+      this.expandedKey = this.customConfig.rootDataId;
       if (this.treeData[0].data_id != this.office_id) {
         this.treeSeekId3(this.treeData[0], this.office_id)
         this.treeData[0] = this.tempData[0]
@@ -294,12 +295,9 @@ export default {
     },
     editPadding(){
       let eleList = document.querySelectorAll(".el-tree-node__content")
-        // console.log("eleList",eleList);
       for (let index = 0; index < eleList.length; index++) {
         const element = eleList[index];
         element.style.paddingLeft = Number(element.style.paddingLeft.slice(0,-2)) / 2 + "px";
-        // let aa = element.style.paddingLeft.slice(0,-2)
-        // console.log('aa',aa);
       }
     },
     do_EventCenter_getId(params) {
