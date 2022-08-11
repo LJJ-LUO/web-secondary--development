@@ -1,72 +1,91 @@
 <template>
-  <div class="infoCard">
-    <div class="card-title" @click="triggerEvent">
-      {{ title }}
-    </div>
-    <div class="card-desc">
-      {{ desc }}
-    </div>
-    <el-button ghost @click="goToStudy"> 去学习 </el-button>
-    <el-button ghost @click="getData"> 获取数据 </el-button>
+  <!-- 定义外层容器标识，宽高百分百 -->
+  <div :id="identification" style="width: 100%;height: 100%" :ref="identification">
+    <!-- 不可删除-->
+    <el-radio-group v-model="defaultValue" v-for="item in buttons" @change="handleValueChange">
+      <el-radio-button :label="item.label"></el-radio-button>
+    </el-radio-group>
   </div>
 </template>
 
 <script>
-// import appService from "@njsdata/app-sdk";
 import eventActionDefine from "./components/msgCompConfig";
-import "./index.css";
+import {
+  RadioButton,
+  RadioGroup
+} from "element-ui";
+import Vue from "vue"
+import utils from "@/utils";
+
+
+Vue.use(RadioGroup)
+Vue.use(RadioButton)
+
 export default {
-  name: "App",
+  name: "ButtonChange",
   props: {
     customConfig: Object,
     info: Object,
   },
-  computed: {
-    title() {
-      return this.customConfig?.title || "数据构建";
-    },
-    desc() {
-      return this.customConfig?.desc || "描述";
-    },
+  computed: {},
+  data() {
+    return {
+      identification: "",
+      selected: "",
+      buttons: [],
+      defaultValue: "",
+    }
   },
   mounted() {
-    let { componentId } = this.customConfig || {};
+    //用于注册事件定义，不可删除
+    let {componentId} = this.customConfig || {};
     componentId &&
-      window.componentCenter?.register(
-        componentId,
-        "comp",
-        this,
-        eventActionDefine
-      );
+    window.componentCenter?.register(
+      componentId,
+      "comp",
+      this,
+      eventActionDefine
+    );
+    let {buttons, id} = this.customConfig
+    let componentName = this.$vnode.tag.split("-").pop().toLowerCase()
+    this.identification = id ? `secondary_${componentName}_${id}` : `secondary_${componentName}_${utils.generateUUID()}`
+    //用于定义接收用户输入
+    this.buttons = JSON.parse(buttons).data;
+    this.defaultValue = JSON.parse(buttons).defaultValue;
+    if (this.defaultValue) {
+      this.triggerEvent("valueChange",
+        {
+          value: this.defaultValue
+        }
+      )
+    }
   },
   methods: {
-    goToStudy() {
-      window.open(this.customConfig?.url || "http://baidu.com");
+    handleValueChange(value) {
+      console.log(value);
+      this.triggerEvent("valueChange",
+        {
+          value
+        }
+      )
     },
-    getData() {
-      //   console.log(appService.getMenuData(), "菜单");
-      //   console.log(appService.getPageData(), "页面");
-      //   console.log(appService.getVariable(), "变量");
-    },
-    triggerEvent() {
-      let { componentId, appId } = this.customConfig || {};
-      componentId &&
-        appId &&
-        window.eventCenter?.triggerEventNew({
-          objectId: appId,
-          componentId: componentId,
-          type: "app",
-          event: "onImgClick",
-          payload: {
-            value: "sasdasd",
-          },
-        });
-    },
-    do_EventCenter_messageSuccess() {
-      alert("动作执行成功！");
+
+    /**
+     * 触发事件
+     * @param {String} eventName 事件名
+     * @param {Array} payload 事件传参
+     *
+     */
+    triggerEvent(eventName, payload) {
+      let {componentId, appId} = this.customConfig || {};
+      componentId && appId && window.eventCenter?.triggerEvent(
+        componentId,
+        eventName,
+        payload
+      );
     },
     Event_Center_getName() {
-      return "应用二开测试";
+      return this.identification;
     },
   },
   destroyed() {

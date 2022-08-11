@@ -1,7 +1,7 @@
 {
-  "id": "e58d249f-703c-4918-9e0d-892936394f78",
+  "id": "e19255f8-a35a-46ff-a5e8-caac396c8c33",
   "type": "app",
-  "main": "app.9439dbc9.js",
+  "main": "app.da9a0940.js",
   "version": "2",
   "props": {
     "type": "customize",
@@ -11,10 +11,8 @@
     "lib": [],
     "css_script": [],
     "customconf": [
-      "title",
-      "url",
-      "desc",
-      "imgUrl"
+      "id",
+      "buttons"
     ]
   }
 }
