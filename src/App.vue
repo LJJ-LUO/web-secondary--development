@@ -2,7 +2,7 @@
   <!-- 定义外层容器标识，宽高百分百 -->
   <div :id="identification" style="width: 100%;height: 100%" :ref="identification">
     <!-- 不可删除-->
-    <el-radio-group v-model="defaultValue" v-for="item in buttons" @change="handleValueChange">
+    <el-radio-group v-model="defaultValue" v-for="item in buttons" @change="handleValueChange" :fill="themeColor">
       <el-radio-button :label="item.label"></el-radio-button>
     </el-radio-group>
   </div>
@@ -26,8 +26,16 @@ export default {
   props: {
     customConfig: Object,
     info: Object,
+    //8.11 V8R4C60SPC100需求新加，之前版本取不到themeInfo
+    themeInfo: Object
   },
-  computed: {},
+  computed: {
+    themeColor() {
+      let {theme_global_config} = this.themeInfo || {theme_global_config: {"--theme-public-pinPai-color": "rgba(24,144,255,1)"}}
+      let themeColor = theme_global_config["--theme-public-pinPai-color"]
+      return themeColor
+    },
+  },
   data() {
     return {
       identification: "",
