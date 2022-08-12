@@ -1,45 +1,68 @@
-.infoCard {
-  width: 24%;
-  min-width: 260px;
-  border-radius: 16px !important;
-  padding: 2vw !important;
-  .ant-card-head {
-    padding: 0;
-    .ant-card-head-title {
-      padding: 0;
-      .card-title {
-        color: white;
-        position: relative;
-        font-weight: bold;
-        font-size: 28px;
-        line-height: 39px;
-        z-index: 10;
+.container {
+  width: 100%;
+  max-height: 614px;
+  overflow: hidden;
+  margin: 0px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-bottom: 0;
+  .space {
+    padding: 0px 16px;
+    border-left: 1px solid #ccc;
+    height: 100%;
+  }
+  .row {
+    width: 100%;
+    height: 36px;
+    display: flex;
+    box-sizing: border-box;
+    border-bottom: 1px solid #ccc;
+    align-items: center;
+  }
+  .tools {
+    .tools-title {
+      width: 140px;
+      padding: 0px 16px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+  .header {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 140px auto;
+    grid-template-rows: 35px;
+    grid-gap: 0;
+    .tools-title {
+      padding: 0px 16px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .table-header {
+      display: grid;
+      grid-gap: 0;
+      .columns {
+        height: 35px;
+        display: flex;
+        align-items: center;
+        border-left: 1px solid #ccc;
+        justify-content: center;
       }
     }
-    .ant-card-extra {
-      padding: 0;
-    }
   }
-  .ant-card-body {
-    padding: 0 !important;
-    .card-desc {
-      color: white;
-      position: relative;
-      font-size: 14px;
-      line-height: 20px;
-      color: #ffffffb3;
-      margin: 1vw 0;
-      z-index: 10;
-    }
+  .content {
+    overflow: auto;
+    max-height: 540px;
   }
-  .ant-btn-background-ghost {
-    border-color: #fff8;
-    width: 100px;
+  .content::-webkit-scrollbar {
+    display: none;
   }
-  @media (max-width: 1680px) {
-    .card-title {
-      font-size: 26px;
-      line-height: 37px;
-    }
+  .ant-picker-suffix {
+    display: none !important;
   }
+}
+.ant-picker {
+  width: 225px;
 }
