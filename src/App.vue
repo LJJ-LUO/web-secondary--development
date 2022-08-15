@@ -40,7 +40,33 @@ export default {
   },
   computed: {
     theme() {
-      return this.changeTheme(this.themeInfo)
+      let {theme_global_config} = this.themeInfo || {
+        theme_global_config: {
+          "--theme-public-pinPai-color": "rgba(24,144,255,1)",
+          "--theme-public-text-color-1": "rgba(12, 13, 14,1)"
+        }
+      }
+
+      let themeColor = theme_global_config["--theme-public-pinPai-color"]
+      let textColor = theme_global_config["--theme-public-text-color-1"]
+      this.$nextTick(() => {
+        let style = `#${this.identification} .el-radio-button__inner:hover{
+                      color:${this.theme.themeColor};
+                      }
+                     #${this.identification} .el-radio-button.is-active .el-radio-button__inner:hover{
+                      color: #FFF;
+                      }
+                      `
+        if (this.$refs[this.identification]) {
+          this.styleEle = document.createElement("style")
+          document.head.appendChild(this.styleEle)
+          this.styleEle.innerText = style
+        }
+      })
+      return {
+        themeColor,
+        textColor
+      }
     },
   },
   data() {
@@ -76,38 +102,8 @@ export default {
         }
       )
     }
-    this.changeTheme(this.themeInfo)
   },
   methods: {
-    changeTheme(themeInfo) {
-      let {theme_global_config} = themeInfo || {
-        theme_global_config: {
-          "--theme-public-pinPai-color": "rgba(24,144,255,1)",
-          "--theme-public-text-color-1": "rgba(12, 13, 14,1)"
-        }
-      }
-
-      let themeColor = theme_global_config["--theme-public-pinPai-color"]
-      let textColor = theme_global_config["--theme-public-text-color-1"]
-      this.$nextTick(() => {
-        let style = `#${this.identification} .el-radio-button__inner:hover{
-                      color:${this.theme.themeColor};
-                      }
-                     #${this.identification} .el-radio-button.is-active .el-radio-button__inner:hover{
-                      color: #FFF;
-                      }
-                      `
-        if (this.$refs[this.identification]) {
-          this.styleEle = document.createElement("style")
-          document.head.appendChild(this.styleEle)
-          this.styleEle.innerText = style
-        }
-      })
-      return {
-        themeColor,
-        textColor
-      }
-    },
     handleValueChange(value) {
       this.triggerEvent("valueChange",
         {
