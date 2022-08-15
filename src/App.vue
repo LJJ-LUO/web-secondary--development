@@ -2,7 +2,13 @@
   <!-- 定义外层容器标识，宽高百分百 -->
   <div :id="identification" style="width: 100%;height: 100%" :ref="identification">
     <!-- 不可删除-->
-    <el-radio-group v-model="defaultValue" v-for="item in buttons" @change="handleValueChange" :fill="themeColor">
+    <el-radio-group
+      v-model="defaultValue"
+      v-for="item in buttons"
+      @change="handleValueChange"
+      :fill="themeColor"
+      :text-color="themeColor"
+    >
       <el-radio-button :label="item.label"></el-radio-button>
     </el-radio-group>
   </div>
@@ -22,10 +28,14 @@ Vue.use(RadioGroup)
 Vue.use(RadioButton)
 
 export default {
+  //这里写组件英文名称，容器dom的id及事件中心命名均用到这个name，请认真填写
   name: "ButtonChange",
   props: {
     customConfig: Object,
     info: Object,
+    //应用变量和系统变量 7.26 V8R4C50SPC220需求新加 之前版本取不到appVariables和sysVariables
+    appVariables:Array,
+    sysVariables:Array,
     //8.11 V8R4C60SPC100需求新加，之前版本取不到themeInfo
     themeInfo: Object
   },

@@ -78,10 +78,161 @@ if (process.env.NODE_ENV !== "production") {
     })
 
   };
-
+  let sysVariables = [
+    {
+      "create_member": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "create_time": 1585814470000,
+      "data_type": 0,
+      "default_value": "1234567890",
+      "id": "10001",
+      "last_modifier": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "last_modify_time": 1585814470000,
+      "name": "current_user_id",
+      "object_id": "",
+      "owner": 0,
+      "type": 1,
+      "use": true
+    },
+    {
+      "create_member": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "create_time": 1585814470000,
+      "data_type": 0,
+      "default_value": "admin",
+      "id": "10002",
+      "last_modifier": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "last_modify_time": 1585814470000,
+      "name": "current_user_name",
+      "owner": 0,
+      "type": 1,
+      "use": true
+    },
+    {
+      "create_member": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "create_time": 1585814470000,
+      "data_type": 0,
+      "default_value": "123456789",
+      "id": "10003",
+      "last_modifier": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "last_modify_time": 1585814470000,
+      "name": "current_office_id",
+      "owner": 0,
+      "type": 1,
+      "use": true
+    },
+    {
+      "create_member": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "create_time": 1585814470000,
+      "data_type": 0,
+      "default_value": "SO.MINE_OFFICE",
+      "id": "10004",
+      "last_modifier": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "last_modify_time": 1585814470000,
+      "name": "current_office_name",
+      "owner": 0,
+      "type": 1,
+      "use": true
+    },
+    {
+      "create_member": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "create_time": 1585814470000,
+      "data_type": 0,
+      "default_value": "SO.MINE_OFFICE",
+      "id": "10005",
+      "last_modifier": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "last_modify_time": 1585814470000,
+      "name": "current_company_name",
+      "owner": 0,
+      "type": 1,
+      "use": true
+    },
+    {
+      "create_member": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "create_time": 1585814470000,
+      "data_type": 6,
+      "default_value": "1660539539969",
+      "id": "10006",
+      "last_modifier": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "last_modify_time": 1585814470000,
+      "name": "current_time",
+      "owner": 0,
+      "type": 1,
+      "use": true
+    },
+    {
+      "create_member": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "create_time": 1585814470000,
+      "data_type": 0,
+      "default_value": "14c9f167-84b7-4840-96bc-0fa2e1ae62a6,88cc8064-ab41-4ebc-b925-f51ccf1888a1,38d2e7e0-1362-43a9-abce-2eba34d5a849,3e854f79-79f7-4db3-a646-a591098335cb,123456789",
+      "id": "10007",
+      "last_modifier": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "last_modify_time": 1585814470000,
+      "name": "current_office_and_next",
+      "object_id": "",
+      "owner": 0,
+      "type": 1,
+      "use": true
+    },
+    {
+      "create_member": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "create_time": 1585814470000,
+      "data_type": 0,
+      "default_value": "admin",
+      "id": "10008",
+      "last_modifier": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "last_modify_time": 1585814470000,
+      "name": "current_user_login_name",
+      "owner": 0,
+      "type": 1,
+      "use": true
+    },
+    {
+      "create_member": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "create_time": 1585814470000,
+      "data_type": 0,
+      "id": "10009",
+      "last_modifier": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "last_modify_time": 1585814470000,
+      "name": "current_direct_sub_company_id",
+      "owner": 0,
+      "type": 1,
+      "use": true
+    },
+    {
+      "create_member": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "create_time": 1656921670000,
+      "data_type": 6,
+      "default_value": "1660492800000",
+      "id": "10010",
+      "last_modifier": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "last_modify_time": 1656921670000,
+      "name": "start_time_of_today",
+      "owner": 0,
+      "type": 1,
+      "use": true
+    },
+    {
+      "create_member": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "create_time": 1656921670000,
+      "data_type": 6,
+      "default_value": "1660579199000",
+      "id": "10011",
+      "last_modifier": "7d65384f-b8df-b3dc-b730-31a15f520ef9",
+      "last_modify_time": 1656921670000,
+      "name": "end_time_of_today",
+      "owner": 0,
+      "type": 1,
+      "use": true
+    }
+  ]
+  let appVariables = []
   new Vue({
     render: h => {
-      return <App customConfig={customConfig} themeInfo={themeInfo}/>;
+      return <App
+        customConfig={customConfig}
+        themeInfo={themeInfo}
+        sysVariables={sysVariables}
+        appVariables={appVariables}
+      />;
     },
   }).$mount("#app");
 } else {
