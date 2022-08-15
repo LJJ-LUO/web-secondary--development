@@ -5,6 +5,7 @@ import { Input, Select, Option } from "element-ui";
 import echarts from "echarts";
 
 import "./index.css";
+import { options } from "less";
 Vue.config.productionTip = false;
 Vue.use(Input);
 Vue.use(Select);
@@ -14,29 +15,28 @@ Vue.prototype.$echarts = echarts;
 if (process.env.NODE_ENV !== "production") {
   const customConfig = {
     variable: { default_value: "测试的数据", id: "测试的ID" },
-    options: {
-      auto: true,
-      showToolbar: false,
-      columns: ["年份", "数值", "指标名称"],
-      showColumns: ["指标名称", "数值"],
-      dataSourceType: 2,
-      customCss: "",
-    },
+
     data: [
       [2018, 3.9, "新生儿死亡率"],
       [2018, 6.1, "婴儿死亡率"],
       [2018, 8.4, "5岁以下儿童死亡率"],
     ],
   };
-
+  const options = {};
+  options.externalVariables = {
+    tip图标颜色: "",
+    tip图标大小: "",
+    tip标题: "",
+    tip标题文字颜色: "",
+    tip标题文字大小: "",
+    tip内容: "",
+    tip内容宽度: "",
+    tip内容文字大小: "",
+    tip内容文字颜色: "",
+  };
   new Vue({
-    render: h => {
-      return (
-        <App
-          style={{ width: "calc(100% - 220px)" }}
-          customConfig={customConfig}
-        />
-      );
+    render: (h) => {
+      return <App style={{ width: "calc(100% - 220px)" }} customConfig={customConfig} />;
     },
   }).$mount("#app");
 } else {
@@ -44,17 +44,14 @@ if (process.env.NODE_ENV !== "production") {
     window.CUSTOM_PLUGIN = new Map();
   }
 
-  window.CUSTOM_PLUGIN.set(
-    process.env.VUE_APP_CUSTOM_PLUGIN_ID,
-    (dom, props) => {
-      if (dom.childNodes.length > 0) {
-        dom.removeChild(dom.childNodes[0]);
-      }
-      const div = document.createElement("div");
-      dom.appendChild(div);
-      new Vue({
-        render: h => <App {...{ props }} />,
-      }).$mount(div);
+  window.CUSTOM_PLUGIN.set(process.env.VUE_APP_CUSTOM_PLUGIN_ID, (dom, props) => {
+    if (dom.childNodes.length > 0) {
+      dom.removeChild(dom.childNodes[0]);
     }
-  );
+    const div = document.createElement("div");
+    dom.appendChild(div);
+    new Vue({
+      render: (h) => <App {...{ props }} />,
+    }).$mount(div);
+  });
 }

@@ -1,12 +1,24 @@
 {
-  "id": "38d34a26-cf25-42ab-aba5-6d9459fc94c4",
+  "id": "a2f87f76-160d-4cca-bda8-31dc8d1d6dea",
   "type": "bigscreen",
-  "main": "app.131f629b.js",
+  "main": "app.3debaa25.js",
   "version": "2",
   "props": {
     "img": "APP_0001.png",
     "disableimg": "disabled_custom_table.png",
     "name": "Vue版本的演示Demo",
-    "className": "className-demo"
+    "className": "className-demo",
+    "vars": [
+      "tip图标颜色",
+      "tip图标大小",
+      "tip标题",
+      "tip标题文字颜色",
+      "tip标题文字大小",
+      "tip内容",
+      "tip内容背景颜色",
+      "tip内容宽度",
+      "tip内容文字大小",
+      "tip内容文字颜色"
+    ]
   }
 }
