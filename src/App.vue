@@ -2,7 +2,13 @@
   <!-- 定义外层容器标识，宽高百分百 -->
   <div :id="identification" style="width: 100%;height: 100%" :ref="identification">
     <!-- 不可删除-->
-    <el-radio-group v-model="defaultValue" v-for="item in buttons" @change="handleValueChange" :fill="themeColor">
+    <el-radio-group
+      v-model="defaultValue"
+      v-for="item in buttons"
+      @change="handleValueChange"
+      :fill="themeColor"
+      :text-color="themeColor"
+    >
       <el-radio-button :label="item.label"></el-radio-button>
     </el-radio-group>
   </div>
