@@ -11,9 +11,9 @@ export const GetpicYzm = () =>
     responseType: 'arraybuffer',
   })
 export const Phoneyzm = (picyzm, mobile) =>
-  request.post(`/system/register/sendSms?type=create&authPicCode=${picyzm}`, mobile);
+  request.post(`/ext/dmzp/sendSms?type=create&authPicCode=${picyzm}&phoneNumber=${mobile}`, mobile);
 export const register = (sjyzm, name, phone) =>
-  request.post(`dmzp/register?code=${sjyzm}`, { name: name, phone: phone });
+  request.post(`/ext/dmzp/register?code=${sjyzm}`, { name: name, phone: phone });
 export const Login = (sjyzm, phone) =>
-  request.get(`/dmzp/login?phone=${phone}&code=${sjyzm}`);
+  request.get(`/ext/dmzp/login?phone=${phone}&code=${sjyzm}`);
 

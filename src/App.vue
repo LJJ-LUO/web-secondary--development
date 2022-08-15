@@ -3,7 +3,7 @@
     <div class="title">
       <div class="top">
         <div style="height:100%;width:60px">
-          <img :src="titleImg" alt="" class="icon" />
+          <img :src="titleImg"  alt="" class="icon" />
           <!-- <img src="./../output" alt=""> -->
         </div>
         <div>
@@ -28,7 +28,7 @@
               </div>
               <div class="row">
                 <div class="red1">正在招</div>
-                <div class="ccontent">{{ item.position }}}</div>
+                <div class="ccontent">{{ item.position }}</div>
                 <el-button type="primary">立即联系</el-button>
               </div>
             </div>
@@ -610,7 +610,7 @@ export default {
       showServe: false,
       url: 'http://www.baidu.com',
       url1: 'http://www.baidu.com',
-      titleImg: require('./../output/images/1c4c7d184fa9d98a46fd36d187204c3.png').default
+      titleImg: require('../pluginTemp/images/1c4c7d184fa9d98a46fd36d187204c3.png')
     }
   },
   computed: {
@@ -749,7 +749,7 @@ export default {
       Login(this.sjyzm, this.mobile).then(res => {
         // console.log(res);
         if (res.status == 200) {
-          alert('登录成功')
+          // alert('登录成功')
           if (this.url) {
             window.open(`${this.url}`, "_blank");
           }
