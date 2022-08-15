@@ -733,7 +733,7 @@ export default {
       Login(this.sjyzm, this.mobile).then(res => {
         // console.log(res);
         if (res.status == 200) {
-          alert('登录成功')
+          // alert('登录成功')
           if (this.url) {
             window.open(`${this.url}`, "_blank");
           }
