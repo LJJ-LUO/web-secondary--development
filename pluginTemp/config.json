@@ -1,20 +1,43 @@
 {
-  "id": "35ef2da7-8d40-4b63-a3f2-c8b240b02ee2",
-  "type": "analyzers",
-  "main": "app.66ff22af.js",
+  "id": "5b4341eb-dbf4-4853-a044-6788befce6ac",
+  "type": "analyzer",
+  "main": "main.8b1fc6d2.js",
   "version": "2",
   "props": {
     "img": "custom_table.png",
-    "type": "k23dasd547",
+    "type": "qoiwud23fo3",
     "disableimg": "disabled_custom_table.png",
-    "name": "vue实现测试",
-    "domId": "ex_custom_table_15",
+    "name": "demo",
+    "process": true,
+    "domId": "ex_46fbe360-daa5-42af-8ca0-2ec3066ef216",
     "lib": [],
     "cssDep": [],
-    "scriptName": "app.a515a2e6.js",
-    "optionModules": [],
+    "scriptName": "main.b42fe2f5.js",
     "vars": [
-      "fontSize"
-    ]
+      "缺口起始角度",
+      "缺口终止角度",
+      "刻度最小值",
+      "刻度最大值",
+      "颜色渐变",
+      "圆环宽度",
+      "圆环整体大小",
+      "圆环边框宽度",
+      "圆环边框颜色",
+      "中部文字字号",
+      "中部文字颜色",
+      "中部文字字体",
+      "中部文字位置",
+      "底部文字",
+      "底部文字字号",
+      "底部文字颜色",
+      "底部文字字体",
+      "底部文字位置",
+      "单位设置",
+      "单位字号",
+      "单位颜色",
+      "单位字体",
+      "单位位置"
+    ],
+    "optionModules": []
   }
 }
