@@ -3,7 +3,7 @@
   <div :id="identification" style="width: 100%;height: 100%" :ref="identification">
     <!-- -->
     <el-radio-group
-      v-model="defaultValue"
+      v-model="selected"
       v-for="item in buttons"
       @change="handleValueChange"
       :fill="theme.themeColor"
@@ -98,6 +98,7 @@ export default {
     this.defaultValue = JSON.parse(buttons).defaultValue;
     //业务代码
     if (this.defaultValue) {
+      this.selected = this.defaultValue
       this.triggerEvent("valueChange",
         {
           value: this.defaultValue
@@ -131,6 +132,14 @@ export default {
     Event_Center_getName() {
       return this.identification;
     },
+    //与msgCompConfig.js文件actions相对应，组件动作，依据定义加上do_message前缀
+    do_message_setValue(value) {
+      this.setValue(value)
+    },
+    setValue(value) {
+      this.selected = value
+
+    }
   },
   destroyed() {
     //必需，不可删除
