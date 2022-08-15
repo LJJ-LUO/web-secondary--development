@@ -22,24 +22,52 @@ import {
 } from "element-ui";
 import Vue from "vue"
 import utils from "@/utils";
-
+import $ from "jquery"
 
 Vue.use(RadioGroup)
 Vue.use(RadioButton)
 
 export default {
+  //这里写组件英文名称，容器dom的id及事件中心命名均用到这个name，请认真填写
   name: "ButtonChange",
   props: {
     customConfig: Object,
     info: Object,
+    //应用变量和系统变量 7.26 V8R4C50SPC220需求新加 之前版本取不到appVariables和sysVariables
+    appVariables: Array,
+    sysVariables: Array,
     //8.11 V8R4C60SPC100需求新加，之前版本取不到themeInfo
     themeInfo: Object
   },
   computed: {
-    themeColor() {
-      let {theme_global_config} = this.themeInfo || {theme_global_config: {"--theme-public-pinPai-color": "rgba(24,144,255,1)"}}
+    theme() {
+      let {theme_global_config} = this.themeInfo || {
+        theme_global_config: {
+          "--theme-public-pinPai-color": "rgba(24,144,255,1)",
+          "--theme-public-text-color-1": "rgba(12, 13, 14,1)"
+        }
+      }
+
       let themeColor = theme_global_config["--theme-public-pinPai-color"]
-      return themeColor
+      let textColor = theme_global_config["--theme-public-text-color-1"]
+      this.$nextTick(() => {
+        let style = `#${this.identification} .el-radio-button__inner:hover{
+                      color:${this.theme.themeColor};
+                      }
+                     #${this.identification} .el-radio-button.is-active .el-radio-button__inner:hover{
+                      color: #FFF;
+                      }
+                      `
+        if (this.$refs[this.identification]) {
+          this.styleEle = document.createElement("style")
+          document.head.appendChild(this.styleEle)
+          this.styleEle.innerText = style
+        }
+      })
+      return {
+        themeColor,
+        textColor
+      }
     },
   },
   data() {
@@ -48,6 +76,7 @@ export default {
       selected: "",
       buttons: [],
       defaultValue: "",
+      styleEle: null
     }
   },
   mounted() {
@@ -66,6 +95,7 @@ export default {
     //用于定义接收用户输入
     this.buttons = JSON.parse(buttons).data;
     this.defaultValue = JSON.parse(buttons).defaultValue;
+    //业务代码
     if (this.defaultValue) {
       this.triggerEvent("valueChange",
         {
@@ -76,7 +106,6 @@ export default {
   },
   methods: {
     handleValueChange(value) {
-      console.log(value);
       this.triggerEvent("valueChange",
         {
           value
@@ -104,6 +133,7 @@ export default {
   },
   destroyed() {
     window.componentCenter?.removeInstance(this.customConfig?.componentId);
+    document.head.removeChild(this.styleEle)
   },
 };
 </script>
