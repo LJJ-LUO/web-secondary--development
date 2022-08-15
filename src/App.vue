@@ -6,8 +6,7 @@
       v-model="defaultValue"
       v-for="item in buttons"
       @change="handleValueChange"
-      :fill="themeColor"
-      :text-color="themeColor"
+      :fill="theme.themeColor"
     >
       <el-radio-button :label="item.label"></el-radio-button>
     </el-radio-group>
