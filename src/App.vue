@@ -6,8 +6,7 @@
       v-model="defaultValue"
       v-for="item in buttons"
       @change="handleValueChange"
-      :fill="themeColor"
-      :text-color="themeColor"
+      :fill="theme.themeColor"
     >
       <el-radio-button :label="item.label"></el-radio-button>
     </el-radio-group>
@@ -22,7 +21,7 @@ import {
 } from "element-ui";
 import Vue from "vue"
 import utils from "@/utils";
-
+import $ from "jquery"
 
 Vue.use(RadioGroup)
 Vue.use(RadioButton)
@@ -34,16 +33,14 @@ export default {
     customConfig: Object,
     info: Object,
     //应用变量和系统变量 7.26 V8R4C50SPC220需求新加 之前版本取不到appVariables和sysVariables
-    appVariables:Array,
-    sysVariables:Array,
+    appVariables: Array,
+    sysVariables: Array,
     //8.11 V8R4C60SPC100需求新加，之前版本取不到themeInfo
     themeInfo: Object
   },
   computed: {
-    themeColor() {
-      let {theme_global_config} = this.themeInfo || {theme_global_config: {"--theme-public-pinPai-color": "rgba(24,144,255,1)"}}
-      let themeColor = theme_global_config["--theme-public-pinPai-color"]
-      return themeColor
+    theme() {
+      return this.changeTheme(this.themeInfo)
     },
   },
   data() {
@@ -52,6 +49,7 @@ export default {
       selected: "",
       buttons: [],
       defaultValue: "",
+      styleEle: null
     }
   },
   mounted() {
@@ -70,6 +68,7 @@ export default {
     //用于定义接收用户输入
     this.buttons = JSON.parse(buttons).data;
     this.defaultValue = JSON.parse(buttons).defaultValue;
+    //业务代码
     if (this.defaultValue) {
       this.triggerEvent("valueChange",
         {
@@ -77,10 +76,39 @@ export default {
         }
       )
     }
+    this.changeTheme(this.themeInfo)
   },
   methods: {
+    changeTheme(themeInfo) {
+      let {theme_global_config} = themeInfo || {
+        theme_global_config: {
+          "--theme-public-pinPai-color": "rgba(24,144,255,1)",
+          "--theme-public-text-color-1": "rgba(12, 13, 14,1)"
+        }
+      }
+
+      let themeColor = theme_global_config["--theme-public-pinPai-color"]
+      let textColor = theme_global_config["--theme-public-text-color-1"]
+      this.$nextTick(() => {
+        let style = `#${this.identification} .el-radio-button__inner:hover{
+                      color:${this.theme.themeColor};
+                      }
+                     #${this.identification} .el-radio-button.is-active .el-radio-button__inner:hover{
+                      color: #FFF;
+                      }
+                      `
+        if (this.$refs[this.identification]) {
+          this.styleEle = document.createElement("style")
+          document.head.appendChild(this.styleEle)
+          this.styleEle.innerText = style
+        }
+      })
+      return {
+        themeColor,
+        textColor
+      }
+    },
     handleValueChange(value) {
-      console.log(value);
       this.triggerEvent("valueChange",
         {
           value
@@ -108,6 +136,7 @@ export default {
   },
   destroyed() {
     window.componentCenter?.removeInstance(this.customConfig?.componentId);
+    document.head.removeChild(this.styleEle)
   },
 };
 </script>
