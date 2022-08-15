@@ -1,9 +1,9 @@
 <template>
-  <!-- 定义外层容器标识，宽高百分百 -->
+  <!-- 定义外层容器标识，宽高百分百 不可删除 -->
   <div :id="identification" style="width: 100%;height: 100%" :ref="identification">
-    <!-- 不可删除-->
+    <!-- -->
     <el-radio-group
-      v-model="defaultValue"
+      v-model="selected"
       v-for="item in buttons"
       @change="handleValueChange"
       :fill="theme.themeColor"
@@ -71,7 +71,9 @@ export default {
   },
   data() {
     return {
+      //必需，不可删除
       identification: "",
+      //业务代码
       selected: "",
       buttons: [],
       defaultValue: "",
@@ -96,6 +98,7 @@ export default {
     this.defaultValue = JSON.parse(buttons).defaultValue;
     //业务代码
     if (this.defaultValue) {
+      this.selected = this.defaultValue
       this.triggerEvent("valueChange",
         {
           value: this.defaultValue
@@ -111,9 +114,8 @@ export default {
         }
       )
     },
-
     /**
-     * 触发事件
+     * 触发事件 必需，不可删除
      * @param {String} eventName 事件名
      * @param {Array} payload 事件传参
      *
@@ -126,12 +128,23 @@ export default {
         payload
       );
     },
+    //必需，不可删除
     Event_Center_getName() {
       return this.identification;
     },
+    //与msgCompConfig.js文件actions相对应，组件动作，依据定义加上do_message前缀
+    do_message_setValue(value) {
+      this.setValue(value)
+    },
+    setValue(value) {
+      this.selected = value
+
+    }
   },
   destroyed() {
+    //必需，不可删除
     window.componentCenter?.removeInstance(this.customConfig?.componentId);
+    //业务代码，不需要记得清除
     document.head.removeChild(this.styleEle)
   },
 };
