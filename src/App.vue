@@ -99,7 +99,6 @@ export default {
 .tips_Content {
   display: none;
   padding: 20px;
-  height: 100px;
   border-top: 3px solid #04abe5;
   position: absolute;
 }
