@@ -1,5 +1,5 @@
-[toc]
-# smardaten前端组件二次开发
+## 组件预览
+![](./output/preview.png)
 ## 插件概述
 数睿开放平台的 UI 插件为用户提供应用设计、分析仪、大屏、填报设计等核心模块自定义前端组件的能力。用户运用此能力，可以定制 UI 样式和页面逻辑。
 
@@ -308,11 +308,3 @@ export default new EventBus();
 + 在组件的模板中，预置了一些事件动作相关的函数及定义，请在正式开发中将$\color{red}{用不到的事件与动作清除掉}$，并正确书写`Event_Center_getName`函数的返回值，以防止对配置人员造成困扰。
 + 因为二开插件外层布局由配置人员通过平台布局组件实现，四种类型的前端二开组件，除非特殊要求，理论上都应该将最外层的宽高设置为100%。
 + 二开组件代码中，如果需要获取dom元素并进行操作，react版本或vue版本都应通过ref去获取dom元素而非通过选择器，以防止组件复用时造成冲突
-+ 分析仪二开通常对图表类进行二次开发，所以应加上窗口监听事件，并在其中写入图表重绘方法
-  eg.
-  ```js
-  let chart= echarts.init(this.refs.chart)
-  window.addEventListener("resize",function(){
-    chart.resize()
-  })
-  ```
