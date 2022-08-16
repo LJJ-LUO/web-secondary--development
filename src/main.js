@@ -8,7 +8,7 @@
  */
 import Vue from "vue";
 import App from "./App.vue";
-
+import './index.css'
 import { Table, TableColumn } from "element-ui";
 
 Vue.config.productionTip = false;
@@ -41,7 +41,11 @@ if (dom) {
     );
     const options = {
       externalVariables: {
-        fontSize: "20px",
+        "坐标字号": 12,
+        "坐标字体": '宋体',
+        "坐标字体颜色": 'red',
+        "柱子宽度": 12,
+        "颜色配置": '[[1,2],[3,4],[5,6]]'
       },
     };
     const props = {
