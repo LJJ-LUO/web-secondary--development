@@ -15,14 +15,17 @@
     "not dead"
   ],
   "dependencies": {
+    "@icon-park/vue": "^1.4.2",
     "@njsdata/app-sdk": "^1.0.0",
     "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
     "@vue/babel-preset-jsx": "^1.2.4",
     "axios": "^0.23.0",
     "core-js": "^3.6.5",
     "element-ui": "^2.15.6",
+    "moment": "^2.29.4",
     "querystringify": "^2.2.0",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-pdf": "^4.3.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
