@@ -8,12 +8,14 @@
  */
 import Vue from "vue";
 import App from "./App.vue";
-
-import { Table, TableColumn } from "element-ui";
+import './index.css'
+import { Table, TableColumn, Row, Col } from "element-ui";
 
 Vue.config.productionTip = false;
 Vue.use(Table);
 Vue.use(TableColumn);
+Vue.use(Row);
+Vue.use(Col);
 
 import config from "../pluginTemp/config.json";
 
@@ -37,11 +39,20 @@ if (dom) {
 } else {
   if (process.env.NODE_ENV !== "production") {
     const dataSource = JSON.parse(
-      '[["衬衫","高跟鞋","裤子","袜子","雪纺衫","羊毛衫"],[5,10,10,17,36,20]]'
+      '[[5,"衬衫"],[10,"高跟鞋"],[10,"裤子"],[10,"袜子"],[10,"雪纺绒"],[10,"羊毛衫"]]'
     );
     const options = {
       externalVariables: {
-        fontSize: "20px",
+        "区域间距": 15,
+        "区域圆角": 18,
+        "名称样式": 30,
+        "数值样式": '{"fontSize":20,"color":"green"}',
+        "数据颜色": '["red","yellow","blue","black"]',
+        "图例间距": '',
+        "图例文字样式": '',
+        "轮播时长间隔": '',
+        "数据标签显示": 'false',
+        "是否轮播": 'true'
       },
     };
     const props = {
