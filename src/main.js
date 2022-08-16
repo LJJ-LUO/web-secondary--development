@@ -8,12 +8,14 @@
  */
 import Vue from "vue";
 import App from "./App.vue";
-
-import { Table, TableColumn } from "element-ui";
+import './index.css'
+import { Table, TableColumn, Row, Col } from "element-ui";
 
 Vue.config.productionTip = false;
 Vue.use(Table);
 Vue.use(TableColumn);
+Vue.use(Row);
+Vue.use(Col);
 
 import config from "../pluginTemp/config.json";
 
@@ -37,11 +39,24 @@ if (dom) {
 } else {
   if (process.env.NODE_ENV !== "production") {
     const dataSource = JSON.parse(
-      '[["衬衫","高跟鞋","裤子","袜子","雪纺衫","羊毛衫"],[5,10,10,17,36,20]]'
+      '[[5,"衬衫"],[10,"高跟鞋"],[10,"裤子"],[10,"袜子"],[10,"雪纺绒"],[10,"羊毛衫"]]'
     );
     const options = {
       externalVariables: {
-        fontSize: "20px",
+        "区域内半径": "30%",
+        "区域外半径": "70%",
+        "色块放大尺寸": "10",
+        "区域间距": 15,
+        "区域圆角": 18,
+        "图例间距": '',
+        "轮播时长间隔": '',
+        "是否轮播": 'true',
+        "图例数值单位": "个",
+        "图例文字字号": "20",
+        "图例文字字体": "Courier New",
+        "图例文字颜色": "pink",
+        "图例数值字号": "30",
+        "图例数值字体": "Microsoft YaHei",
       },
     };
     const props = {
