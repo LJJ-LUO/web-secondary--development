@@ -11,10 +11,13 @@
     "lib": [],
     "css_script": [],
     "customconf": [
+      "assetId",
       "title",
-      "url",
-      "desc",
-      "imgUrl"
+      "moreTo",
+      "menuTitle",
+      "menuDesc",
+      "menuTo",
+      "themePic"
     ]
   }
 }

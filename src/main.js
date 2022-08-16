@@ -15,16 +15,46 @@ Vue.use(Avatar);
 if (process.env.NODE_ENV !== "production") {
   // 添加 customConfig 进行测试
   let customConfig = {
-    title: "数据构建",
-    desc: "无码化应用搭建，弹指间即完成数据从无到有到收集和使用",
-    url: "http://baidu.com",
-    imgUrl:
-      "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
+    assetId: "54b18540-a396-41a6-9333-34ab04336df0",
+    title: "应用工具",
+    moreTo: "http://baidu.com",
+    menuTitle: "title",
+    menuDesc: "desc",
+    menuTo: "http",
+    themePic:'[{"themeId":"d8724186-78cf-4c23-abb6-e931974e2df4","image":"imgUrl"},{"themeId":"52250e971ce3482491f75a7ae01af824","image":"imgUrl"}]'
   };
+
+  let themeInfo = {
+      "theme_id": "52250e971ce3482491f75a7ae01af824",
+      "theme_global_config": {
+          "--theme-public-pinPai-color": "rgba(24,144,255,1)",
+          "--theme-public-sub-color-1": "rgba(37, 55, 97,1)",
+          "--theme-public-sub-color-2": "rgba(30, 41, 64,1)",
+          "--theme-public-sub-color-3": "rgba(115, 141, 192,1)",
+          "--theme-public-text-color-1": "rgba(12, 13, 14,1)",
+          "--theme-public-text-color-2": "rgba(85, 85, 85,1)",
+          "--theme-public-text-color-3": "rgba(204, 204, 204,1)",
+          "--theme-public-text-color-4": "rgba(245, 245, 245,1)",
+          "--theme-public-background-color-1": "rgba(245, 246, 250,1)",
+          "--theme-public-background-color-2": "rgba(240, 242, 247,1)",
+          "--theme-public-function-color-1": "rgba(255, 102, 102,1)",
+          "--theme-public-function-color-2": "rgba(255, 148, 0,1)",
+          "--theme-public-function-color-4": "rgba(61, 204, 180,1)",
+          "--theme-public-function-color-5": "rgba(73, 129, 47,1)",
+          "--theme-public-fontSize-1": "56px",
+          "--theme-public-fontSize-2": "48px",
+          "--theme-public-fontSize-3": "36px",
+          "--theme-public-fontSize-4": "20px",
+          "--theme-public-fontSize-5": "18px",
+          "--theme-public-fontSize-6": "16px",
+          "--theme-public-fontSize-7": "14px",
+          "--theme-public-fontFamily-1": "Microsoft YaHei"
+      }
+  }
 
   new Vue({
     render: h => {
-      return <App customConfig={customConfig} />;
+      return <App customConfig={customConfig} themeInfo={themeInfo}/>;
     },
   }).$mount("#app");
 } else {
