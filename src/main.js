@@ -36,9 +36,12 @@ if (dom) {
   }).$mount(wrapper);
 } else {
   if (process.env.NODE_ENV !== "production") {
-    const dataSource = JSON.parse(
-      '[["衬衫","高跟鞋","裤子","袜子","雪纺衫","羊毛衫"],[5,10,10,17,36,20]]'
-    );
+    const dataSource = [
+      ["阅读","10","12","13","30"],
+      ["年度","3","11","9","40"],
+      ["同比","2","23","33","36"],
+      ["环比","30","10","20","45"],
+    ]
     const options = {
       externalVariables: {
         fontSize: "20px",
