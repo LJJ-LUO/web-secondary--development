@@ -1,8 +1,8 @@
 // 组件可派发事件
 export const events = [
   {
-    key: "change",
-    name: "内容改变",
+    key: "bulr",
+    name: "组件失焦",
     payload: [
       {
         name: "内容",

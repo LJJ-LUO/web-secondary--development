@@ -1,11 +1,11 @@
 <template>
-  <el-form ref="form"
-           :model="form"
-           label-width="80px">
-    <el-form-item label="占位符">
-      <el-input v-model="form.placeholder"></el-input>
+  <el-form ref="form" :model="form" label-width="110px" label-position="left">
+    <el-form-item label="秒小数精确位数" name="accuracy">
+      <el-input-number v-model="form.accuracy" :controls="false" size="small" :min="0" />
     </el-form-item>
-
+    <el-form-item label="保留小数位数" name="latitude">
+      <el-input-number v-model="form.latitude" :controls="false" size="small" :min="0" />
+    </el-form-item>
   </el-form>
 </template>
 
@@ -14,16 +14,17 @@ export default {
   data() {
     return {
       form: {
-        placeholder: "",
+        accuracy: null,
+        latitude: null,
       },
     };
   },
 
   watch: {
-    "form.size": function (value, oldValue) {
+    "form.accuracy": function (value, oldValue) {
       this.onFormLayoutChange();
     },
-    "form.placeholder": function (value, oldValue) {
+    "form.latitude": function (value, oldValue) {
       this.onFormLayoutChange();
     },
     "form.allowClear": function (value, oldValue) {

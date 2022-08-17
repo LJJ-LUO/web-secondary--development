@@ -3,6 +3,7 @@ import App from "./App.vue";
 // 按需引入组件，引入方式见https://element.eleme.cn/#/zh-CN/component/quickstart#an-xu-yin-ru
 import {
   Input,
+  InputNumber,
   Select,
   Option,
   Form,
@@ -25,6 +26,7 @@ Vue.use(FormItem);
 Vue.use(RadioGroup);
 Vue.use(RadioButton);
 Vue.use(Switch);
+Vue.use(InputNumber);
 
 // Vue.use(Element);
 
