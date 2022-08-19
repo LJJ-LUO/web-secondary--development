@@ -7,9 +7,10 @@ import request from "./request";
 export const queryAssetById = id =>
   request.post(`/asset/getAssetData?asset_id=${id}`, []);
 
+
 /**
- * 无鉴权查询资产
+ * 查询信息
  * @param id 资产ID
  */
-export const queryAssetById = id =>
-  request.post(`/form/getAssetData?asset_id=${id}`, []);
+export const queryMessage = id =>
+request.get(`/remind/queryRemindData?userId=${id}`);
