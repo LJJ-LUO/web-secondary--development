@@ -174,6 +174,12 @@ export const themeInfo = {
 export const customConfig = {
   componentId: "123",
   appId: "123",
+  assetId: '233f6b6f-fca6-4a73-9dad-f5577edf46e6',
+  speedTime: '3',
+  detailsUrl: 'dsdd',
+  keyField: 'data_id',
+  imgField: 'Urlddd',
+  titleField: 'title111',
   buttons: JSON.stringify({
     defaultValue: "战勤部",
     data: [
@@ -212,5 +218,5 @@ export const customConfig = {
     ]
   })
 };
-export const appVariables=[];
+export const appVariables = [];
 

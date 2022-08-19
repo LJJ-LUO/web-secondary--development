@@ -6,7 +6,9 @@ import {
   customConfig,
   themeInfo
 }
+
   from "@/components/mockData.js";
+import './index.css'
 
 if (process.env.NODE_ENV !== "production") {
   window.eventCenter = {
@@ -38,7 +40,7 @@ if (process.env.NODE_ENV !== "production") {
       const div = document.createElement("div");
       dom.appendChild(div);
       new Vue({
-        render: h => <App {...{props}} />,
+        render: h => <App {...{ props }} />,
       }).$mount(div);
     }
   );

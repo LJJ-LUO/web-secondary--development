@@ -1,7 +1,7 @@
 {
-  "id": "f1c7b5c4-0c91-42bc-8c65-f50d68af5def",
+  "id": "c27272a0-1f79-4bd5-92f5-bb4cae98d933",
   "type": "app",
-  "main": "app.1deb4c02.js",
+  "main": "app.46162945.js",
   "version": "2",
   "props": {
     "type": "customize",
@@ -11,8 +11,12 @@
     "lib": [],
     "css_script": [],
     "customconf": [
-      "id",
-      "buttons"
+      "assetId",
+      "speedTime",
+      "imgField",
+      "titleField",
+      "detailsUrl",
+      "keyField"
     ]
   }
 }
