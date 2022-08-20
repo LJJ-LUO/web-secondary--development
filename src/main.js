@@ -26,6 +26,9 @@ import {
   CheckboxGroup,
   Dialog,
   Message,
+  RadioButton,
+  Row,
+  Col,
 } from "element-ui";
 
 Vue.config.productionTip = false;
@@ -48,6 +51,9 @@ Vue.use(Switch);
 Vue.use(Radio);
 Vue.use(RadioGroup);
 Vue.use(VideoPlayer);
+Vue.use(RadioButton);
+Vue.use(Row);
+Vue.use(Col);
 Vue.prototype.$message = Message;
 // import * as appService from "@njsdata/app-sdk";
 

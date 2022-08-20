@@ -1,7 +1,7 @@
 {
-  "id": "717b11a1-2c7d-47a5-a46c-02d9b312f67a",
+  "id": "8f02066f-de85-436f-b4f0-2a5b0859f569",
   "type": "app",
-  "main": "app.71593672.js",
+  "main": "app.bddb26bc.js",
   "version": "2",
   "props": {
     "type": "customize",
@@ -10,11 +10,6 @@
     "loadStyle": 0,
     "lib": [],
     "css_script": [],
-    "customconf": [
-      "终端资产ID",
-      "本地资产ID",
-      "融合资产ID",
-      "监控资产ID"
-    ]
+    "customconf": []
   }
 }
