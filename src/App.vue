@@ -7,7 +7,7 @@
 <script>
 import * as echarts from "echarts";
 import "./index.css";
-import { getAssetById } from "./api/asset";
+// import { getAssetById } from "./api/asset";
 
 const zipObject = (arr1, arr2) => {
   const ret = {};
@@ -98,6 +98,8 @@ export default {
   mounted() {
     this.$refs.eChartsLine.parentNode.style.height = "100%"
     this.$refs.eChartsLine.parentNode.style.width = "100%"
+    this.$refs.eChartsLine.parentNode.parentNode.style.minHeight = "0"
+
     console.log('this.options',this.options);
     // let { 辅助线颜色, 辅助线隐藏两端, 辅助线样式, 辅助线文字显示, 辅助线文字样式, 辅助线文字颜色 } = this.options?.externalVariables;
     // this.markLines.symbol = 辅助线隐藏两端 ? 辅助线隐藏两端.split(",") : ["circle","triangle"];
