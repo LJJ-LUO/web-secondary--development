@@ -1,10 +1,13 @@
 import Vue from "vue";
 import App from "./App.vue";
-import "videojs-flash";
-import "videojs-contrib-hls";
-import VideoPlayer from "vue-video-player/src";
-require("video.js/dist/video-js.css");
-require("vue-video-player/src/custom-theme.css");
+import Video from "video.js";
+import "video.js/dist/video-js.css";
+import "videojs-flash"; // 要播放rtmp流, 就必须引入videojs-flash
+import SWF_URL from "videojs-swf/dist/video-js.swf";
+// Video.options.flash.swf = SWF_URL;
+Vue.prototype.$video = Video;
+console.log(Video.options);
+// Video.addLanguage('zh-CN', video_zhCN)
 // 按需引入组件，引入方式见https://element.eleme.cn/#/zh-CN/component/quickstart#an-xu-yin-ru
 import {
   Input,
@@ -50,7 +53,6 @@ Vue.use(Icon);
 Vue.use(Switch);
 Vue.use(Radio);
 Vue.use(RadioGroup);
-Vue.use(VideoPlayer);
 Vue.use(RadioButton);
 Vue.use(Row);
 Vue.use(Col);

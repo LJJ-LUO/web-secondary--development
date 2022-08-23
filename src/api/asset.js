@@ -8,7 +8,7 @@ export const queryAssetById = (id) => request.post(`/asset/getAssetData?asset_id
 // 创建会议
 export const create = (data) => request.post(`/customize/conference/create?data_id=${data.data_id}&type=${data.type}`);
 // 临时资源添加
-export const add_resources = (data) => request.post(`/customize/conference/add_resources?conference_id=${data.conference_id}`, data);
+export const add_resources = (data,message) => request.post(`/customize/conference/add_resources?conference_id=${data}`, message);
 // 会议录制
 export const record = (data) => request.post(`/customize/conference/record`, data);
 // 线路切换

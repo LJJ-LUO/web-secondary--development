@@ -1,32 +1,30 @@
 <template>
   <div class="main" :style="{ height: mainHeight }">
+  <!-- 位置与录播 -->
     <span class="addressSpan"
       >位置：{{ video_listData.meeting_room_name }} <span class="videoGreen" v-show="videoStatus"> (录播中)</span><span class="videoRed" v-show="!videoStatus"> (未录播)</span
       ><el-switch v-model="videoStatus" @change="videoChange" active-color="#13ce66" inactive-color="#ff4949"> </el-switch
     ></span>
+    <!-- 屏幕布局选项 -->
     <div class="screenNum">
       <el-radio-group v-model="centerScreenIndex" size="mini" @change="centerScreenIndexChange">
         <el-radio-button :label="item" v-for="(item, index) in centerScreen" :key="index">{{ item.window_layout.length }}</el-radio-button>
       </el-radio-group>
     </div>
+    <!-- 上面 -->
     <div class="mainTop">
+      <!-- 上面左边 -->
       <div class="topLeft">
         <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
           <el-tab-pane label="终端" name="zhongduan" class="tabLable">
             <el-checkbox-group v-model="terminalCheckList">
               <div class="checkboxItem" v-for="(item, index) in terminalList" :key="index">
-                <el-checkbox :disabled="item.status == '紧急'" :label="item">{{ item.name }}</el-checkbox>
+                <el-checkbox :label="item">{{ item.name }}</el-checkbox>
                 <div class="checkboxItemIcon">
-                  <img
-                    src="../pluginTemp/images/handle.png"
-                    v-show="!item.status"
-                    @click="handleUp(item)"
-                    alt=""
-                    style="cursor: pointer; height: 24px; width: 24px; margin-right: 8px"
-                  />
-                  <phone-call theme="filled" size="24" fill="#dc150e" v-show="item.status" @click="recall(item)" style="cursor: pointer; margin-right: 8px" />
-                  <people theme="outline" size="24" fill="#ffffff" v-show="!item.is_main && !item.status" @click="changemain(item)" style="cursor: pointer; margin-right: 8px" />
-                  <people theme="filled" size="24" fill="#0E98DC" v-show="item.is_main && !item.status" @click="changemain(item)" style="cursor: pointer; margin-right: 8px" />
+                  <img src="../pluginTemp/images/handle.png" v-show="!item.status" @click="handleUp(item)" alt="" style="cursor: pointer; height: 24px; width: 24px" />
+                  <phone-call theme="filled" size="24" fill="#dc150e" v-show="item.status" @click="recall(item)" style="cursor: pointer" />
+                  <people theme="outline" size="24" fill="#ffffff" v-show="!item.is_main && !item.status" @click="changemain(item)" style="cursor: pointer" />
+                  <people theme="filled" size="24" fill="#0E98DC" v-show="item.is_main && !item.status" @click="changemain(item)" style="cursor: pointer" />
                 </div>
               </div>
             </el-checkbox-group>
@@ -34,18 +32,12 @@
           <el-tab-pane label="本地" name="bendi" class="tabLable">
             <el-checkbox-group v-model="localCheckList">
               <div class="checkboxItem" v-for="(item, index) in localList" :key="index">
-                <el-checkbox :disabled="item.status == '紧急'" :label="item.name"></el-checkbox>
+                <el-checkbox  :label="item.name"></el-checkbox>
                 <div class="checkboxItemIcon">
-                  <img
-                    src="../pluginTemp/images/handle.png"
-                    v-show="!item.status"
-                    @click="handleUp(item)"
-                    alt=""
-                    style="cursor: pointer; height: 24px; width: 24px; margin-right: 8px"
-                  />
-                  <phone-call theme="filled" size="24" fill="#dc150e" v-show="item.status" @click="recall(item)" style="cursor: pointer; margin-right: 8px" />
-                  <people theme="outline" size="24" fill="#ffffff" v-show="!item.is_main && !item.status" @click="changemain(item)" style="cursor: pointer; margin-right: 8px" />
-                  <people theme="filled" size="24" fill="#0E98DC" v-show="item.is_main && !item.status" @click="changemain(item)" style="cursor: pointer; margin-right: 8px" />
+                  <img src="../pluginTemp/images/handle.png" v-show="!item.status" @click="handleUp(item)" alt="" style="cursor: pointer; height: 24px; width: 24px" />
+                  <phone-call theme="filled" size="24" fill="#dc150e" v-show="item.status" @click="recall(item)" style="cursor: pointer" />
+                  <people theme="outline" size="24" fill="#ffffff" v-show="!item.is_main && !item.status" @click="changemain(item)" style="cursor: pointer" />
+                  <people theme="filled" size="24" fill="#0E98DC" v-show="item.is_main && !item.status" @click="changemain(item)" style="cursor: pointer" />
                 </div>
               </div>
             </el-checkbox-group>
@@ -53,18 +45,12 @@
           <el-tab-pane label="融合" name="ronghe" class="tabLable">
             <el-checkbox-group v-model="fuseCheckList">
               <div class="checkboxItem" v-for="(item, index) in fuseList" :key="index">
-                <el-checkbox :disabled="item.status == '紧急'" :label="item.name"></el-checkbox>
+                <el-checkbox  :label="item.name"></el-checkbox>
                 <div class="checkboxItemIcon">
-                  <img
-                    src="../pluginTemp/images/handle.png"
-                    v-show="!item.status"
-                    @click="handleUp(item)"
-                    alt=""
-                    style="cursor: pointer; height: 24px; width: 24px; margin-right: 8px"
-                  />
-                  <phone-call theme="filled" size="24" fill="#dc150e" v-show="item.status" @click="recall(item)" style="cursor: pointer; margin-right: 8px" />
-                  <people theme="outline" size="24" fill="#ffffff" v-show="!item.is_main && !item.status" @click="changemain(item)" style="cursor: pointer; margin-right: 8px" />
-                  <people theme="filled" size="24" fill="#0E98DC" v-show="item.is_main && !item.status" @click="changemain(item)" style="cursor: pointer; margin-right: 8px" />
+                  <img src="../pluginTemp/images/handle.png" v-show="!item.status" @click="handleUp(item)" alt="" style="cursor: pointer; height: 24px; width: 24px" />
+                  <phone-call theme="filled" size="24" fill="#dc150e" v-show="item.status" @click="recall(item)" style="cursor: pointer" />
+                  <people theme="outline" size="24" fill="#ffffff" v-show="!item.is_main && !item.status" @click="changemain(item)" style="cursor: pointer" />
+                  <people theme="filled" size="24" fill="#0E98DC" v-show="item.is_main && !item.status" @click="changemain(item)" style="cursor: pointer" />
                 </div>
               </div>
             </el-checkbox-group>
@@ -72,18 +58,12 @@
           <el-tab-pane label="监控" name="jiankong" class="tabLable">
             <el-checkbox-group v-model="monitorCheckList">
               <div class="checkboxItem" v-for="(item, index) in monitorList" :key="index">
-                <el-checkbox :disabled="item.status == '紧急'" :label="item.name"></el-checkbox>
+                <el-checkbox  :label="item.name"></el-checkbox>
                 <div class="checkboxItemIcon">
-                  <img
-                    src="../pluginTemp/images/handle.png"
-                    v-show="!item.status"
-                    @click="handleUp(item)"
-                    alt=""
-                    style="cursor: pointer; height: 24px; width: 24px; margin-right: 8px"
-                  />
-                  <phone-call theme="filled" size="24" fill="#dc150e" v-show="item.status" @click="recall(item)" style="cursor: pointer; margin-right: 8px" />
-                  <people theme="outline" size="24" fill="#ffffff" v-show="!item.is_main && !item.status" @click="changemain(item)" style="cursor: pointer; margin-right: 8px" />
-                  <people theme="filled" size="24" fill="#0E98DC" v-show="item.is_main && !item.status" @click="changemain(item)" style="cursor: pointer; margin-right: 8px" />
+                  <img src="../pluginTemp/images/handle.png" v-show="!item.status" @click="handleUp(item)" alt="" style="cursor: pointer; height: 24px; width: 24px" />
+                  <phone-call theme="filled" size="24" fill="#dc150e" v-show="item.status" @click="recall(item)" style="cursor: pointer" />
+                  <people theme="outline" size="24" fill="#ffffff" v-show="!item.is_main && !item.status" @click="changemain(item)" style="cursor: pointer" />
+                  <people theme="filled" size="24" fill="#0E98DC" v-show="item.is_main && !item.status" @click="changemain(item)" style="cursor: pointer" />
                 </div>
               </div>
             </el-checkbox-group>
@@ -93,6 +73,7 @@
           <el-button @click="advance">预监</el-button>
         </div>
       </div>
+      <!-- 上面中间 -->
       <div class="topCenter">
         <div
           class="topCenterScreen"
@@ -101,7 +82,6 @@
           @drop="drop(item, nowCenterScreen.screen_num, index)"
           :style="{ position: 'absolute', border: '2px solid #113164', background: '#7d7d7d', width: item.w, height: item.h, top: item.y, left: item.x }"
         >
-            <iframe width="100%" v-if="videoList[index]" height="100%" frameborder="0" allowfullscreen :src="videoList[index].iFrameUrl"></iframe>
           <el-select
             class="agreement"
             v-show="index < videoList.length"
@@ -111,7 +91,7 @@
           >
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </el-option>
           </el-select>
-          <div style="color: #ffffff; position: absolute; top: 0; left: 0" v-if="videoList[index] && index < videoList.length">
+          <div style="color: #ffffff" v-if="videoList[index] && index < videoList.length">
             {{ videoList[index].name }}
           </div>
           <img
@@ -131,6 +111,7 @@
           />
         </div>
       </div>
+      <!-- 上面右边 -->
       <div class="topRight">
         <div>
           <img @click="openLogout" src="../pluginTemp/images/logout.png" alt="" />
@@ -146,14 +127,15 @@
         </div>
       </div>
     </div>
+    <!-- 下面 -->
     <div class="mainBottom">
       <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
         <el-tab-pane label="终端资源" name="zhongduan" class="tabPane">
           <el-carousel ref="cardShow" :autoplay="false" interval="0" indicator-position="none" :loop="false" arrow="never">
             <el-carousel-item>
-              <div draggable="true" @dragstart="dragstart($event)" v-for="(item, index) in buttomTabList.terminalList" :key="index" class="carouselItem">
-                <div class="closeBox" v-show="item" @click="closeButtom(item, index, 'terminalList')">x</div>
-                <iframe width="100%" height="100%" frameborder="0" allowfullscreen :src="item.iFrameUrl"></iframe>
+              <div draggable="true" @dragstart="dragstart($event)" v-for="(item, index) in buttomTabList" :key="index" class="carouselItem">
+                <div class="closeBox" v-show="item.url" @click="closeButtom(item, index)">x</div>
+                <img :src="item.url" alt="" />
               </div>
             </el-carousel-item>
           </el-carousel>
@@ -161,9 +143,9 @@
         <el-tab-pane label="本地设备" name="bendi" class="tabPane">
           <el-carousel ref="cardShow3" :autoplay="false" interval="0" indicator-position="none" :loop="false" arrow="never">
             <el-carousel-item>
-              <div draggable="true" @dragstart="dragstart($event)" v-for="(item, index) in buttomTabList.localList" :key="index" class="carouselItem">
-                <div class="closeBox" v-show="item" @click="closeButtom(item, index, 'localList')">x</div>
-                <iframe width="100%" height="100%" frameborder="0" allowfullscreen :src="item.iFrameUrl"></iframe>
+              <div draggable="true" @dragstart="dragstart($event)" v-for="(item, index) in buttomTabList" :key="index" class="carouselItem">
+                <div class="closeBox" v-show="item.url" @click="closeButtom(item, index)">x</div>
+                <img :src="item.url" alt="" />
               </div>
             </el-carousel-item>
           </el-carousel>
@@ -171,9 +153,9 @@
         <el-tab-pane label="融合通讯" name="ronghe" class="tabPane">
           <el-carousel ref="cardShow1" :autoplay="false" interval="0" indicator-position="none" :loop="false" arrow="never">
             <el-carousel-item>
-              <div draggable="true" @dragstart="dragstart($event)" v-for="(item, index) in buttomTabList.fuseList" :key="index" class="carouselItem">
-                <div class="closeBox" v-show="item" @click="closeButtom(item, index, 'fuseList')">x</div>
-                <iframe width="100%" height="100%" frameborder="0" allowfullscreen :src="item.iFrameUrl"></iframe>
+              <div draggable="true" @dragstart="dragstart($event)" v-for="(item, index) in buttomTabList" :key="index" class="carouselItem">
+                <div class="closeBox" v-show="item.url" @click="closeButtom(item, index)">x</div>
+                <img :src="item.url" alt="" />
               </div>
             </el-carousel-item>
           </el-carousel>
@@ -181,15 +163,16 @@
         <el-tab-pane label="监控资源" name="jiankong" class="tabPane">
           <el-carousel ref="cardShow2" :autoplay="false" interval="0" indicator-position="none" :loop="false" arrow="never">
             <el-carousel-item>
-              <div draggable="true" @dragstart="dragstart($event)" v-for="(item, index) in buttomTabList.monitorList" :key="index" class="carouselItem">
-                <div class="closeBox" v-show="item" @click="closeButtom(item, index, 'monitorList')">x</div>
-                <iframe width="100%" height="100%" frameborder="0" allowfullscreen :src="item.iFrameUrl"></iframe>
+              <div draggable="true" @dragstart="dragstart($event)" v-for="(item, index) in buttomTabList" :key="index" class="carouselItem">
+                <div class="closeBox" v-show="item.url" @click="closeButtom(item, index)">x</div>
+                <img :src="item.url" alt="" />
               </div>
             </el-carousel-item>
           </el-carousel>
         </el-tab-pane>
       </el-tabs>
     </div>
+    <!-- 推出会议弹窗 -->
     <el-dialog title="关闭提示" :visible.sync="offDialogVisible" width="25%" :before-close="handleClose" class="leaceMeetingDialog">
       <span>确认结束会议？</span>
       <span slot="footer" class="dialog-footer">
@@ -197,8 +180,8 @@
         <el-button type="primary" @click="leaveMeetingAll">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 会场终端弹窗 -->
     <el-dialog :visible.sync="statusDialogVisible" width="60%" :before-close="handleStatusClose" class="meetingStatus">
-      <span class="dialogX" @click="statusDialogVisible = false">x</span>
       <div class="metting_all">
         <!-- 会议 -->
         <div class="metting">
@@ -224,12 +207,7 @@
                 </el-radio-group>
               </div>
               <!-- 表格 -->
-              <el-table
-                :data="meetingStatusData"
-                max-height="500px"
-                :row-style="tableRowClassName"
-                :header-cell-style="{ background: '#012641', borderBottom: '1px solid #013657' }"
-              >
+              <el-table :data="meetingStatusData" max-height="500px" :header-cell-style="{ background: '#012641', borderBottom: '1px solid #013657' }">
                 <el-table-column show-overflow-tooltip prop="name" label="会场名称" header-align="center" align="center" width="200"></el-table-column>
                 <el-table-column show-overflow-tooltip prop="local_venue_name" label="观看会场" header-align="center" align="center" width="200"></el-table-column>
                 <el-table-column show-overflow-tooltip prop="hw_addr" label="会场标识" header-align="center" align="center" width="200"></el-table-column>
@@ -301,6 +279,7 @@
         </div>
       </div>
     </el-dialog>
+    <!-- 线路切换弹窗 -->
     <el-dialog title="线路切换" :visible.sync="lineDialogVisible" width="25%" :before-close="handleLineClose" class="switchLine">
       <el-radio-group v-model="lineData">
         <el-radio label="IPV4">全部切换IPV4</el-radio>
@@ -312,11 +291,12 @@
         <el-button type="primary" @click="lineDialogChange">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 添加临时资源弹窗 -->
     <el-dialog :visible.sync="addDialogVisible" width="60%" :show-close="false" class="temporaryAdd">
       <el-table :data="addtableData" style="width: 100%" height="500px">
         <el-table-column align="center" prop="name" label="名称">
           <template slot-scope="scope">
-            <el-input size="small" v-model="scope.row.name"></el-input>
+            <el-input size="small" v-model="scope.row.addtableData"></el-input>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="model" label="型号">
@@ -344,7 +324,7 @@
         ></el-table-column>
         <el-table-column align="center" prop="recall" width="180" label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary">高级设置</el-button>
+            <el-button size="mini" type="primary">其他参数</el-button>
             <el-button size="mini" type="primary" @click="deleteRow(scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -352,7 +332,7 @@
       <el-button class="addRow" @click="addRow" style="background: #171f34; color: #ffffff">➕新增</el-button>
       <span slot="footer" class="dialog-footer">
         <el-button @click="addDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addRowChange">确 定</el-button>
+        <el-button type="primary" @click="addDialogVisible = false">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -360,10 +340,7 @@
 
 <script>
 // import appService from "@njsdata/app-sdk";
-
-import "video.js/dist/video-js.css";
 import { videoPlayer } from "vue-video-player";
-import "videojs-flash";
 import eventActionDefine from "./components/msgCompConfig";
 import {
   queryAssetById,
@@ -386,7 +363,6 @@ import {
 import "./index.css";
 import { Five, People, PhoneCall } from "@icon-park/vue";
 import { finished } from "stream";
-const CKplayer = window.ckplayer;
 export default {
   name: "App",
   props: {
@@ -401,15 +377,7 @@ export default {
   },
   data() {
     return {
-      page_server: "https://streamedian.com",
-      video_size: "320x240",
       conference_id: "", //会议ID，
-      videoObject: {
-        container: ".video-content", // 容器的ID或className
-        variable: "player", // 播放函数名称
-        autoplay: true, // 是否自动播放
-        live: true, // 是否是直播视频 true = 直播，false = 点播}
-      },
       playerOptions: {
         playbackRates: [0.5, 1.0, 1.5, 2.1], // 可选的播放速度
         autoplay: false, // 如果为true,浏览器准备好时开始回放。
@@ -421,7 +389,7 @@ export default {
         sources: [
           {
             type: "rtmp/mp4", // 类型
-            src: "rtmp://mobliestream.c3tv.com:554/live/goodtv.sdp", // url地址
+            src: "rtmp://live.hkstv.hk.lxdns.com/live/hks1", // url地址
           },
         ],
         notSupportedMessage: "此视频暂无法播放，请稍后再试", // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
@@ -437,20 +405,20 @@ export default {
       statusDialogVisible: false,
       lineDialogVisible: false,
       addDialogVisible: false,
-      imgshow: true, //麦克风图片控制
-      lineData: "IPV4", //线路数据
-      videoStatus: true, //录播状态
-      addtableData: [], //新增弹窗表格
-      videoSouce: [], //每个屏幕的线路
-      terminalList: [], //终端数据
-      localList: [], //本地数据
-      fuseList: [], //融合数据
-      monitorList: [], //监控数据
+      imgshow: true,//麦克风图片控制
+      lineData: "IPV4",//线路数据
+      videoStatus: true,//录播状态
+      addtableData: [],//新增弹窗表格
+      videoSouce: [],//每个屏幕的线路
+      terminalList: [],//终端数据
+      localList: [],//本地数据
+      fuseList: [],//融合数据
+      monitorList: [],//监控数据
       centerScreen: [],
       nowCenterScreen: [],
       videoList: [],
-      radioSearch: "终端", //弹窗radio搜索
-      dialogSearch: "", //弹窗搜索
+      radioSearch: "",//弹窗radio搜索
+      dialogSearch: "",//弹窗搜索
       options: [
         {
           value: "IPV4",
@@ -460,7 +428,7 @@ export default {
           value: "IPV6",
           label: "IPV6",
         },
-      ], //线路选项
+      ],//线路选项
       modelOptions: [
         {
           value: "华为",
@@ -470,95 +438,56 @@ export default {
           value: "中兴",
           label: "中兴",
         },
-      ], //弹窗模型选项
+      ],//弹窗模型选项
       typeOptions: [
         {
           value: "H.323",
           label: "H.323",
         },
-      ], //弹窗类型选项
-      modelOptionsModel: "",
-      typeOptionsModel: "",
+      ],//弹窗类型选项
       centerScreenIndex: {},
-      meetingStatusData: [], //弹窗最终展示数据
-      meetingStatusDataAll: [], //弹窗展示数据
-      buttomTabList: {
-        terminalList: [],
-        localList: [],
-        fuseList: [],
-        monitorList: [],
-      },
-      terminalCheckList: [], //终端值
-      localCheckList: [], //本地值
-      fuseCheckList: [], //融合值
-      monitorCheckList: [], //监控值
-      listId: 0, //新增ID
-      nowLocaltion: "终端", //当前的tab
-      video_listData: [], //所有会议的初始数据
-      data_id: "", //data_id
-      mainHeight: "980px", //组件高度
+      meetingStatusData: [],//弹窗最终展示数据
+      meetingStatusDataAll: [],//弹窗展示数据
+      buttomTabList: [
+        {
+          url: require("../pluginTemp/images/demoimg.png"),
+        },
+        {
+          url: require("../pluginTemp/images/demoimg2.png"),
+        },
+        {
+          url: require("../pluginTemp/images/demoimg3.png"),
+        },
+        {
+          url: require("../pluginTemp/images/demoimg2.png"),
+        },
+        {
+          url: require("../pluginTemp/images/demoimg3.png"),
+        },
+      ],//底部预监数据
+      terminalCheckList: [],//终端值
+      localCheckList: [],//本地值
+      fuseCheckList: [],//融合值
+      monitorCheckList: [],//监控值
+      listId: 0,//新增ID
+      nowLocaltion: "终端",//当前的tab
+      video_listData: [],//所有会议的初始数据
+      data_id: "",//data_id
+      mainHeight: "",//组件高度
     };
   },
   computed: {},
   mounted() {
-    // console.log(document.getElementsByClassName("ant-layout-content"));
-    // this.mainHeight = document.getElementsByClassName("ant-layout-content")[0].offsetHeight + "px";
+    console.log(document.getElementsByClassName("ant-layout-content"));
+    this.mainHeight = document.getElementsByClassName("ant-layout-content")[0].offsetHeight + "px";
     let { componentId } = this.customConfig || {};
     // let urlMessage = this.getUrlParams(window.location.href);
     let dataid = this.GetQueryString("data_id");
-     this.data_id = this.GetQueryString("data_id");
     // console.log(this.GetQueryString("data_id"));
     this.creatMeeting(dataid);
     componentId && window.componentCenter?.register(componentId, "comp", this, eventActionDefine);
   },
   methods: {
-    initVideoPlayer() {
-      // 第一个选中的要播放的video标签, 记得是video标签,
-      const currentInstance = this.$video(this.$refs.videos, {
-        autoplay: true, // 是否自动播放
-        controls: true, // 是否显示控件
-      });
-
-      currentInstance.src({
-        src: "rtmp://media3.scctv.net/live/scctv_800",
-        type: "rtmp/flv", // 这个type值必写, 告诉videojs这是一个rtmp流视频
-      });
-    },
-    GetQueryString(name) {
-      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-      var r = window.location.search.substr(1).match(reg); //获取url中"?"符后的字符串并正则匹配
-      var context = "";
-      if (r != null) context = r[2];
-      reg = null;
-      r = null;
-      return context == null || context == "" || context == "undefined" ? "" : context;
-    },
-    // 处理资产数据
-    translatePlatformDataToJsonArray(originTableData) {
-      let originTableHeader = originTableData.data[0];
-      let tableHeader = [];
-      originTableHeader.forEach((item) => {
-        tableHeader.push(item.col_name);
-      });
-      let tableBody = originTableData.data[1];
-      let tableData = [];
-      tableBody.forEach((tableItem) => {
-        let temp = {};
-        tableItem.forEach((item, index) => {
-          temp[tableHeader[index]] = item;
-        });
-        tableData.push(temp);
-      });
-      return tableData;
-    },
-    getUrlParams(url) {
-      let pattern = /(\w+|[\u4e00-\u9fa5]+)=(\w+|[\u4e00-\u9fa5]+)/gi;
-      let result = {};
-      url.replace(pattern, ($, $1, $2) => {
-        result[$1] = $2;
-      });
-      return result;
-    },
     // 创建会议
     creatMeeting(data_id) {
       let message = {
@@ -568,6 +497,7 @@ export default {
       create(message).then((res) => {
         if (res.status == 200) {
           this.conference_id = res.data.conference_id;
+          this.addResources();
           let message = {
             conference_id: +this.conference_id,
             external: "",
@@ -580,27 +510,21 @@ export default {
                 conference_id: this.conference_id,
                 status: 1,
               };
-              record(message).then((res) => {
-                if (res.status == 200) {
-                  this.$message({
-                    message: "正在录播中",
-                    type: "success",
-                  });
-                }
-              });
+              // record(message).then((res) => {
+              //   if (res.status == 200) {
+              //     this.$message({
+              //       message: "正在录播中",
+              //       type: "success",
+              //     });
+              //   }
+              // });
             }
             this.videoList = res.data.terminal_list;
+            this.meetingStatusDataAll = res.data.terminal_list;
+            this.meetingStatusData = this.meetingStatusDataAll;
             this.videoList.forEach((item, index) => {
-              item.iFrameUrl = `${this.page_server}/embed?s=${window.btoa("rtsp://rtsp.stream/pattern")}&r=${window.btoa(this.video_size)}`;
               item.ipv == 0 ? (this.videoSouce[index] = "IPV4") : (this.videoSouce[index] = "IPV6");
             });
-            this.meetingStatusDataAll = res.data.terminal_list;
-            this.meetingStatusDataAll.forEach((item, index) => {
-              if (item.type == 0) {
-                this.meetingStatusData.push(item);
-              }
-            });
-            // this.meetingStatusData = this.meetingStatusDataAll;
             this.terminalList = [];
             this.localList = [];
             this.fuseList = [];
@@ -626,34 +550,109 @@ export default {
         }
       });
     },
-    //临时资源添加
-    addResources() {
+    // 获取所有直播数据
+    searhVideoList() {
       let message = {
-        conference_id: this.conference_id,
-        data_id: "111", // 新增为空
-        parent_id: "aa", //跳转二开页面带入的data_id
-        name: "名称",
-        model: "型号",
-        connection_identifier: "192.168.1.1",
-        user_name: "admin",
-        password: "sdy_23sZG",
-        KVParams: { key: "value" }, // 其他参数
+        conference_id: +this.conference_id,
+        external: "",
+        type: 1,
       };
-      add_resources(message).then((res) => {
-        console.log(res);
+      video_list(message).then((res) => {
+        this.video_listData = res.data;
+        if (res.data.is_recording) {
+          let message = {
+            conference_id: this.conference_id,
+            status: 1,
+          };
+          record(message).then((res) => {
+            if (res.status == 200) {
+              this.$message({
+                message: "正在录播中",
+                type: "success",
+              });
+            }
+          });
+        }
+        this.videoList = res.data.terminal_list;
+        this.meetingStatusDataAll = res.data.terminal_list;
+        this.meetingStatusData = this.meetingStatusDataAll;
+        this.videoList.forEach((item, index) => {
+          item.ipv == 0 ? (this.videoSouce[index] = "IPV4") : (this.videoSouce[index] = "IPV6");
+        });
+        this.terminalList = [];
+        this.localList = [];
+        this.fuseList = [];
+        this.monitorList = [];
+        res.data.terminal_list.forEach((item, index) => {
+          switch (item.type) {
+            case 0:
+              this.terminalList.push(item);
+              break;
+            case 1:
+              this.localList.push(item);
+              break;
+            case 2:
+              this.fuseList.push(item);
+              break;
+            case 3:
+              this.monitorList.push(item);
+              break;
+          }
+        });
       });
     },
-    // 点击主席
-    zhuxichange(item, index) {
-      this.terminalList.forEach((item, itemIndex) => {
-        item.zhuxi = false;
+    // 录播
+    videoChange() {
+      this.videoStatus = this.videoStatus;
+      let message = {
+        conference_id: this.conference_id,
+        status: "",
+      };
+      this.videoStatus ? (message.status = 1) : (message.status = 0);
+      record(message).then((res) => {
+        if (res.status == 200) {
+          if (this.videoStatus) {
+            this.$message({
+              message: "正在录播中",
+              type: "success",
+            });
+          } else {
+            this.$message({
+              message: "录制已关闭",
+              type: "warning",
+            });
+          }
+        }
       });
-      this.terminalList[index].zhuxi = true;
-      this.$message({
-        message: "主席已变更",
-        type: "success",
+    },
+    // 主屏幕布局
+    windowLayout() {
+      let message = {
+        local_venue_name: "3123",
+      };
+      window_layout(message).then((res) => {
+        if (res.status == 200) {
+          this.centerScreen = res.data;
+          this.centerScreenIndex = this.centerScreen[0];
+          this.nowCenterScreen = this.centerScreen[0];
+          this.videoList.forEach((item, index) => {
+            item.ipv == 0 ? (this.videoSouce[index] = "IPV4") : "IPV6";
+          });
+          this.$nextTick(() => {
+            let elements = document.getElementsByClassName("topCenterScreen");
+            Array.prototype.forEach.call(elements, function (element) {
+              element.addEventListener("dragover", function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+              });
+              element.addEventListener("dragEnter", function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+              });
+            });
+          });
+        }
       });
-      this.searhVideoList();
     },
     // 重拨
     recall(row) {
@@ -684,6 +683,21 @@ export default {
             type: "success",
           });
           this.searhVideoList();
+        }
+      });
+    },
+    // 举手发言
+    handleUp(row) {
+      let message = {
+        conference_id: this.conference_id,
+        terminal_id: row.id,
+      };
+      say(message).then((res) => {
+        if (res.status == 200) {
+          this.$message({
+            message: "发言成功，上屏至第二区域",
+            type: "success",
+          });
         }
       });
     },
@@ -723,32 +737,6 @@ export default {
       }
       preview(message).then((res) => {
         if (res.status == 200) {
-          switch (this.nowLocaltion) {
-            case "终端":
-              res.data.forEach((item, index) => {
-                item.iFrameUrl = `${this.page_server}/embed?s=${window.btoa("rtsp://rtsp.stream/pattern")}&r=${window.btoa(this.video_size)}`;
-              });
-              this.buttomTabList.terminalList = res.data;
-              break;
-            case "本地":
-              res.data.forEach((item, index) => {
-                item.iFrameUrl = `${this.page_server}/embed?s=${window.btoa("rtsp://rtsp.stream/pattern")}&r=${window.btoa(this.video_size)}`;
-              });
-              this.buttomTabList.localList = res.data;
-              break;
-            case "融合":
-              res.data.forEach((item, index) => {
-                item.iFrameUrl = `${this.page_server}/embed?s=${window.btoa("rtsp://rtsp.stream/pattern")}&r=${window.btoa(this.video_size)}`;
-              });
-              this.buttomTabList.fuseList = res.data;
-              break;
-            case "监控":
-              res.data.forEach((item, index) => {
-                item.iFrameUrl = `${this.page_server}/embed?s=${window.btoa("rtsp://rtsp.stream/pattern")}&r=${window.btoa(this.video_size)}`;
-              });
-              this.buttomTabList.monitorList = res.data;
-              break;
-          }
           this.$message({
             message: "预监资源已更新",
             type: "success",
@@ -756,58 +744,13 @@ export default {
         }
       });
     },
-    handleUp(row) {
-      let message = {
-        conference_id: this.conference_id,
-        terminal_id: row.id,
-      };
-      say(message).then((res) => {
-        if (res.status == 200) {
-          this.$message({
-            message: "发言成功，上屏至第二区域",
-            type: "success",
-          });
-        }
-      });
-    },
-    // 搜索方法
-    handleSearch() {
-      this.meetingStatusData = [];
-      this.meetingStatusDataAll.map((item) => {
-        if (item.name.indexOf(this.dialogSearch) !== -1) {
-          this.meetingStatusData.push(item);
-        }
-      });
-      this.radioSearch = "";
-    },
     // 底部删除
-    closeButtom(item, index, type) {
-      this.buttomTabList[type] = this.buttomTabList[type].splice(index, 0);
+    closeButtom(item, index) {
+      this.buttomTabList[index].url = "";
       this.$message({
         message: "删除成功",
         type: "success",
       });
-    },
-    // 拖动拖动源
-    dragstart(event) {
-      console.log(event, "拖动源信息");
-    },
-    // 拖动接收源
-    drop(item, num, index) {
-      console.log(item, num, index, "接收源信息");
-      let message = {
-        conference_id: this.conference_id,
-        terminal_id: item.id,
-        screen_id: num,
-        window_id: index,
-      };
-      up_screen(message).then((res) => {
-        console.log(res);
-      });
-    },
-    dragleave(event) {
-      event.preventDefault();
-      console.log("dragleave");
     },
     // 线路切换
     videoLineChange(val, item) {
@@ -833,6 +776,40 @@ export default {
         }
       });
     },
+    // 麦克风
+    imgShowChange(val, item, index) {
+      let message = {
+        conference_id: this.conference_id,
+        terminal_id: item.id,
+      };
+      if (val == "off") {
+        message.status = 1;
+      } else if (val == "open") {
+        message.status = 0;
+      }
+      mic_all(message).then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          this.$message({
+            message: "麦克风状态已切换",
+            type: "success",
+          });
+          message.status == 0 ? item.mic_status == "off" : item.mic_status == "on";
+          this.imgshow = !this.imgshow;
+          this.searhVideoList();
+        }
+      });
+    },
+    // 弹窗搜索方法
+    handleSearch() {
+      this.meetingStatusData = [];
+      this.meetingStatusDataAll.map((item) => {
+        if (item.name.indexOf(this.dialogSearch) !== -1) {
+          this.meetingStatusData.push(item);
+        }
+      });
+      this.radioSearch = "";
+    },
     // 线路弹窗事件
     lineDialogChange() {
       console.log(this.lineData);
@@ -850,6 +827,7 @@ export default {
         type: "success",
       });
     },
+    // 弹窗tabChange
     dialogRadioSearch(val) {
       this.meetingStatusData = [];
       switch (val) {
@@ -883,86 +861,7 @@ export default {
           break;
       }
     },
-    // 退出弹窗
-    handleClose() {
-      this.offDialogVisible = false;
-    },
-    // 会场状态弹窗
-    handleStatusClose() {
-      this.statusDialogVisible = false;
-    },
-    // 线路切换弹窗
-    handleLineClose() {
-      this.lineDialogVisible = false;
-    },
-    // 新增设备弹窗
-    handleAddClose() {
-      this.addDialogVisible = false;
-    },
-    // 退出弹窗
-    openLogout() {
-      this.offDialogVisible = true;
-    },
-    // 会场状态弹窗
-    openStatus() {
-      this.statusDialogVisible = true;
-    },
-    // 线路切换弹窗
-    lineStatus() {
-      this.lineDialogVisible = true;
-    },
-    // 新增设备弹窗
-    addStatus() {
-      this.addDialogVisible = true;
-    },
-    // 录播
-    videoChange() {
-      this.videoStatus = this.videoStatus;
-      let message = {
-        conference_id: this.conference_id,
-        status: "",
-      };
-      this.videoStatus ? (message.status = 1) : (message.status = 0);
-      record(message).then((res) => {
-        if (res.status == 200) {
-          if (this.videoStatus) {
-            this.$message({
-              message: "正在录播中",
-              type: "success",
-            });
-          } else {
-            this.$message({
-              message: "录制已关闭",
-              type: "warning",
-            });
-          }
-        }
-      });
-    },
-    // 麦克风
-    imgShowChange(val, item, index) {
-      let message = {
-        conference_id: this.conference_id,
-        terminal_id: item.id,
-      };
-      if (val == "off") {
-        message.status = 1;
-      } else if (val == "open") {
-        message.status = 0;
-      }
-      mic_all(message).then((res) => {
-        console.log(res);
-        if (res.status == 200) {
-          this.$message({
-            message: "麦克风状态已切换",
-            type: "success",
-          });
-          message.status == 0 ? item.mic_status == "off" : item.mic_status == "on";
-          this.imgshow = !this.imgshow;
-          this.searhVideoList();
-        }
-      });
-    },
+    // 扬声器状态切换
     hornChange(row) {
       let message = {
         conference_id: this.conference_id,
@@ -978,6 +877,7 @@ export default {
         }
       });
     },
+    // 弹窗预监
     rowMonitor(row) {
       let message = {
         conference_id: this.conference_id,
@@ -994,6 +894,7 @@ export default {
         }
       });
     },
+    // 弹窗踢出会议
     rowFinishMeeting(row) {
       let message = {
         conference_id: this.conference_id,
@@ -1008,99 +909,7 @@ export default {
         }
       });
     },
-    searhVideoList() {
-      let message = {
-        conference_id: +this.conference_id,
-        external: "",
-        type: 1,
-      };
-      video_list(message).then((res) => {
-        this.video_listData = res.data;
-        if (res.data.is_recording) {
-          let message = {
-            conference_id: this.conference_id,
-            status: 1,
-          };
-          record(message).then((res) => {
-            if (res.status == 200) {
-              this.$message({
-                message: "正在录播中",
-                type: "success",
-              });
-            }
-          });
-        }
-        // this.videoList = res.data.terminal_list;
-        this.meetingStatusDataAll = res.data.terminal_list;
-        this.meetingStatusData = this.meetingStatusDataAll;
-        this.videoList.forEach((item, index) => {
-          item.ipv == 0 ? (this.videoSouce[index] = "IPV4") : (this.videoSouce[index] = "IPV6");
-          item.iFrameUrl = `${this.page_server}/embed?s=${window.btoa("rtsp://rtsp.stream/pattern")}&r=${window.btoa(this.video_size)}`;
-        });
-        this.terminalList = [];
-        this.localList = [];
-        this.fuseList = [];
-        this.monitorList = [];
-        res.data.terminal_list.forEach((item, index) => {
-          switch (item.type) {
-            case 0:
-              this.terminalList.push(item);
-              break;
-            case 1:
-              this.localList.push(item);
-              break;
-            case 2:
-              this.fuseList.push(item);
-              break;
-            case 3:
-              this.monitorList.push(item);
-              break;
-          }
-        });
-      });
-    },
-    tableRowClassName(row) {
-      console.log(row.row.status);
-      if (row.row.status == 0) {
-        return {
-          color: "red",
-        };
-      } else {
-        return {
-          color: "#fff",
-        };
-      }
-    },
-    // 主屏幕布局
-    windowLayout() {
-      let message = {
-        local_venue_name: "3123",
-      };
-      window_layout(message).then((res) => {
-        if (res.status == 200) {
-          this.centerScreen = res.data;
-          this.centerScreenIndex = this.centerScreen[0];
-          this.nowCenterScreen = this.centerScreen[0];
-          this.videoList.forEach((item, index) => {
-            item.ipv == 0 ? (this.videoSouce[index] = "IPV4") : "IPV6";
-            item.iFrameUrl = `${this.page_server}/embed?s=${window.btoa("rtsp://rtsp.stream/pattern")}&r=${window.btoa(this.video_size)}`;
-          });
-          this.$nextTick(() => {
-            let elements = document.getElementsByClassName("topCenterScreen");
-            Array.prototype.forEach.call(elements, function (element) {
-              element.addEventListener("dragover", function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-              });
-              element.addEventListener("dragEnter", function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-              });
-            });
-          });
-        }
-      });
-    },
+    // 屏幕布局变更
     centerScreenIndexChange(val) {
       this.nowCenterScreen = val;
       console.log(val);
@@ -1108,10 +917,6 @@ export default {
     // tab改变
     handleClick(tab, event) {
       this.nowLocaltion = tab.label;
-      this.terminalCheckList = [];
-      this.localCheckList = [];
-      this.fuseCheckList = [];
-      this.monitorCheckList = [];
     },
     // 箭头点击
     arrowClick(val) {
@@ -1157,28 +962,9 @@ export default {
         listId: this.listId++,
       };
       this.addtableData.push(message);
-    },
-    addRowChange() {
-      this.addtableData.forEach((item, index) => {
-        let message = {
-          data_id: null,
-          parent_id: this.GetQueryString("data_id"),
-          name: item.name,
-          model: item.model,
-          type: item.type,
-          connection_identifier: item.flag,
-          user_name: item.username,
-          password: item.password,
-        };
-        add_resources(this.conference_id, message).then((res) => {
-          if (res.status == 200) {
-            this.$message({
-              message: "已添加",
-              type: "success",
-            });
-            this.addDialogVisible = false;
-          }
-        });
+      this.$message({
+        message: "新增成功",
+        type: "success",
       });
     },
     // 弹窗删除行
@@ -1193,6 +979,105 @@ export default {
         }
       });
     },
+    //临时资源添加
+    addResources() {
+      let message = {
+        conference_id: this.conference_id,
+        data_id: "111", // 新增为空
+        parent_id: "aa", //跳转二开页面带入的data_id
+        name: "名称",
+        model: "型号",
+        connection_identifier: "192.168.1.1",
+        user_name: "admin",
+        password: "sdy_23sZG",
+        KVParams: { key: "value" }, // 其他参数
+      };
+      add_resources(message).then((res) => {
+        console.log(res);
+      });
+    },
+    // 拖动拖动源
+    dragstart(event) {
+      console.log(event, "拖动源信息");
+    },
+    // 拖动接收源
+    drop(item, num, index) {
+      console.log(item, num, index, "接收源信息");
+      let message = {
+        conference_id: this.conference_id,
+        terminal_id: item.id,
+        screen_id: num,
+        window_id: index,
+      };
+      up_screen(message).then((res) => {
+        console.log(res);
+      });
+    },
+    // dragleave
+    dragleave(event) {
+      event.preventDefault();
+      console.log("dragleave");
+    },
+    // 退出弹窗
+    handleClose() {
+      this.offDialogVisible = false;
+    },
+    // 会场状态弹窗
+    handleStatusClose() {
+      this.statusDialogVisible = false;
+    },
+    // 线路切换弹窗
+    handleLineClose() {
+      this.lineDialogVisible = false;
+    },
+    // 新增设备弹窗
+    handleAddClose() {
+      this.addDialogVisible = false;
+    },
+    // 退出弹窗
+    openLogout() {
+      this.offDialogVisible = true;
+    },
+    // 会场状态弹窗
+    openStatus() {
+      this.statusDialogVisible = true;
+    },
+    // 线路切换弹窗
+    lineStatus() {
+      this.lineDialogVisible = true;
+    },
+    // 新增设备弹窗
+    addStatus() {
+      this.addDialogVisible = true;
+    },
+    //获取URL参数
+    GetQueryString(name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      var r = window.location.search.substr(1).match(reg); //获取url中"?"符后的字符串并正则匹配
+      var context = "";
+      if (r != null) context = r[2];
+      reg = null;
+      r = null;
+      return context == null || context == "" || context == "undefined" ? "" : context;
+    },
+    // 处理资产数据
+    translatePlatformDataToJsonArray(originTableData) {
+      let originTableHeader = originTableData.data[0];
+      let tableHeader = [];
+      originTableHeader.forEach((item) => {
+        tableHeader.push(item.col_name);
+      });
+      let tableBody = originTableData.data[1];
+      let tableData = [];
+      tableBody.forEach((tableItem) => {
+        let temp = {};
+        tableItem.forEach((item, index) => {
+          temp[tableHeader[index]] = item;
+        });
+        tableData.push(temp);
+      });
+      return tableData;
+    },
     // 获取会议信息
     do_EventCenter_getMettingInfo(value) {
       console.log("----->", value);
@@ -1200,11 +1085,13 @@ export default {
       this.data_id = value.data_id;
       if (value.mettingID) {
         this.conference_id = value.mettingID;
+        this.addResources();
         this.searhVideoList();
         this.windowLayout();
       } else {
         creatMetting(value.data_id).then((res) => {
           this.conference_id = res.data.conference_id;
+          this.addResources();
           this.searhVideoList();
           this.windowLayout();
         });
@@ -1253,11 +1140,13 @@ export default {
   font-weight: 700;
   margin-left: 0.5%;
 }
+// 上面区域
 .mainTop {
   height: 67%;
   width: 100%;
   display: flex;
   justify-content: space-around;
+  // 上面左边
   .topLeft {
     border: 3.5px solid #2062a0;
     height: 100%;
@@ -1270,7 +1159,7 @@ export default {
     .tabLable {
       display: flex;
       justify-content: space-between;
-      // overflow: scroll;
+      overflow: scroll;
       height: 100%;
       overflow-x: hidden;
       /*滚动条样式*/
@@ -1356,6 +1245,7 @@ export default {
       color: #ffffff;
     }
   }
+  // 上面中间
   .topCenter {
     border: 3.5px solid #2062a0;
     height: 100%;
@@ -1398,20 +1288,7 @@ export default {
       }
     }
   }
-  .monitorbBottom {
-    height: 36.6%;
-    display: flex;
-    justify-content: space-between;
-    div {
-      width: 24.8%;
-      height: 100%;
-      background: #7d7d7d;
-      .mainImg {
-        width: 100%;
-        height: 100%;
-      }
-    }
-  }
+  // 上边右边
   .topRight {
     border: 3.5px solid #2062a0;
     height: 100%;
@@ -1434,6 +1311,7 @@ export default {
     }
   }
 }
+// 下面区域
 .mainBottom {
   margin-top: 0.5%;
   height: 28%;
@@ -1498,7 +1376,7 @@ export default {
     width: 100%;
     background-color: #7d7d7d !important;
     display: flex;
-    // justify-content: space-around;
+    justify-content: space-around;
   }
   .carouselItem {
     height: 100%;
@@ -1552,13 +1430,6 @@ export default {
   }
 }
 .meetingStatus {
-  .dialogX {
-    position: relative;
-    left: 98%;
-    top: 25px;
-    font-size: 22px;
-    cursor: pointer;
-  }
   /deep/.el-dialog {
     border: 0px solid #2062a0 !important;
     background: transparent !important;
@@ -1724,6 +1595,9 @@ export default {
     /deep/ .el-table tbody tr:hover > td {
       background: #171f34 !important;
     }
+    /deep/ .el-table__row .cell {
+      color: #ffffff;
+    }
     /deep/ .el-table td.el-table__cell,
     .el-table th.el-table__cell.is-leaf {
       border-bottom: 1px solid #013153;
@@ -1826,5 +1700,4 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 </style>
