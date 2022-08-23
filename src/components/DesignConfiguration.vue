@@ -58,7 +58,7 @@ export default {
     if (this.platformProps) {
       form = JSON.parse(this.platformProps.configuration);
     }
-    
+
     return {
       configForm: {},
       form: form,
@@ -97,7 +97,7 @@ export default {
       this.onFormLayoutChange();
     },
   },
-  
+
   methods: {
     onFormLayoutChange() {
       this.platformProps?.changeConfiguration(JSON.stringify(this.form));
