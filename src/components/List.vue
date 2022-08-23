@@ -1,5 +1,6 @@
 <template>
   <div class="gantt_all">
+    <el-button type="primary" class="add_button" @click="addClick()">新增</el-button>
     <div class="ganttLoading" v-if="!taskList[0]"></div>
     <!-- 左侧 -->
     <div id="gantt_left" class="gantt_left">
@@ -18,7 +19,8 @@
       </div>
       <!-- 任务轴 -->
       <div class="gantt_task" v-for="(item, index) in projectList" :key="index">
-        <div :id="`${item.id}_${item2}`" class="task_lattice" v-for="(item2, index2) in taskList" :key="index2"></div></div>
+        <div :id="`${item.id}_${item2}`" class="task_lattice" v-for="(item2, index2) in taskList" :key="index2"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -26,11 +28,11 @@
 <script>
 // 引入接口
 import { queryAssetById, delectData } from "../api/asset";
-
+import { isPlainObject } from "lodash";
 import $ from "jquery";
 window.$ = $;
 
-import qs from 'querystringify'
+import qs from "querystringify";
 
 export default {
   name: "List",
@@ -53,88 +55,237 @@ export default {
       // 加载等待
       ganttLoading: false,
 
-      projectNameData: [
+      aaaaa: [
         [
-            {
-                "label": "项目名称",
-                "columnId": "6161c2a2-5af8-4673-b219-f2769dd1589e",
-                "value": {
-                    "value": "项目一",
-                    "display": "项目一"
-                },
-                "showType": "select"
+          {
+            label: "id",
+            columnId: "22542047-eec5-4cd6-ae8c-571cf5052077",
+            value: {
+              value: "c3ce3641ed774e91a857e163a1a6943e",
+              display: "c3ce3641ed774e91a857e163a1a6943e",
             },
-            {
-                "label": "id",
-                "columnId": "a4fe850d-87bc-4d88-b611-eda80b21dc6b",
-                "value": {
-                    "value": "111",
-                    "display": "111"
-                },
-                "showType": "input"
-            }
+            showType: "input",
+          },
+          {
+            label: "负责人",
+            columnId: "c508481d-4c4a-473e-9bc2-26fa14145036",
+            value: {
+              value: "ae586e6KJ0000001",
+              display: "田鑫辉",
+            },
+            showType: "user",
+          },
+          {
+            label: "所属公司",
+            columnId: "a884ce4a-557f-468a-9b7a-48abd8be0745",
+            value: {
+              value: "0c2da6ea-7136-4b8a-919d-87dd7348cfa3",
+              display: "科技公司",
+            },
+            showType: "office",
+          },
+          {
+            label: "项目名称",
+            columnId: "85ab4fb7-f87a-4ebe-aa6e-234bf3d17e5f",
+            value: {
+              value: "会议302",
+              display: "会议302",
+            },
+            showType: "input",
+          },
+          {
+            label: "所属部门",
+            columnId: "ac63c2e4-6912-47f6-904b-736bd2da102f",
+            value: {
+              value: "0c2da6ea-7136-4b8a-919d-87dd7348cfa3",
+              display: "科技公司",
+            },
+            showType: "office",
+          },
+          {
+            label: "录入日期",
+            columnId: "e80f0019-4bbf-4ec8-bd24-848a8b546db1",
+            value: {
+              value: 1658678400000,
+              display: 1658678400000,
+            },
+            showType: "date",
+          },
+          {
+            label: "会议室描述",
+            columnId: "7295f927-ef2d-4757-b0a2-6f9804743bca",
+            value: {
+              value: "会议室",
+              display: "会议室",
+            },
+            showType: "textarea",
+          },
+          {
+            label: "会议室地点",
+            columnId: "dc83e609-8b95-42d2-9609-2a4fa92ecef9",
+            value: {
+              value: "302",
+              display: "302",
+            },
+            showType: "input",
+          },
+          {
+            label: "最多容纳人数",
+            columnId: "491076a3-b343-425b-b784-a50a42f0b7e5",
+            value: {
+              value: 15,
+              display: 15,
+            },
+            showType: "number",
+          },
+          {
+            label: "会议室状态",
+            columnId: "a17ae9c9-8c36-49ea-bbed-3ce732b0c8ad",
+            value: {
+              value: "",
+              display: "",
+            },
+            showType: "input",
+          },
+          {
+            label: "设备",
+            columnId: "607fa6fa-9bd1-4dd0-bf66-a4d482f1bb29",
+            value: {},
+            showType: "select_multiple",
+          },
+          {
+            label: "会议室类型",
+            columnId: "67da6f4b-39c0-4b90-a616-87a5a29047dd",
+            value: {
+              value: "1",
+              display: "董事会型",
+            },
+            showType: "select",
+          },
+          {
+            label: "会议室图片",
+            columnId: "5b9d05f8-5061-431f-8911-37250bc2d42a",
+            value: {
+              value: '[{"name":"91ff0cc4f5278f2505fd2254188867c1.jpeg","url":"/storage_area/form/1234567890/1d76919be6b14832a25b963b6bd80120.jpeg"}]',
+              display: '[{"name":"91ff0cc4f5278f2505fd2254188867c1.jpeg","url":"/storage_area/form/1234567890/1d76919be6b14832a25b963b6bd80120.jpeg"}]',
+            },
+            showType: "picupload",
+          },
         ],
         [
-            {
-                "label": "项目名称",
-                "columnId": "6161c2a2-5af8-4673-b219-f2769dd1589e",
-                "value": {
-                    "value": "项目一",
-                    "display": "项目一"
-                },
-                "showType": "select"
+          {
+            label: "id",
+            columnId: "22542047-eec5-4cd6-ae8c-571cf5052077",
+            value: {
+              value: "e962919599f04d63b125f0ef32481fca",
+              display: "e962919599f04d63b125f0ef32481fca",
             },
-            {
-                "label": "id",
-                "columnId": "a4fe850d-87bc-4d88-b611-eda80b21dc6b",
-                "value": {
-                    "value": "222",
-                    "display": "222"
-                },
-                "showType": "input"
-            }
+            showType: "input",
+          },
+          {
+            label: "负责人",
+            columnId: "c508481d-4c4a-473e-9bc2-26fa14145036",
+            value: {
+              value: "8266a10d-9bb0-4b82-a508-b8ef9b2d2812",
+              display: "张三",
+            },
+            showType: "user",
+          },
+          {
+            label: "所属公司",
+            columnId: "a884ce4a-557f-468a-9b7a-48abd8be0745",
+            value: {
+              value: "123456789",
+              display: "集团",
+            },
+            showType: "office",
+          },
+          {
+            label: "项目名称",
+            columnId: "85ab4fb7-f87a-4ebe-aa6e-234bf3d17e5f",
+            value: {
+              value: "会议室1",
+              display: "会议室1",
+            },
+            showType: "input",
+          },
+          {
+            label: "所属部门",
+            columnId: "ac63c2e4-6912-47f6-904b-736bd2da102f",
+            value: {
+              value: "123456789",
+              display: "集团",
+            },
+            showType: "office",
+          },
+          {
+            label: "录入日期",
+            columnId: "e80f0019-4bbf-4ec8-bd24-848a8b546db1",
+            value: {
+              value: 1657594800000,
+              display: 1657594800000,
+            },
+            showType: "date",
+          },
+          {
+            label: "会议室描述",
+            columnId: "7295f927-ef2d-4757-b0a2-6f9804743bca",
+            value: {
+              value: "1111",
+              display: "1111",
+            },
+            showType: "textarea",
+          },
+          {
+            label: "会议室地点",
+            columnId: "dc83e609-8b95-42d2-9609-2a4fa92ecef9",
+            value: {
+              value: "1502",
+              display: "1502",
+            },
+            showType: "input",
+          },
+          {
+            label: "最多容纳人数",
+            columnId: "491076a3-b343-425b-b784-a50a42f0b7e5",
+            value: {
+              value: 10,
+              display: 10,
+            },
+            showType: "number",
+          },
+          {
+            label: "会议室状态",
+            columnId: "a17ae9c9-8c36-49ea-bbed-3ce732b0c8ad",
+            value: {
+              value: "",
+              display: "",
+            },
+            showType: "input",
+          },
+          {
+            label: "设备",
+            columnId: "607fa6fa-9bd1-4dd0-bf66-a4d482f1bb29",
+            value: {},
+            showType: "select_multiple",
+          },
+          {
+            label: "会议室类型",
+            columnId: "67da6f4b-39c0-4b90-a616-87a5a29047dd",
+            value: {},
+            showType: "select",
+          },
+          {
+            label: "会议室图片",
+            columnId: "5b9d05f8-5061-431f-8911-37250bc2d42a",
+            value: {
+              value: '[{"name":"d80539669de28d4a2051e19ea1cd93b7.jpeg","url":"/storage_area/form/1234567890/630c6bb8d4254d7587929999113f4dc3.jpeg"}]',
+              display: '[{"name":"d80539669de28d4a2051e19ea1cd93b7.jpeg","url":"/storage_area/form/1234567890/630c6bb8d4254d7587929999113f4dc3.jpeg"}]',
+            },
+            showType: "picupload",
+          },
         ],
-        [
-            {
-                "label": "项目名称",
-                "columnId": "6161c2a2-5af8-4673-b219-f2769dd1589e",
-                "value": {
-                    "value": "项目二",
-                    "display": "项目二"
-                },
-                "showType": "select"
-            },
-            {
-                "label": "id",
-                "columnId": "a4fe850d-87bc-4d88-b611-eda80b21dc6b",
-                "value": {
-                    "value": "333",
-                    "display": "333"
-                },
-                "showType": "input"
-            }
-        ],
-        [
-            {
-                "label": "项目名称",
-                "columnId": "6161c2a2-5af8-4673-b219-f2769dd1589e",
-                "value": {
-                    "value": "项目三",
-                    "display": "项目三"
-                },
-                "showType": "select"
-            },
-            {
-                "label": "id",
-                "columnId": "a4fe850d-87bc-4d88-b611-eda80b21dc6b",
-                "value": {
-                    "value": "444",
-                    "display": "444"
-                },
-                "showType": "input"
-            }
-        ]
-      ]    
+      ],
     };
   },
 
@@ -143,12 +294,12 @@ export default {
       deep: true,
       immediate: true,
       handler(newVal, oldVal) {
-        console.log('触发监听', this.platformProps)
+        console.log("触发监听", this.platformProps);
         this.configForm = this.platformProps.pluginConfig;
         // 加载项目数据
-        this.getProjectListData()
+        this.configForm && this.getProjectListData();
       },
-    }
+    },
   },
 
   mounted() {
@@ -157,7 +308,7 @@ export default {
         $("#dropdown").remove();
       }
     });
-    
+
     // 配置项信息
     if (this.platformProps) {
       this.configForm = this.platformProps.pluginConfig;
@@ -165,9 +316,10 @@ export default {
       this.configForm = this.customConfig.configuration;
     }
     // 获取甘特图显示状态
-    this.taskType = this.configForm.timeStep || 'date';
-  },
+    this.taskType = this.configForm.timeStep || "date";
 
+    // this.getProjectListData();
+  },
   methods: {
     // 数据转换
     translatePlatformDataToJsonArray(originTableData) {
@@ -192,7 +344,7 @@ export default {
     handleTime(resData) {
       // 保存处理后的返回数据
       let taskData = {
-        ...resData
+        ...resData,
       };
       // 保存宽度
       let px = "";
@@ -208,42 +360,38 @@ export default {
       // 根据任务类型处理返回数据
       if (this.taskType == "month") {
         // 算出每月占格像素
-        px = (140 / monthDay);
+        px = 140 / monthDay;
         // 算出相差天数
-        let days = parseInt(
-          (new Date(resData.endTime).getTime() - new Date(resData.startTime).getTime()) / (1000 * 60 * 60 * 24)
-        );
+        let days = parseInt((new Date(resData.endTime).getTime() - new Date(resData.startTime).getTime()) / (1000 * 60 * 60 * 24));
         // 赋值
         taskData.taskTime = `${startDateYear}年${startDateMonth}月`;
         taskData.marginLeft = Math.abs(startDateDay * px);
         taskData.width = Number((days * px).toFixed(1));
       } else if (this.taskType == "date") {
         // 算出每日占格像素
-        px = (140 / 24);
+        px = 140 / 24;
         // 算出相差小时
-        let days = parseInt(
-          (new Date(resData.endTime).getTime() - new Date(resData.startTime).getTime()) / (1000 * 60 * 60)
-        );
+        let days = parseInt((new Date(resData.endTime).getTime() - new Date(resData.startTime).getTime()) / (1000 * 60 * 60));
         // 赋值
         taskData.taskTime = `${startDateYear}年${startDateMonth}月${startDateDay}日`;
         taskData.marginLeft = Math.abs(startDateHours * px);
         taskData.width = Number((days * px).toFixed(1)) + 6;
       } else if (this.taskType == "time") {
-        px = (140 / 60);
+        px = 140 / 60;
         // 算出相差分钟
         let days = (new Date(resData.endTime).getTime() - new Date(resData.startTime).getTime()) / (1000 * 60);
         // 计算相差天数的零点点数
-        let differZero = Number( (days/60/24).toFixed(0) )
+        let differZero = Number((days / 60 / 24).toFixed(0));
         // 如果开始时间为零点，则相差天数减一
-        if(startDateHours < 1) differZero--
-        
+        if (startDateHours < 1) differZero--;
+
         // 如果结束时间为零点，则相差天数加一
-        if(endDateHours < 1) differZero++
-        
+        if (endDateHours < 1) differZero++;
+
         // 赋值
         taskData.taskTime = `${startDateYear}年${startDateMonth}月${startDateDay}日${startDateHours}时`;
         taskData.marginLeft = Math.abs(startDateMinutes * px);
-        taskData.width = Number(days * px) + (differZero * 140) + 2;
+        taskData.width = Number(days * px) + differZero * 140 + 2;
       }
       // 赋值
       taskData.belongProject = resData[this.configForm.taskMappingField];
@@ -255,38 +403,37 @@ export default {
     // 获取字段
     getField(templateStr, data) {
       return templateStr.replace(/\{\{(\w+)\}\}/g, function (findStr, $1) {
-        return data[$1] || ''
+        return data[$1] || "";
       });
     },
 
     // 获取项目列数据
     getProjectListData() {
-
       // 保存处理后的项目列数据
-      let dataArray = []
+      let dataArray = [];
       // 处理项目表数据
-      // this.projectNameData.forEach( (item, index) => {
-      this.platformProps.data.forEach( (item, index) => {
-        let dataObj = {}
+      this.platformProps.data.forEach((item, index) => {
+        // this.aaaaa.forEach((item, index) => {
+        let dataObj = {};
         // 去除默认字段
-        if(item.length > 9) item.splice(-9, 9)
+        if (item.length > 9) item.splice(-9, 9);
         // 过滤数据
-        item.forEach( (e, i) => {
+        item.forEach((e, i) => {
           switch (e.label) {
             case "id":
-              dataObj.id = e.value.display || ''; break;
+              dataObj.id = e.value.display || "";
+              break;
             case "项目名称":
-              dataObj.label = e.value.display || ''; break;
+              dataObj.label = e.value.display || "";
+              break;
           }
-        })
-        dataArray.push(dataObj)
-      })
+        });
+        dataArray.push(dataObj);
+      });
       // 项目列赋值
+      this.projectList = [...new Set(dataArray)];
 
-      console.log(dataArray)
-      this.projectList = [...new Set(dataArray)]
-
-      this.getTaskListData()
+      this.getTaskListData();
     },
 
     // 获取任务列数据
@@ -294,7 +441,7 @@ export default {
       // 请求任务资产
       queryAssetById(this.configForm.taskID).then((res) => {
         let resData = this.translatePlatformDataToJsonArray(res);
-          this.handleData(resData);
+        this.handleData(resData);
       });
     },
 
@@ -353,19 +500,14 @@ export default {
           this.taskList.push(`${strYear}年${strMonth}月`);
           strMonth++;
         }
-        this.$nextTick( () => {
+        this.$nextTick(() => {
           setTimeout(() => {
-            this.creatDom(_dataList)
-          },100)
-        })
+            this.creatDom(_dataList);
+          }, 100);
+        });
       } else if (this.taskType == "date") {
         // 计算相差天数
-        _dateTime = parseInt(
-          new Date(
-            new Date(_dataEnd[_dataEnd.length - 1]).getTime() - _dataStart[0]
-          ).getTime() /
-            (1000 * 60 * 60 * 24)
-        );
+        _dateTime = parseInt(new Date(new Date(_dataEnd[_dataEnd.length - 1]).getTime() - _dataStart[0]).getTime() / (1000 * 60 * 60 * 24));
         // 根据相差时间生成对应年月日
         for (let i = 0; i < _dateTime + 2; i++) {
           if (strDate > new Date(strYear, strMonth, 0).getDate()) {
@@ -379,26 +521,16 @@ export default {
           this.taskList.push(`${strYear}年${strMonth}月${strDate}日`);
           strDate++;
         }
-        this.$nextTick( () => {
+        this.$nextTick(() => {
           setTimeout(() => {
-            this.creatDom(_dataList)
-          },100)
-        })
+            this.creatDom(_dataList);
+          }, 100);
+        });
       } else if (this.taskType == "time") {
         // 计算相差天数
-        let days = parseInt(
-            new Date(
-              new Date(_dataEnd[_dataEnd.length - 1]).getTime() - _dataStart[0]
-            ).getTime() /
-              (1000 * 60 * 60 * 24)
-          ) + 1;
+        let days = parseInt(new Date(new Date(_dataEnd[_dataEnd.length - 1]).getTime() - _dataStart[0]).getTime() / (1000 * 60 * 60 * 24)) + 1;
         // 计算相差小时数
-        _dateTime = parseInt(
-          new Date(
-            new Date(_dataEnd[_dataEnd.length - 1]).getTime() - _dataStart[0]
-          ).getTime() /
-            (1000 * 60 * 60)
-        );
+        _dateTime = parseInt(new Date(new Date(_dataEnd[_dataEnd.length - 1]).getTime() - _dataStart[0]).getTime() / (1000 * 60 * 60));
         // 根据相差时间生成对应年月日时
         for (let i = 0; i < _dateTime + days + 2; i++) {
           if (strHours > 24) {
@@ -413,16 +545,14 @@ export default {
               }
             }
           }
-          this.taskList.push(
-            `${strYear}年${strMonth}月${strDate}日${strHours}时`
-          );
+          this.taskList.push(`${strYear}年${strMonth}月${strDate}日${strHours}时`);
           strHours++;
         }
-        this.$nextTick( () => {
+        this.$nextTick(() => {
           setTimeout(() => {
-            this.creatDom(_dataList)
-          },100)
-        })
+            this.creatDom(_dataList);
+          }, 100);
+        });
       }
     },
 
@@ -430,124 +560,141 @@ export default {
     creatDom(dataList) {
       // 移除下拉菜单元素
       if ($("#dropdown")) $("#dropdown").remove();
+
       // 生成任务元素
       dataList.forEach((e, i) => {
         // 获取DomID
         let listDom = $(`#${e.belongProject}_${e.taskTime}`);
+
         // 生成下拉菜单ID
-        let dropID = `${e.belongProject}_${i}`
+        let dropID = `${e.belongProject}_${i}`;
+
+        if ($(`#${e.belongProject}_${i}`)) $(`#${e.belongProject}_${i}`).remove();
+
         // 生成任务DOM
         let taskDiv = `
-          <div id="${dropID}" class="task_div" style="margin-left: ${e.marginLeft}px; width: ${e.width}px">
-            <div class="task_title">${e.taskName}</div>
-          </div>
-        `
+            <div id="${dropID}" class="task_div" style="margin-left: ${e.marginLeft}px; width: ${e.width}px">
+              <div class="task_title">${e.taskName}</div>
+            </div>
+          `;
         // 添加任务DOM元素
         listDom.append(taskDiv);
         // 生成下拉菜单
+
         $(`#${dropID}`).on("click", (element) => {
+          console.log("点击下拉框");
           // 阻止冒泡
-          element.stopPropagation()
+          element.stopPropagation();
           // 移除下拉菜单元素
           if ($("#dropdown")) $("#dropdown").remove();
           // 获取项目列边距
-          let leftDiv = $('#gantt_left').offset().left + 140
+          let leftDiv = $("#gantt_left").offset().left + 140;
           // 获取当前任务时间轴边距
-          let marginDiv = $(`#${e.belongProject}_${e.taskTime}`).offset().left
+          let marginDiv = $(`#${e.belongProject}_${e.taskTime}`).offset().left;
           // 下拉框出现位置
-          let dropLeftDiv = marginDiv + e.marginLeft < leftDiv ? leftDiv : marginDiv + e.marginLeft
-          
+          let dropLeftDiv = marginDiv + e.marginLeft < leftDiv ? leftDiv : marginDiv + e.marginLeft;
+
           // 添加下拉菜单DOM
           let selectDiv = `
-            <div class="task_tooltip" style="top: ${listDom.offset().top + 45}px; left: ${dropLeftDiv}px;">${e.taskName}</div>
-            <div id="dropdown" class="dropdown" style="top: ${listDom.offset().top + 42}px; left: ${dropLeftDiv}px;">
-              <div id="taskDetails" class="dropdown_label">详情</div>
-              <div id="taskEdit" class="dropdown_label">编辑</div>
-              <div id="taskDelete" class="dropdown_label">删除</div>
-            </div>
-          `
-          $('body').append(selectDiv);
+                <div class="task_tooltip" style="top: ${listDom.offset().top + 45}px; left: ${dropLeftDiv}px;">${e.taskName}</div>
+                <div id="dropdown" class="dropdown" style="top: ${listDom.offset().top + 42}px; left: ${dropLeftDiv}px;">
+                  <div id="taskDetails" class="dropdown_label">详情</div>
+                  <div id="taskEdit" class="dropdown_label">编辑</div>
+                  <div id="taskDelete" class="dropdown_label">删除</div>
+                </div>
+              `;
+          $("body").append(selectDiv);
 
-          $('#taskDetails').on('click',() => {
-            this.routerHistry(e, 'details')
-          })
-          $('#taskEdit').on('click',() => {
-            this.routerHistry(e, 'insert')
-          })
-          $('#taskDelete').on('click',() => {
+          $("#taskDetails").on("click", () => {
+            this.routerHistry(e, "details");
+          });
+          $("#taskEdit").on("click", () => {
+            this.routerHistry(e, "insert");
+          });
+          $("#taskDelete").on("click", () => {
             let dataForm = {
-              "where": {
-                "and": [
+              where: {
+                and: [
                   {
-                    "id": `eq#${e.id}`
-                  }
-                ]
-              }
-            }
-            delectData(this.configForm.deleteKey, dataForm).then( (res) => {
-              $(`#${dropID}`).remove()
-            })
-          })
+                    id: `eq#${e.id}`,
+                  },
+                ],
+              },
+            };
+            delectData(this.configForm.deleteKey, dataForm).then((res) => {
+              $(`#${dropID}`).remove();
+            });
+          });
         });
       });
 
-      this.ganttLoading = false
+      this.ganttLoading = false;
+    },
+
+    addClick() {
+      let dataList = {
+        taskName: "",
+        dataList: "",
+      };
+      this.routerHistry(dataList, "insert");
     },
 
     // 跳转数据
     routerHistry(dataList, pathType) {
-
       function filterSearchParams() {
         const search = qs.parse(location.search);
-        const required = ['appid', 'menuId', 'type', 'otherappid', 'pId'];
+        const required = ["appid", "menuId", "type", "otherappid", "pId"];
 
-        return Object.fromEntries(
-          Object.entries(search).filter(
-            ([k, v]) => required.includes(k) && v !== 'undefined'
-          )
-        );
-      };
+        return Object.fromEntries(Object.entries(search).filter(([k, v]) => required.includes(k) && v !== "undefined"));
+      }
 
       const search = filterSearchParams();
       search.breadcrumb = dataList.taskName;
-      search.id = this.configForm.formID;
-      search.dataId = dataList.id;
+      // search.id = this.configForm.detailsID;
+      search.id = "";
+      search.dataId = dataList.data_id;
 
-      for(let i in search) {
-        if(search[i] === undefined) {
-          delete search[i]
+      if (pathType == "details") {
+        search.id = this.configForm.detailsID;
+      } else if (pathType == "insert") {
+        search.id = this.configForm.insertID;
+      }
+
+      for (let i in search) {
+        if (search[i] === undefined) {
+          delete search[i];
         }
       }
 
-      let pathname = ''
+      let pathname = "";
 
-      if(pathType == 'details') {
-        pathname = `/applicationview/content/detail/view` 
-      } else if(pathType == 'insert') {
-        pathname = `/applicationview/content/data-form/${this.configForm.formID}/insert` 
+      if (pathType == "details") {
+        pathname = `/applicationview/content/detail/view`;
+      } else if (pathType == "insert") {
+        pathname = `/applicationview/content/data-form/${this.configForm.insertID}/insert`;
       }
 
       this.platformProps.history.push({
         pathname: pathname,
         search: qs.stringify(search),
-      })
+      });
     },
 
     // 今日标题高亮
     isToday(days) {
-      let year = new Date().getFullYear()
-      let month = new Date().getMonth() + 1
-      let day = new Date().getDate()
-      let hours = new Date().getHours()
+      let year = new Date().getFullYear();
+      let month = new Date().getMonth() + 1;
+      let day = new Date().getDate();
+      let hours = new Date().getHours();
 
-      if(this.taskType == 'month') {
-        if(days == `${year}年${month}月`) return 'background: #FFE699;'
-      } else if(this.taskType == 'date') {
-        if(days == `${year}年${month}月${day}日`) return 'background: #FFE699;'
-      } else if(this.taskType == 'time') {
-        if(days == `${year}年${month}月${day}日${hours}时`) return 'background: #FFE699;'
+      if (this.taskType == "month") {
+        if (days == `${year}年${month}月`) return "background: #FFE699;";
+      } else if (this.taskType == "date") {
+        if (days == `${year}年${month}月${day}日`) return "background: #FFE699;";
+      } else if (this.taskType == "time") {
+        if (days == `${year}年${month}月${day}日${hours}时`) return "background: #FFE699;";
       }
-    }
+    },
   },
 };
 </script>
@@ -559,6 +706,15 @@ export default {
   display: flex;
   box-sizing: border-box;
   overflow-x: auto;
+  margin-top: 40px;
+}
+.add_button {
+  position: absolute;
+  padding: 8px 15px !important;
+  margin-top: -40px !important;
+  z-index: 112;
+  background: #0454f2 !important;
+  border-color: #0454f2 !important;
 }
 .ganttLoading {
   width: 100%;
@@ -571,7 +727,9 @@ export default {
   z-index: 111;
   box-sizing: border-box;
 }
-.list_lattice_first, .list_lattice, .header_lattice {
+.list_lattice_first,
+.list_lattice,
+.header_lattice {
   width: 140px;
   height: 45px;
   line-height: 45px;
@@ -587,7 +745,8 @@ export default {
   background: #ffffff;
   box-sizing: border-box;
 }
-.gantt_header, .gantt_task {
+.gantt_header,
+.gantt_task {
   display: flex;
   box-sizing: border-box;
 }
@@ -627,7 +786,7 @@ export default {
   margin-top: 3px;
   box-sizing: border-box;
 }
-.task_div:hover .task_tooltip{
+.task_div:hover .task_tooltip {
   display: block;
 }
 .task_tooltip {

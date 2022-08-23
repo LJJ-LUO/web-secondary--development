@@ -3,8 +3,8 @@ import qs from "querystringify";
 
 let apiContextPath = "";
 if (process.env.NODE_ENV === "development") {
-  document.cookie = "token=eyJhbGciOiJIUzI1NiJ9.eyJsb2dpblRpbWVzdGFtcCI6MTY1ODc5ODk4MDAzMSwidXNlcklkIjoiMTIzNDU2Nzg5MCJ9.USomwxnFteDWyTgaVPdnBZ8Q7ZJF-KOnGsEKJ7DOhps";
-  apiContextPath = '/api'
+  document.cookie = "token=eyJhbGciOiJIUzI1NiJ9.eyJsb2dpblRpbWVzdGFtcCI6MTY2MDcyMTM1MTU2MSwidXNlcklkIjoiMTIzNDU2Nzg5MCJ9.bXGvkk0-6glH4SdlkHk3jtiVkaBFPAm_277IcJD8vGU";
+  apiContextPath = "/api";
 }
 
 const instance = axios.create({
@@ -13,17 +13,13 @@ const instance = axios.create({
   validateStatus: function (status) {
     return status >= 200 && status < 300; // default
   },
-  headers:
-    (window.location.search && qs.parse(window.location.search).token) ||
-    window.token
-      ? { token: qs.parse(window.location.search).token || window.token }
-      : {},
+  headers: (window.location.search && qs.parse(window.location.search).token) || window.token ? { token: qs.parse(window.location.search).token || window.token } : {},
 });
 
 instance.defaults.headers.post["Content-Type"] = "application/json";
 
 instance.interceptors.response.use(
-  response => {
+  (response) => {
     let { data } = response;
     if (typeof data === "string") {
       data = JSON.parse(data);
@@ -39,7 +35,7 @@ instance.interceptors.response.use(
     response.data = data && data.result;
     return response;
   },
-  error => {
+  (error) => {
     if (error.response && error.response.status === 401) {
       return;
     }

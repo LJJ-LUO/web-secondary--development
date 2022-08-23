@@ -21,6 +21,7 @@
     "core-js": "^3.6.5",
     "element-ui": "^2.15.6",
     "jquery": "^3.6.0",
+    "lodash": "^4.17.21",
     "qs": "^6.11.0",
     "querystringify": "^2.2.0",
     "vue": "^2.6.11"
