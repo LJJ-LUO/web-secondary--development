@@ -1,7 +1,9 @@
 <template>
-  <el-input v-model="data"
-            @input="inputChange"
-            :placeholder="configuration.placeholder" />
+  <el-input
+    v-model="data"
+    @input="inputChange"
+    :placeholder="configuration.placeholder"
+  />
 </template>
 
 <script>
@@ -14,7 +16,7 @@ export default {
   data() {
     return {
       data: this.customConfig.data,
-      propsConfiguration: this.customConfig.configuration,
+      propsConfiguration: this.customConfig.configuration || "{}",
       configuration: {},
     };
   },

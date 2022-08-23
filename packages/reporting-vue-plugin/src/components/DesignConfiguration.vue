@@ -1,11 +1,8 @@
 <template>
-  <el-form ref="form"
-           :model="form"
-           label-width="80px">
+  <el-form ref="form" :model="form" label-width="80px">
     <el-form-item label="占位符">
       <el-input v-model="form.placeholder"></el-input>
     </el-form-item>
-
   </el-form>
 </template>
 
@@ -32,8 +29,6 @@ export default {
   },
 
   props: {
-    changeConfiguration: Function,
-    configuration: Object,
     customConfig: Object,
   },
   methods: {
@@ -42,7 +37,7 @@ export default {
     },
   },
   mounted() {
-    this.form = JSON.parse(this.customConfig.configuration);
+    this.form = JSON.parse(this.customConfig.configuration || "{}");
   },
 };
 </script>

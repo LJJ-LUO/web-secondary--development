@@ -1,7 +1,5 @@
 <template>
-  <el-input v-model="data"
-            @input="inputChange"
-            size="small" />
+  <el-input v-model="data" @input="inputChange" size="small" />
 </template>
 
 <script>
@@ -17,7 +15,7 @@ export default {
     };
   },
   mounted() {
-    let { component, child_id, index } = this.customConfig;
+    let { component, child_id = "", index } = this.customConfig;
     let initId = `${component?.id}__childId__${child_id.substr(0, 10)}`;
     initId = `${initId}__index__${index}`;
     window?.componentCenter?.register(initId, "comp", this, eventActionDefine);
@@ -25,8 +23,13 @@ export default {
   methods: {
     async inputChange(e) {
       this.data = e;
-      let { formConfig, component, child_id, index, onChange } =
-        this.customConfig;
+      let {
+        formConfig,
+        component,
+        child_id = "",
+        index,
+        onChange,
+      } = this.customConfig;
       let initId = `${component?.id}__childId__${child_id.substr(0, 10)}`;
       await window.eventCenter.triggerEventNew({
         objectId: formConfig?.id,
@@ -52,7 +55,7 @@ export default {
     },
   },
   destroyed() {
-    let { component, child_id, index } = this.customConfig;
+    let { component, child_id = "", index } = this.customConfig;
     let initId = `${component?.id}__childId__${child_id.substr(0, 10)}`;
     initId = `${initId}__index__${index}`;
     window?.componentCenter?.removeInstance(initId);

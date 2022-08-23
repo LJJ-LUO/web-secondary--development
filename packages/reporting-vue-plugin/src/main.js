@@ -95,7 +95,7 @@ if (process.env.NODE_ENV !== "production") {
       const div = document.createElement("div");
       dom.appendChild(div);
       new Vue({
-        render: h => <App {...{ props }} />,
+        render: h => <App type={props.type} customConfig={props || {}} />,
       }).$mount(div);
     }
   );

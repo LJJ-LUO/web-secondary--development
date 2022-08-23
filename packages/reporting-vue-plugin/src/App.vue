@@ -1,6 +1,5 @@
 <template>
-  <component :is="componentType"
-             :customConfig="customConfig" />
+  <component :is="componentType" :customConfig="customConfig" />
 </template>
 
 <script>
