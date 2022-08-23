@@ -1,0 +1,20 @@
+{
+  "id": "8155a4b7-b0d4-4cb5-b7b4-2b22e7171056",
+  "type": "head",
+  "main": "main.fbeb0f74.js",
+  "version": "2",
+  "props": {
+    "type": "head",
+    "img": "APP_0001.png",
+    "name": "dsadq",
+    "loadStyle": 0,
+    "lib": [],
+    "css_script": [],
+    "customconf": [
+      "title",
+      "logoUrl",
+      "mainHeight",
+      "logoutUrl"
+    ]
+  }
+}
