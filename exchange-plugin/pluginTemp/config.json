@@ -1,0 +1,20 @@
+{
+  "id": "3519b44f-8f66-47ca-bdbf-75d655206b54",
+  "type": "exchange",
+  "main": "main.97dfaf06.js",
+  "version": "2",
+  "language": "react",
+  "props": {
+    "code": "EN_37960034",
+    "img": "EN_0001.png",
+    "hover_img": "EN_0001_hover.png",
+    "name": "书名提取",
+    "classname": "com.sdata.customize.dataflow.CustomizeNode",
+    "input_count": 1,
+    "output_count": 999,
+    "lib": "[]",
+    "css_script": "[]",
+    "group_type": "constomize",
+    "group_name": "自定义"
+  }
+}

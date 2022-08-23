@@ -18,6 +18,7 @@ pluginTemp/libs/*
 plugin-*.zip
 
 dumi
+temp
 
 .history
 # Editor directories and files
