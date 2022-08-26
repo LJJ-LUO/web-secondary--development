@@ -20,21 +20,50 @@ import App from "./App";
  */
 if (process.env.NODE_ENV !== "production") {
   require("antd/dist/antd.css");
+
   const dataSource = [
-    ["标题一", "标题二", "标题三"],
-    ["标题一数据一", "标题二数据一", "标题三数据一"],
-    ["标题一数据二", "标题二数据二", "标题三数据二"],
-    ["标题一数据三", "标题二数据三", "标题三数据三"],
+    ["货种", "吞吐量"],
+    ["A货种", "580"],
+    ["B货种", "470"],
+    ["C货种", "190"],
+    ["D货种", "390"],
+    ["E货种", "250"],
+    ["F货种", "330"],
   ];
+
   const options = {
     externalVariables: {
-      headerBGColor: "#000",
+      // 颜色配置
+      背景颜色: "", // 建议#141C34
+      柱状颜色渐变: "rgba(0,0,0,0)-#3FF1FC",
+      // 图例配置
+      图例图标颜色: "#3FF1FC",
+      图例图标宽度: "18",
+      图例图标高度: "3",
+      图例文字颜色: "#fff",
+      图例文字字号: "14",
+      图例整体位置: "5",
+      // X轴配置
+      X轴分割线颜色: "#244364",
+      X轴文字颜色: "#fff",
+      X轴文字字号: "14",
+      // Y轴配置
+      Y轴线颜色: "#244364",
+      Y轴线宽度: "1",
+      Y轴线最大值: "800",
+      Y轴文字颜色: "#fff",
+      Y轴文字字号: "14",
+      // 柱状数据配置
+      数据柱宽度: "22",
+      数据柱背景宽度: "22",
+      数据柱背景颜色: "#24364B",
+      数据柱末尾块宽度: "3",
+      数据柱末尾块高度: "30",
+      数据柱末尾块颜色: "#3FF1FC",
     },
   };
-  ReactDOM.render(
-    <App dataSource={dataSource} options={options} />,
-    document.getElementById("root")
-  );
+
+  ReactDOM.render(<App dataSource={dataSource} options={options} />, document.getElementById("root"));
 } else {
   if (!window.CUSTOM_PLUGIN) {
     window.CUSTOM_PLUGIN = new Map();
