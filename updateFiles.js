@@ -1,8 +1,9 @@
 const fs = require('fs');
 const sysPath = require('path');
 const templates = fs.readdirSync(sysPath.resolve(__dirname, "packages"));
-let vueTemplates = templates.filter((template) => template.indexOf("vue") > -1)
-let reactTemplates = templates.filter((template) => template.indexOf("vue") == -1)
+//移出老版本的目录
+let vueTemplates = templates.filter((template) => (template.indexOf("vue") > -1 && template.indexOf("old") == -1))
+let reactTemplates = templates.filter((template) => (template.indexOf("vue") == -1 && template.indexOf("old") == -1))
 
 copy("vue template", "vue")
 copy("react template", "react")
@@ -19,13 +20,22 @@ async function copy(src, type) {
       let tempPath = _src.split("/")
       tempPath.shift()
       tempPath = tempPath.join("/")
-      let packages = type === undefined ? templates : type == "vue" ? vueTemplates : reactTemplates
+      let packages = type === undefined ? templates : type === "vue" ? vueTemplates : reactTemplates
       packages.forEach((packageName) => {
         let targetPath = sysPath.resolve(__dirname, `packages/${packageName}/${tempPath}`)
-        fs.copyFile(sysPath.join(__dirname, _src), targetPath, (err) => {
+
+        let targetDir = targetPath.split("\\")
+        targetDir.pop()
+        targetDir = targetDir.join("\\")
+        let dirIsExist = fs.existsSync(targetDir)
+        if (!dirIsExist) {
+          fs.mkdirSync(targetDir)
+        }
+        fs.copyFile(sysPath.resolve(__dirname, _src), targetPath, (err) => {
           if (err) {
-            throw new Error("复制出错")
+            throw new Error(`复制出错，目录为${_src}，目标目录${targetPath}`)
           }
+          console.log("success");
         })
       })
     }
