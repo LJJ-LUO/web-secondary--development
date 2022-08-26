@@ -20,21 +20,49 @@ import App from "./App";
  */
 if (process.env.NODE_ENV !== "production") {
   require("antd/dist/antd.css");
+
   const dataSource = [
-    ["标题一", "标题二", "标题三"],
-    ["标题一数据一", "标题二数据一", "标题三数据一"],
-    ["标题一数据二", "标题二数据二", "标题三数据二"],
-    ["标题一数据三", "标题二数据三", "标题三数据三"],
+    ["月份", "南京", "苏州", "镇江"],
+    ["一月", "350", "210", "280"],
+    ["二月", "280", "200", "140"],
+    ["三月", "320", "340", "180"],
+    ["四月", "300", "180", "270"],
+    ["五月", "210", "290", "150"],
+    ["六月", "290", "210", "140"],
   ];
+
   const options = {
     externalVariables: {
-      headerBGColor: "#000",
+      // 系列颜色
+      背景颜色: "",
+      系列颜色数组: "#3FF2FD-#F39924-#27A6FE",
+      对应渐变颜色数组: "#F60C0D-#2EBC27-#0413FF",
+      // 图例配置
+      图例图标宽度: "18",
+      图例图标高度: "3",
+      图例文字颜色: "#fff",
+      图例文字字号: "14",
+      图例间距: "20",
+      图例整体位置: "5",
+      // X轴配置
+      X轴线颜色: "#fff",
+      X轴文字颜色: "#fff",
+      X轴文字字号: "14",
+      // Y轴配置
+      Y轴最大值: "500",
+      Y轴线颜色: "#fff",
+      Y轴分割线颜色: "#fff",
+      Y轴文字颜色: "#fff",
+      Y轴文字字号: "14",
+      // 柱形数据配置
+      柱形数据宽度: "30",
+      柱形数据倾斜角度: "30",
+      柱形数据间距: "25",
+      柱形数据向左偏移系数: "-0.6",
     },
   };
-  ReactDOM.render(
-    <App dataSource={dataSource} options={options} />,
-    document.getElementById("root")
-  );
+
+  ReactDOM.render(<App dataSource={dataSource} options={options} />, document.getElementById("root"));
 } else {
   if (!window.CUSTOM_PLUGIN) {
     window.CUSTOM_PLUGIN = new Map();
