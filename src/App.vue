@@ -1,9 +1,9 @@
 <template>
-  <div class="metting_all">
+  <div id="ry_mettingAll" class="metting_all">
     <!-- 会议位置标题 -->
     <div class="metting_title">
       <div>人工点名</div>
-      <img src="./assets/quit.png" alt="" @click="outMett" />
+      <img src="./assets/close.png" alt="" title="结束会议" @click="outMett" />
     </div>
     <!-- 会议 -->
     <div class="metting">
@@ -31,7 +31,7 @@
             </el-radio-group>
           </div> -->
           <!-- 表格 -->
-          <el-table :data="tableData" height="77%" :header-cell-style="{ background: '#012641', borderBottom: '1px solid #013657' }">
+          <el-table :data="tableData" height="77%" :row-style="tableRowClassName" :header-cell-style="{ background: '#012641', borderBottom: '1px solid #013657' }">
             <el-table-column prop="name" label="会场名称" :show-overflow-tooltip="true" header-align="center" align="center" width="230"></el-table-column>
             <el-table-column prop="hw_addr" label="会场标识" :show-overflow-tooltip="true" header-align="center" align="center" width="250"></el-table-column>
             <el-table-column c label="操作" header-align="center" align="center">
@@ -40,47 +40,48 @@
                   <el-col :span="3">
                     <div class="table_img">
                       <div v-if="!scope.row.is_main || scope.row.is_main == false">&nbsp;</div>
-                      <img v-if="scope.row.is_main == true" src="./assets/user_2.png" />
+                      <img v-if="scope.row.is_main == true" src="./assets/user_2.png" title="主席" />
                     </div>
                   </el-col>
                   <el-col :span="4">
                     <div class="table_img">
-                      <!-- <img v-if="!scope.row.checked" src="./assets/nothand1.png" @click="callRoll(scope.row)" /> -->
-                      <img v-if="scope.row.checked == 0" src="./assets/handle.png" @click="callRoll(scope.row)" />
-                      <img v-if="scope.row.checked == 1" src="./assets/isHandel.png" @click="callRoll(scope.row)" />
+                      <img v-if="scope.row.checked == 1" src="./assets/nothand1.png" @click="callRoll(scope.row)" />
+                      <img v-if="scope.row.checked == 0 && selectMett.id != scope.row.id" src="./assets/handle.png" @click="callRoll(scope.row)" title="点名" />
+                      <img v-if="scope.row.checked == 0 && selectMett.id == scope.row.id" src="./assets/isHandel.png" @click="callRoll(scope.row)" title="点名" />
                     </div>
                   </el-col>
                   <el-col :span="3">
                     <div class="table_img">
-                      <img v-if="!scope.row.mic_status" src="./assets/notMic1.png" />
-                      <img v-if="scope.row.mic_status == 'on'" src="./assets/mic2.png" @click="handleTabelIcon(scope.row, 'micCall', 0)" />
-                      <img v-if="scope.row.mic_status == 'off'" src="./assets/mic_2.png" @click="handleTabelIcon(scope.row, 'micCall', 1)" />
+                      <img v-if="scope.row.checked == 1" src="./assets/notMic1.png" title="麦克风" />
+                      <img v-if="scope.row.checked == 0 && scope.row.mic_status == 'on'" src="./assets/mic2.png" @click="handleTabelIcon(scope.row, 'micCall', 0)" title="麦克风" />
+                      <img v-if="scope.row.checked == 0 && scope.row.mic_status == 'off'" src="./assets/mic_2.png" @click="handleTabelIcon(scope.row, 'micCall', 1)" title="麦克风" />
                     </div>
                   </el-col>
                   <el-col :span="3">
                     <div class="table_img">
-                      <img v-if="!scope.row.mic_status" src="./assets/notOutMic.png" />
-                      <img v-if="scope.row.mic_status == 'on'" src="./assets/mic_3.png" />
-                      <img v-if="scope.row.mic_status == 'off'" src="./assets/mic_4.png" />
+                      <img v-if="scope.row.checked == 1" src="./assets/notOutMic.png" title="远端麦克风" />
+                      <img v-if="scope.row.checked == 0 && scope.row.mic_status == 'on'" src="./assets/mic_3.png" title="远端麦克风" />
+                      <img v-if="scope.row.checked == 0 && scope.row.mic_status == 'off'" src="./assets/mic_4.png" title="远端麦克风" />
                     </div>
                   </el-col>
                   <el-col :span="3">
                     <div class="table_img">
-                      <img v-if="!scope.row.vol_status" src="./assets/notVoice.png" />
-                      <img v-if="scope.row.vol_status == 'on'" src="./assets/horn_1.png" @click="handleTabelIcon(scope.row, 'loudspeaker', 0)" />
-                      <img v-if="scope.row.vol_status == 'off'" src="./assets/horn_2.png" @click="handleTabelIcon(scope.row, 'loudspeaker', 1)" />
+                      <img v-if="scope.row.checked == 1" src="./assets/notVoice.png" />
+                      <img v-if="scope.row.checked == 0 && scope.row.vol_status == 'on'" src="./assets/horn_1.png" @click="handleTabelIcon(scope.row, 'loudspeaker', 0)" title="扬声器" />
+                      <img v-if="scope.row.checked == 0 && scope.row.vol_status == 'off'" src="./assets/horn_2.png" @click="handleTabelIcon(scope.row, 'loudspeaker', 1)" title="扬声器" />
                     </div>
                   </el-col>
                   <el-col :span="4">
                     <div class="table_img">
-                      <img src="./assets/Hangup.png" alt="" @click="handleTabelIcon(scope.row, 'hangup')" />
+                      <img v-if="scope.row.checked == 1" src="./assets/notHangUp.png" title="重拨" />
+                      <img v-if="scope.row.checked == 0" src="./assets/Hangup.png" alt="" @click="handleTabelIcon(scope.row, 'hangup')" title="挂断" />
                     </div>
                   </el-col>
                 </el-row>
                 <el-row v-else :gutter="20">
                   <el-col :span="3">
                     <div class="table_img">
-                      <img src="./assets/call_2.png" @click="handleTabelIcon(scope.row, 'recall')" />
+                      <img src="./assets/call_2.png" @click="handleTabelIcon(scope.row, 'recall')" title="重拨" />
                     </div>
                   </el-col>
                 </el-row>
@@ -96,17 +97,17 @@
             <img style="margin-left: 12%" src="./assets/ico_ty.png" alt="" />
           </div>
           <div class="metting_live">
-            <flv-video ref="flvVideo" class="flvVideo" :mettItem="selectMett"></flv-video>
-            <!-- <img src="https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg" alt="" /> -->
+            <!-- <flv-video v-if="videoShow" ref="flvVideo" class="flvVideo" :mettItem="selectMett"></flv-video> -->
+            <iframe id="rtsp_player_window" width="100%" height="100%" frameborder="0" allowfullscreen src=""></iframe>
           </div>
         </div>
       </div>
       <!-- 下侧 -->
-      <div class="metting_bottom">
+      <div v-if="selectMett.id" class="metting_bottom">
         <!-- 标题 -->
         <div class="live_title">
           <img src="./assets/ico_dw.png" alt="" />
-          <div>本地</div>
+          <div>情况记录</div>
           <img src="./assets/ico_ty.png" alt="" />
         </div>
         <div class="live_radio">
@@ -141,10 +142,18 @@
               <el-input type="textarea" :rows="5" placeholder="请输入内容" v-model="rollItem.notes"> </el-input>
             </div>
           </div>
-          <el-button type="primary" class="live_button" @click="saveRoll">保存</el-button>
+          <el-button v-show="selectMett.checked == 0" type="primary" class="live_button" @click="saveRoll">保存</el-button>
         </div>
       </div>
     </div>
+    <!-- 关闭弹窗 -->
+    <el-dialog title="关闭提示" :visible.sync="dialogVisible" width="30%">
+      <span>确认结束会议?</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="okClose">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -164,6 +173,8 @@ export default {
   data() {
     return {
       creatMeetId: '',
+      videoShow: false,
+      dialogVisible: false,
       // 表格数据
       tableData: [],
       tableDataCopy: [],
@@ -186,11 +197,19 @@ export default {
       selectMett: {},
     }
   },
-  created() {
-    // this.creatMetting()
-  },
+  created() {},
   mounted() {
     this.getParams()
+    this.$nextTick(() => {
+      let _mettingAll = document.getElementById('ry_mettingAll')
+      _mettingAll.parentNode.style.width = '100%'
+      _mettingAll.parentNode.style.height = '100%'
+      _mettingAll.parentNode.parentNode.parentNode.parentNode.style.height = '100%'
+      _mettingAll.parentNode.parentNode.parentNode.parentNode.parentNode.style.width = '100%'
+      _mettingAll.parentNode.parentNode.parentNode.parentNode.parentNode.style.height = '100%'
+      _mettingAll.parentNode.parentNode.parentNode.parentNode.parentNode.style.position = 'absolute'
+    })
+
     let { componentId } = this.customConfig || {}
     componentId && window.componentCenter?.register(componentId, 'comp', this, eventActionDefine)
   },
@@ -204,7 +223,7 @@ export default {
         obj[list[0]] = list[1]
       })
       this.creatMeetId = obj.data_id
-      if (obj.meeting_id == '') {
+      if (obj.meeting_id == null || obj.meeting_id == 'null' || obj.meeting_id == '' || obj.meeting_id == undefined || !obj.meeting_id) {
         this.creatMetting()
       } else {
         this.mettingInfo.conference_id = obj.meeting_id
@@ -212,10 +231,11 @@ export default {
         this.rollItem.conference_id = parseInt(this.mettingInfo.conference_id)
         this.rollItem.parent_id = this.creatMeetId
       }
+      console.log('obj', obj)
     },
     // 创建会议
     async creatMetting() {
-      // this.creatMeetId = '283e4c1ed46644c1930618064025b028hyxj'
+      // this.creatMeetId = '283e4c1ed46644c1930618064025b028zdxj'
       const params = {
         id: this.creatMeetId,
         type: 2,
@@ -232,27 +252,25 @@ export default {
         conference_id: this.mettingInfo.conference_id,
       }
       let { data } = await artificalVideoList(params)
-      this.tableData = data
-      this.tableDataCopy = data
-      console.log('data===', data)
+      this.tableData = data.filter((x) => {
+        return x.type == 0
+      })
+      this.tableDataCopy = this.tableData
+      if (this.selectMett.id) {
+        this.tableData.forEach((x) => {
+          if (x.id == this.selectMett.id) {
+            this.selectMett.checked = x.checked
+          }
+        })
+      }
+      // console.log('data===', data)
     },
-    // 表格数据
-    // async getArtificalList() {
-    //   const params = {
-    //     conference_id: parseInt(this.mettingInfo.conference_id),
-    //     external: '',
-    //   }
-    //   let { data } = await artificalVideoList(params)
-    //   this.rollList = data
-
-    //   console.log('rollList===', this.rollList)
-    // },
     // 点名表单
     async rollForm() {
       let res = await callTheRollForm(this.rollItem)
-      console.log('res===', res)
+      // console.log('res===', res)
     },
-
+    // 退出
     async outMett() {
       let params = {
         conference_id: this.mettingInfo.conference_id,
@@ -260,7 +278,16 @@ export default {
         type: 2, //1 紧急会议 0 普通会议
       }
       let res = await finishMetting(params)
-      console.log('结束会议===', res)
+      this.dialogVisible = true
+      // console.log('结束会议===', res)
+    },
+
+    // 关闭弹窗
+    okClose() {
+      this.dialogVisible = false
+      this.$nextTick(() => {
+        this.closeWindow()
+      })
     },
 
     // 搜索
@@ -297,12 +324,12 @@ export default {
     },
 
     // 触发图标事件
-    async handleTabelIcon(row, type, status) {
+    handleTabelIcon(row, type, status) {
       let dataForm = {
         conference_id: this.mettingInfo.conference_id,
         terminal_id: row.id,
       }
-      // // 主席设置
+      // 重拨
       if (type == 'recall') {
         recall(dataForm).then((res) => {})
       }
@@ -320,34 +347,103 @@ export default {
       if (type == 'hangup') {
         let form = {
           conference_id: this.mettingInfo.conference_id,
-          terminal_id: [row.id],
+          terminal_id: row.id,
         }
         hangup(form).then((res) => {})
       }
-      await this.getTableList()
+      setTimeout(() => {
+        this.getTableList()
+      }, 100)
     },
 
     // 点名
     callRoll(row) {
-      if (this.rollItem.terminal_id != row.id) {
+      if (row.checked == 1) {
+        this.$message('该会场已点名')
+      } else {
         this.rollItem = {
+          conference_id: this.mettingInfo.conference_id,
+          parent_id: this.creatMeetId,
           terminal_id: row.id,
           video_status: '',
           audio_status: '',
           network_status: '',
           notes: '',
         }
+        this.selectMett = row
+        // this.$refs.flvVideo.mpegts_destroy()
+        // this.$refs.flvVideo.initMpegts()
+        console.log('this.selectMett', this.selectMett)
+        this.initVideo(row.video_url)
       }
-      this.selectMett = row
-      this.$refs.flvVideo.mpegts_destroy()
-      this.$refs.flvVideo.initMpegts()
+      // if (this.rollItem.terminal_id != row.id) {
+      //   this.rollItem = {
+      //     conference_id: this.mettingInfo.conference_id,
+      //     parent_id: this.creatMeetId,
+      //     terminal_id: row.id,
+      //     video_status: '',
+      //     audio_status: '',
+      //     network_status: '',
+      //     notes: '',
+      //   }
+      //   this.selectMett = row
+      //   // this.$refs.flvVideo.mpegts_destroy()
+      //   // this.$refs.flvVideo.initMpegts()
+      //   console.log('this.selectMett', this.selectMett)
+      //   this.initVideo(row.video_url)
+      // }
+    },
+
+    initVideo(video_url) {
+      this.destroyedVideo()
+      // this.videoShow = true
+      let page_server = 'http://114.115.248.69'
+      let video_src = video_url
+      // let video_src = 'rtsp://rtsp.stream/pattern'
+      let video_size = '730x500'
+      document.getElementById('rtsp_player_window').src = page_server + '/embed?s=' + btoa(video_src) + '&r=' + btoa(video_size)
+    },
+    destroyedVideo() {
+      document.getElementById('rtsp_player_window').src = ''
+      // this.videoShow = false
     },
 
     // 保存
     saveRoll() {
-      console.log('this.rollItem', this.rollItem)
-      this.rollForm()
-      this.getParams()
+      if (this.rollItem.terminal_id) {
+        this.rollForm()
+      }
+      // console.log('this.rollItem', this.rollItem)
+      this.getTableList()
+    },
+
+    tableRowClassName(row) {
+      if (row.row.status == 0) {
+        return {
+          color: 'red',
+        }
+      } else if (row.row.checked == 1) {
+        return {
+          color: '#8a8a8a',
+        }
+      } else {
+        return {
+          color: '#fff',
+        }
+      }
+    },
+
+    closeWindow() {
+      var userAgent = navigator.userAgent
+      // console.log('userAgent', userAgent)
+      if (userAgent.indexOf('Firefox') != -1 || userAgent.indexOf('Chrome') != -1) {
+        window.location.href = 'about:blank'
+        window.close()
+      } else {
+        window.opener = null
+        window.open('', '_self')
+        window.close()
+      }
     },
 
     triggerEvent() {
@@ -371,7 +467,7 @@ export default {
       //   meeting_id: "xxxxxxxxxxxxxxxxxxxxxx",
       //   type: 2
       // }
-      console.log('会议信息', params)
+      // console.log('会议信息', params)
       // this.creatMeetId = params.data_id
       // if (params.meeting_id == '') {
       //   this.creatMetting()
@@ -388,6 +484,7 @@ export default {
   },
 
   destroyed() {
+    this.destroyedVideo()
     window.componentCenter?.removeInstance(this.customConfig?.componentId)
   },
 }
@@ -396,12 +493,28 @@ export default {
 <style lang="less" scoped>
 // 会议整体
 .metting_all {
+  padding-top: 30px;
   width: 100%;
   height: 100%;
-  padding: 30px 10px 0 10px;
   background: #001529;
   box-sizing: border-box;
   z-index: -1;
+}
+
+/deep/.el-dialog {
+  .el-dialog__header {
+    background: #171f34;
+    span {
+      color: #ffffff;
+    }
+  }
+  .el-dialog__body {
+    background: #171f34;
+    color: #ffffff;
+  }
+  .el-dialog__footer {
+    background: #171f34;
+  }
 }
 // 会议位置标题
 .metting_title {
@@ -410,11 +523,12 @@ export default {
   top: 8px;
   color: #ffffff;
   font-size: 21px;
+  text-indent: 20px;
 }
 // 退出标题
 .metting_title img {
   position: absolute;
-  right: 1%;
+  right: 30px;
   top: 3px;
   width: 26px;
   height: 26px;
@@ -428,7 +542,8 @@ export default {
 }
 // 会议上侧
 .metting_top {
-  width: 100%;
+  padding: 0 10px;
+  width: calc(100% - 20px);
   height: 70%;
   display: flex;
   justify-content: center;
@@ -530,9 +645,9 @@ export default {
   /deep/ .el-table tbody tr:hover > td {
     background: #171f34 !important;
   }
-  /deep/ .el-table__row .cell {
-    color: #ffffff;
-  }
+  // /deep/ .el-table__row .cell {
+  //   color: #ffffff;
+  // }
   /deep/ .el-table td.el-table__cell,
   .el-table th.el-table__cell.is-leaf {
     border-bottom: 1px solid #013153;
@@ -552,10 +667,9 @@ export default {
     border: 1px solid #00a6d3;
     margin-left: 15px;
     border-top-left-radius: 12px;
-  }
-  .metting_tool {
     background: #002c47;
   }
+
   .metting_live {
     padding: 10px;
     width: 100%;
@@ -596,7 +710,8 @@ export default {
 }
 // 会议下侧
 .metting_bottom {
-  width: 100%;
+  margin-left: 10px;
+  width: calc(100% - 20px);
   height: 28%;
   margin-top: 10px;
   border: 1px solid #00a6d3;

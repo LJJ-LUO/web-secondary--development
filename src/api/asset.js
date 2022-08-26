@@ -33,16 +33,16 @@ export const callTheRollForm = params =>
 * @param id 资产ID
 */
 export const artificalVideoList = params =>
-request.post(`/customize/conference/artifical_video_list`, params);
+  request.post(`/customize/conference/artifical_video_list`, params);
 
 /**
  * 3.切换主席
  */
- export const changeMain = (dataForm) => request.post(`/customize/conference/change_main`, dataForm);
+export const changeMain = (dataForm) => request.post(`/customize/conference/change_main`, dataForm);
 
- /**
- * 9.扬声器控制
- */
+/**
+* 9.扬声器控制
+*/
 export const loudspeaker = (dataForm) => request.post(`/customize/conference/change_all_loudspeaker`, dataForm);
 
 /**
@@ -53,18 +53,18 @@ export const finishMetting = (dataForm) => request.post(`/customize/conference/f
 /**
  * 7.麦克风控制
  */
- export const micCall = (dataForm) => request.post(`/customize/conference/mic_all`, dataForm);
+export const micCall = (dataForm) => request.post(`/customize/conference/mic_all`, dataForm);
 
 /**
  * 5.重呼
  */
- export const recall = (dataForm) => request.post(`/customize/conference/recall`, dataForm);
+export const recall = (dataForm) => request.post(`/customize/conference/recall`, dataForm);
 
- /**
-  * 13.挂断
-  */
- export const hangup = (dataForm) => request.post(`/customize/conference/hangup`, dataForm);
+/**
+ * 13.挂断
+ */
+export const hangup = (dataForm) => request.post(`/customize/conference/hangup`, dataForm);
 
 
- 
+
 

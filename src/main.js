@@ -1,7 +1,7 @@
 import Vue from "vue";
 import App from "./App.vue";
 // 按需引入组件，引入方式见https://element.eleme.cn/#/zh-CN/component/quickstart#an-xu-yin-ru
-import { Input, Button, Table, TableColumn, Row, Col, Radio, RadioGroup, RadioButton, CheckboxGroup, CheckboxButton } from "element-ui";
+import { Input, Button, Table, TableColumn, Row, Col, Radio, RadioGroup, RadioButton, CheckboxGroup, CheckboxButton, Dialog, Message } from "element-ui";
 
 Vue.config.productionTip = false;
 Vue.use(Input);
@@ -15,8 +15,9 @@ Vue.use(RadioGroup);
 Vue.use(RadioButton);
 Vue.use(CheckboxGroup);
 Vue.use(CheckboxButton);
+Vue.use(Dialog);
 // import * as appService from "@njsdata/app-sdk";
-
+Vue.prototype.$message = Message;
 if (process.env.NODE_ENV !== "production") {
   // 添加 customConfig 进行测试
   let customConfig = {
