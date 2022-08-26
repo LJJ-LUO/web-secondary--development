@@ -1,7 +1,7 @@
 {
-  "id": "35ef2da7-8d40-4b63-a3f2-c8b240b02ee2",
+  "id": "9ee0fc78-a586-4c42-b418-92d2491b696b",
   "type": "analyzers",
-  "main": "app.66ff22af.js",
+  "main": "app.6af11ead.js",
   "version": "2",
   "props": {
     "img": "custom_table.png",
@@ -14,7 +14,17 @@
     "scriptName": "app.a515a2e6.js",
     "optionModules": [],
     "vars": [
-      "fontSize"
+      "系列颜色",
+      "图例名称颜色",
+      "图例名称大小",
+      "图例名称字体",
+      "图例数值颜色",
+      "图例数值大小",
+      "饼图左距离",
+      "饼图顶距离",
+      "饼图缩放倍率",
+      "图例右距离",
+      "图例顶距离"
     ]
   }
 }

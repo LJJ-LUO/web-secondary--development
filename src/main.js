@@ -36,12 +36,28 @@ if (dom) {
   }).$mount(wrapper);
 } else {
   if (process.env.NODE_ENV !== "production") {
-    const dataSource = JSON.parse(
-      '[["衬衫","高跟鞋","裤子","袜子","雪纺衫","羊毛衫"],[5,10,10,17,36,20]]'
-    );
+    const dataSource = [
+      ["月份", "数值"],
+      ["本月", "12"],
+      ["六月", "11"],
+      ["七月", "10"],
+      ["平均", "11"]
+    ]
+
     const options = {
       externalVariables: {
-        fontSize: "20px",
+        系列颜色: "#0778e5,#84e2e5,#51deac,#e6c77c,#e69146,#13d8ea",
+        图例名称颜色: "#a3c1de",
+        图例名称大小: "14",
+        图例名称字体: "serif",
+        图例数值颜色: "#333",
+        图例数值大小: "20",
+        图例数值字体: "Arial",
+        饼图左距离: "-130",
+        饼图顶距离: "0",
+        饼图缩放倍率: "1.5",
+        图例右距离: "50",
+        图例顶距离: "middle",
       },
     };
     const props = {
