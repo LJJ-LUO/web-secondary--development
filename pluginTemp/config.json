@@ -1,7 +1,7 @@
 {
-  "id": "35ef2da7-8d40-4b63-a3f2-c8b240b02ee2",
+  "id": "00369c86-87e5-4a9c-a9fe-c9e3639bfb80",
   "type": "analyzers",
-  "main": "app.66ff22af.js",
+  "main": "app.4c13ecb8.js",
   "version": "2",
   "props": {
     "img": "custom_table.png",
@@ -14,7 +14,17 @@
     "scriptName": "app.a515a2e6.js",
     "optionModules": [],
     "vars": [
-      "fontSize"
+      "数据系列颜色",
+      "y轴单位",
+      "坐标系颜色",
+      "坐标系字体",
+      "坐标系字号",
+      "图例文字颜色",
+      "图例字体",
+      "图例字号",
+      "图例位置x",
+      "图例位置y",
+      "tips单位"
     ]
   }
 }

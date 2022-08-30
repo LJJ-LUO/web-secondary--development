@@ -8,7 +8,7 @@
  */
 import Vue from "vue";
 import App from "./App.vue";
-
+import './index.css'
 import { Table, TableColumn } from "element-ui";
 
 Vue.config.productionTip = false;
@@ -37,11 +37,15 @@ if (dom) {
 } else {
   if (process.env.NODE_ENV !== "production") {
     const dataSource = JSON.parse(
-      '[["衬衫","高跟鞋","裤子","袜子","雪纺衫","羊毛衫"],[5,10,10,17,36,20]]'
+      '[["月份","存款业务","货款业务","存款速率"], ["一月",50 , 30,1.2] ,["二月",60,55,1.0], ["三月",72 ,66,0.51 ] ,["四月",88,40,0.88], ["五月",44 , 61,0.37] ,["六月",53,79,0.1]]'
     );
     const options = {
       externalVariables: {
-        fontSize: "20px",
+        数据系列颜色: 'red',
+        y轴单位: 'a',
+
+        图例位置y: 600,
+        图例位置x: 400,
       },
     };
     const props = {
