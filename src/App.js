@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import * as echarts from "echarts";
 import "./app.less";
+import toopImg from "../src/assets/tooipBg2.png";
 
 export default class App extends Component {
   constructor(props) {
@@ -23,7 +24,6 @@ export default class App extends Component {
     this.xAxisLabelColor = external["X轴文字颜色"] || "#fff";
     this.xAxisLabelFontSize = external["X轴文字字号"] || "14";
     // Y轴配置
-    this.yAxisLineMax = external["Y轴最大值"] || "500";
     this.yAxisLineColor = external["Y轴线颜色"] || "#fff";
     this.yAxisSplitLineColor = external["Y轴分割线颜色"] || "#fff";
     this.yAxisLabelColor = external["Y轴文字颜色"] || "#fff";
@@ -33,12 +33,20 @@ export default class App extends Component {
     this.barDataTilt = external["柱形数据倾斜角度"] || "20";
     this.barDataSpacing = external["柱形数据间距"] || "25";
     this.barDataLeftPosition = external["柱形数据向左偏移系数"] || "1";
+    // 悬浮窗配置
+    this.tooltipHeight = external["悬浮窗高度"] || "90";
+    this.tooltipWidth = external["悬浮窗宽度"] || "160";
   }
 
   componentDidMount() {
-    this.refs["jsgk_barY"].parentNode.style.width = "100%";
-    this.refs["jsgk_barY"].parentNode.style.height = "100%";
-    this.refs["jsgk_barY"].parentNode.parentNode.style.minHeight = 0;
+    if (process.env.NODE_ENV !== "development") {
+      this.refs["jsgk_barYs"].parentNode.style.width = "100%";
+      this.refs["jsgk_barYs"].parentNode.style.height = "100%";
+      this.refs["jsgk_barYs"].parentNode.parentNode.style.overflow = "visible";
+      this.refs["jsgk_barYs"].parentNode.parentNode.parentNode.parentNode.style.overflow = "visible";
+      this.refs["jsgk_barYs"].parentNode.parentNode.parentNode.parentNode.parentNode.style.overflow = "visible";
+      this.refs["jsgk_barYs"].parentNode.parentNode.style.minHeight = 0;
+    }
 
     this.handleEchartsData();
 
@@ -52,6 +60,7 @@ export default class App extends Component {
 
     let spacing = Number(this.barDataSpacing);
     let leftPosition = Number(this.barDataLeftPosition);
+
     // X轴数据
     let xAxisData = [];
     // 图例数据
@@ -61,30 +70,40 @@ export default class App extends Component {
     // 二次处理数据
     let seriesData = [];
 
-    propsData[0].forEach((item, index) => {
+    propsData.forEach((item, index) => {
       if (index > 0) {
-        dataList[index - 1] = {
-          name: "",
-          data: [],
-        };
-        propsData.forEach((e, i) => {
-          if (i > 0) {
-            xAxisData.push(e[0]);
-            legendData.push(item);
-            dataList[index - 1].name = item;
-            dataList[index - 1].data.push(e[index]);
+        xAxisData.push(item[0]);
+        if (xAxisData.length < 1) {
+          legendData.push(item[1]);
+          dataList.push({
+            name: item[1],
+            data: [item[2]],
+          });
+        } else {
+          if (legendData.includes(item[1])) {
+            dataList.forEach((e, i) => {
+              if (item[1] === e.name) {
+                e.data.push(item[2]);
+              }
+            });
+          } else {
+            legendData.push(item[1]);
+            dataList.push({
+              name: item[1],
+              data: [item[2]],
+            });
           }
-        });
+        }
       }
     });
 
     xAxisData = [...new Set(xAxisData)];
-    legendData = [...new Set(legendData)];
 
     dataList.forEach((item, index) => {
       let dataObj = {
         type: "custom",
         name: item.name,
+        animation: true,
         renderItem: (params, api) => {
           const location = api.coord([api.value(0), api.value(1)]);
           const xlocation = api.coord([api.value(0), 0]);
@@ -121,12 +140,11 @@ export default class App extends Component {
   }
 
   initEcharts(xAxisData, legendData, seriesData) {
-    let myChart = echarts.init(this.refs["jsgk_barY"]);
+    let myChart = echarts.init(this.refs["jsgk_barYs"]);
     let option = {};
 
     let barWidth = Number(this.barDataWdith);
     let barTilt = Number(this.barDataTilt);
-    console.log(barWidth);
 
     // 绘制柱状图左侧面
     const InclinedRoofBar = echarts.graphic.extendShape({
@@ -146,6 +164,37 @@ export default class App extends Component {
       backgroundColor: this.barBackgroundColor,
       // 颜色数组
       color: this.barColorArr.split("-"),
+      tooltip: {
+        trigger: "axis",
+        axisPointer: {
+          type: "none",
+        },
+        backgroundColor: "transparent",
+        borderWidth: 0,
+        formatter: (params) => {
+          let list = [];
+          let listItem = "";
+          for (var i = 0; i < params.length; i++) {
+            list.push(
+              `<div style="font-size: 14px; color: #fff; padding-left: 15px; padding-top: 2px;">
+                <div style="display: flex; align-items: center;">
+                  <div style="width: 18px; border: 1px solid ${params[i].color}; margin-right: 10px;">
+                  </div>${params[i].seriesName}: ${params[i].value}</div>
+                </div>
+              `
+            );
+          }
+          listItem = list.join("");
+          return (
+            `
+              <div style="background: url(${toopImg}) no-repeat; background-size: cover; background-attachment: fixed; height: ${Number(this.tooltipHeight)}px; width: ${Number(this.tooltipWidth)}px;">
+              <div style="font-size: 14px; color: #B0C4DD; padding-left: 15px; padding-top: 12px;">${params[0].name}</div>
+            ` +
+            listItem +
+            `</div>`
+          );
+        },
+      },
       // 柱状图整体大小
       grid: {
         left: "5%",
@@ -197,13 +246,27 @@ export default class App extends Component {
       // y轴配置
       yAxis: {
         type: "value",
-        min: 0,
-        max: this.yAxisLineMax,
+
         axisTick: {
           show: false,
         },
 
         axisLabel: {
+          formatter: function (params) {
+            let str = String(params);
+            if (str.length === 9) {
+              return `${params / 100000000}亿`;
+            } else if (str.length === 8) {
+              return `${params / 1000000}00万`;
+            } else if (str.length === 7) {
+              return `${params / 100000}0万`;
+            } else if (str.length === 6) {
+              return `${params / 10000}万`;
+            } else if (str.length === 5) {
+              return `${params / 10000}万`;
+            }
+            return params;
+          },
           textStyle: {
             color: this.yAxisLabelColor,
             fontSize: this.yAxisLabelFontSize,
@@ -249,6 +312,6 @@ export default class App extends Component {
   }
 
   render() {
-    return <div ref="jsgk_barY" style={{ width: "100%", height: "100%" }}></div>;
+    return <div ref="jsgk_barYs" style={{ width: "100%", height: "100%" }}></div>;
   }
 }
