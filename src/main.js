@@ -1,12 +1,15 @@
 import Vue from "vue";
 import App from "./App.vue";
-import { Input, Select, Option } from "element-ui";
+import { Input, Select, Option, Tooltip, Form, FormItem } from "element-ui";
 import "./index.css";
 
 Vue.config.productionTip = false;
 Vue.use(Input);
 Vue.use(Select);
 Vue.use(Option);
+Vue.use(Tooltip);
+Vue.use(Form);
+Vue.use(FormItem);
 
 if (process.env.NODE_ENV !== "production") {
   const props = {
@@ -43,6 +46,10 @@ if (process.env.NODE_ENV !== "production") {
             classname: "com.sdata.customize.dataflow.CustomizeNode",
           },
           detail: {
+            apiSrc: "https://www.baudi.com",
+            backValue: "美团接口",
+            backTextarea: "111111111111111111",
+            authParam: "2222222222",
             columns: [
               {
                 displayed: 1,
@@ -52,14 +59,14 @@ if (process.env.NODE_ENV !== "production") {
                 col_datatype: 0,
                 import_flag: false,
               },
-            ],
+            ]
           },
           text: {
-            internalName: "书名提取",
+            internalName: "",
             code: "S2",
           },
         },
-        label: "S2:书名提取",
+        label: "S2:API服务调用",
         output: 999,
         input: 1,
         size: [55, 55],
