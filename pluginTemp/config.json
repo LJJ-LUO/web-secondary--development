@@ -1,7 +1,7 @@
 {
-  "id": "f0f69f28-19a0-4749-afd9-60a2ee240ec2",
+  "id": "312c3eaa-fe3c-45a7-be78-37d6deb3651a",
   "type": "analyzer",
-  "main": "main.c1ab2462.js",
+  "main": "main.64ab7967.js",
   "version": "2",
   "props": {
     "img": "custom_table.png",
@@ -27,7 +27,6 @@
       "X轴文字字号",
       "Y轴线颜色",
       "Y轴线宽度",
-      "Y轴线最大值",
       "Y轴文字颜色",
       "Y轴文字字号",
       "数据柱宽度",
