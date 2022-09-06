@@ -1,7 +1,7 @@
 {
-  "id": "35123344f-4533we-57ca-2d3f-75d655206b47",
+  "id": "f135d8a7-f60b-41cd-88a8-93f0aac46188",
   "type": "analyzers",
-  "main": "app.66ff22af.js",
+  "main": "app.42aad8e2.js",
   "version": "2",
   "props": {
     "img": "custom_table.png",
@@ -14,7 +14,14 @@
     "scriptName": "app.a515a2e6.js",
     "optionModules": [],
     "vars": [
-      "fontSize"
+      "background",
+      "headerFontSize",
+      "headerColor",
+      "headerFontFamily",
+      "headerFontWeight",
+      "bodyFontSize",
+      "bodyColor",
+      "bodyFontFamily"
     ]
   }
 }

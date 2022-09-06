@@ -8,12 +8,13 @@
  */
 import Vue from "vue";
 import App from "./App.vue";
-
-import { Table, TableColumn } from "element-ui";
+import './index.css'
+import { Table, TableColumn, Message } from "element-ui";
 
 Vue.config.productionTip = false;
 Vue.use(Table);
 Vue.use(TableColumn);
+Vue.prototype.$message = Message;
 
 import config from "../pluginTemp/config.json";
 
@@ -37,11 +38,18 @@ if (dom) {
 } else {
   if (process.env.NODE_ENV !== "production") {
     const dataSource = JSON.parse(
-      '[["衬衫","高跟鞋","裤子","袜子","雪纺衫","羊毛衫"],[5,10,10,17,36,20]]'
+      '[["袜子1","袜子_1_豆豆鞋","袜子2_3_4","袜子_1_6","袜子_7_8","袜子_9_0"],["中文1",10,10,17,36,20],["合计",60,30,47,26,10],["中文2",10,10,17,36,20],["中文3",10,10,17,36,20]]'
     );
     const options = {
       externalVariables: {
-        fontSize: "20px",
+        background: "",
+        headerFontSize: '24',
+        headerColor: '',
+        headerFontFamily: '楷体',
+        headerFontWeight: 'false',
+        bodyFontSize: '20',
+        bodyColor: '',
+        bodyFontFamily: '',
       },
     };
     const props = {
@@ -50,6 +58,7 @@ if (dom) {
     };
     const App = require("./App.vue").default;
     new Vue({
+
       render: h => <App {...{ props }} />,
     }).$mount("#app");
   } else {
