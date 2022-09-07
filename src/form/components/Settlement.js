@@ -15,7 +15,7 @@ import {
     Col, Row
 } from 'antd'
 import { PlusOutlined, ProfileOutlined } from '@ant-design/icons';
-import { queryAssetById, } from '../api/asset.js'
+import { queryAssetById, getDataWithSort } from '../api/asset.js'
 import eventbus from '../uilts/eventbus'
 import moment from "moment";
 import formatFn from '../uilts/uilt.js';
@@ -29,12 +29,14 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
     const [compensateJa, setCompensateJa] = useState([])
     const [placement_method, setPlacement_method] = useState('货币补偿')
     const [formC, setformC] = useState({})
-
+    // const [youhua, setYouhua] = useState(false)
     const [piceF, setPiceF] = useState({})
+    const [formDisabled, setformDisabled] = useState(false);
     // const [temp, settemp] = useState(0);
 
 
     useEffect(() => {
+        let a = updateSet
         formlement.validateFields([]);
         if (defaultValue && defaultValue.data_id) {
             let tempObj = {};
@@ -51,21 +53,27 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
 
             // tempObj.cgdqx = [moment(tempObj.transition_start), moment(tempObj.transition_end)]
             formlement.setFieldsValue(tempObj)
+            if (defaultValue?.process_status == 'processing') {
+                setformDisabled(true)
+            }
         }
 
 
 
+        let tempArr = {}
 
-        let tempArr = []
         eventbus.on('heji', (val) => {
 
+
             let { con_frame_total, con_bconcrete_total, con_bwood_total, wqq_sum, jyx_sum } = val
-            let contat = [con_frame_total, con_bconcrete_total, con_bwood_total, wqq_sum, jyx_sum]
+            let contat = { con_frame_total, con_bconcrete_total, con_bwood_total, wqq_sum, jyx_sum }
 
             queryAsset(val)
+
             // console.log(contat);
             // let tempArr = JSON.parse(JSON.stringify(compensateJa))
-            tempArr.push(...contat)
+            // tempArr.push(...contat)
+            tempArr = { ...tempArr, ...contat }
             // setCompensateJa(tempArr)
             setPlacement_method(val)
             setformC(placement_method)
@@ -86,13 +94,13 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
                     djArr.forEach((item, i) => {
                         if (maxdj < item) {
                             maxdj = item
-                            console.log(maxdj, '=============');
+
                         }
                     })
                 } else {
                     maxdj = djArr[0]
                 }
-                console.log(maxdj, tempArr, '=========对应单价');
+
                 let a = val.total_confirmed_area <= 45 ? 45 : val.total_confirmed_area
                 let djcs = { jt_monetary_indemnity_removal: formlement.getFieldsValue().jt_monetary_indemnity_removal, jt_monetary_indemnity_removal_times: formlement.getFieldsValue().jt_monetary_indemnity_removal_times, jt_monetary_indemnity_placement: formlement.getFieldsValue().jt_monetary_indemnity_placement, jt_monetary_indemnity_placement_months: formlement.getFieldsValue().jt_monetary_indemnity_placement_months }
                 formlement.setFieldsValue({
@@ -110,6 +118,7 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
                 let tmepsum = zhuanh.a + zhuanh.b
 
                 if (val.total_confirmed_area > tmepsum) {
+                    console.log(111, '======true');
                     let deff = val.total_confirmed_area - tmepsum
                     formlement.setFieldsValue({
                         jt_monetary_total: deff * djcs.jt_monetary_indemnity_removal * djcs.jt_monetary_indemnity_removal_times,
@@ -126,6 +135,7 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
                     setHiddenCurrency(false)
 
                 }
+                formlement.setFieldsValue({ qt_money: 0 })
             }
 
 
@@ -135,24 +145,27 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
             })
         })
         eventbus.on('quan', (val) => {
+
+            if (!updateSet) return
             let { total_amount } = val
+
             // let tempArr = JSON.parse(JSON.stringify(compensateJa))
             // console.log(total_amount);
-            tempArr.push(total_amount)
+            tempArr.total_amount = total_amount
             setCompensateJa(tempArr)
         })
-        eventbus.emit('settlementDidmount', {})
-        let { qt_money, jt_monetary_total, jt_equity_total, jt_monetary_indemnity_total, jt_equity_exchange_total, jt_signed, jt_move, jt_outsourcing } = formlement.getFieldValue()
+        eventbus.emit('settlementDidmount', { a: a })
+        let { tctyssbc, qt_money, ssbz, sssbbqf, jt_monetary_total, jt_equity_total, jt_monetary_indemnity_total, jt_equity_exchange_total, jt_signed, jt_move, jt_outsourcing } = formlement.getFieldValue()
         // let tempArr = JSON.parse(JSON.stringify(compensateJa))
-        let contat = [qt_money, jt_monetary_total, jt_equity_total, jt_monetary_indemnity_total, jt_equity_exchange_total, jt_signed, jt_move, jt_outsourcing]
-        tempArr.push(...contat)
+        let contat = { tctyssbc, qt_money, ssbz, sssbbqf, jt_monetary_total, jt_equity_total, jt_monetary_indemnity_total, jt_equity_exchange_total, jt_signed, jt_move, jt_outsourcing }
+        tempArr = { ...tempArr, ...contat }
+
         setCompensateJa(tempArr)
 
         formlement.setFieldsValue({
             jy_compensation: compenJaSum(tempArr)
         })
 
-        // console.log(compensate);
     }, [updateSet]);
 
 
@@ -182,7 +195,7 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
                 }
 
             })
-            console.log(transformation.sign_date, '=============date');
+            // console.log(transformation.sign_date, '=============date');
             transformation.sign_date = new Date(transformation.sign_date?._d).getTime()
             // if (err2) transformation.err2 = err2
             // transformation.childData = []
@@ -196,12 +209,19 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
     }));
     //
     const queryAsset = (val) => {
-        queryAssetById('ae1cb3c5-b29d-bb49-d309-3ac8b7bfa988').then(res => {
+        getDataWithSort('ae1cb3c5-b29d-bb49-d309-3ac8b7bfa988', {
+            filters: [{
+                column: "project_name",
+                compareObj: val.project_name,
+                datatype: 0,
+                satisfy_type: 0,
+                type: 4,
+                varibleType: "components"
+            }], columnNames: ['special_sign', 'special_move', 'buy_out_house', '']
+        }).then(res => {
             // console.log(res);
             let a = formatFn(res.data[0], res.data[1])
-            let b = a.filter(item => {
-                return item.project_name == val.project_name
-            })
+            let b = a
             // console.log(b, '======')
             let btemp = b[0] || {}
 
@@ -237,15 +257,23 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
 
 
     //甲补乙金额
-    const compenJaSum = (Arr) => {
+    const compenJaSum = (obj) => {
         let sum = 0
-        Arr.forEach(x => {
-            if (x) {
-                sum += x
+        for (let key in obj) {
+            if (obj[key]) {
+                sum += obj[key]
             } else {
                 sum += 0
             }
-        })
+
+        }
+        // Arr.forEach(x => {
+        //     if (x) {
+        //         sum += x
+        //     } else {
+        //         sum += 0
+        //     }
+        // })
         return sum
     }
 
@@ -254,7 +282,7 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
         setComponentDisabled(disabled);
     };
     //小写转大写
-    const atoc = (numberValue) => {
+    const atoc = (numberValue, fh) => {
         var numberValue = new String(Math.round(numberValue * 100));   //   数字金额  
         var chineseValue = "";                     //   转换后的汉字金额  
         var String1 = "零壹贰叁肆伍陆柒捌玖";               //   汉字数字  
@@ -324,17 +352,20 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
         if (String3 == 0) {                       //   最后一位（分）为0时，加上“整”  
             chineseValue = chineseValue + "整";
         }
-
+        if (!fh) {
+            chineseValue = "负" + chineseValue;
+        }
         return chineseValue;
     }
     //是否抵扣
     const deductionChange = (val) => {
 
         let { jy_compensation, yj_compensation } = formlement.getFieldValue()
-        let deff = Math.abs(jy_compensation - yj_compensation)
+        let deff = jy_compensation - yj_compensation
         let Capitalize
+        let zf = deff >= 0 ? true : false
         if (val.target.value == '是') {
-            Capitalize = atoc(deff)
+            Capitalize = atoc(Math.abs(deff), zf)
             formlement.setFieldsValue({
                 rmb_lowercase: deff,
                 rmb_capital: Capitalize
@@ -406,7 +437,17 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
                 setHiddenCurrency(false)
 
             }
+            formlement.setFieldsValue({ qt_money: 0 })
         }
+    }
+    const setChange = (val, i) => {
+
+        let tempArr = JSON.parse(JSON.stringify(compensateJa))
+        tempArr[i] = val
+        formlement.setFieldsValue({
+            jy_compensation: compenJaSum(tempArr)
+        })
+        setCompensateJa(tempArr)
     }
     return (
         <Form
@@ -429,19 +470,19 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
                 jt_equity_exchange_placement_monthsmax: 36
             }}
             onValuesChange={onFormLayoutChange}
-            disabled={componentDisabled}
+            disabled={formDisabled}
         >
 
             <Row justify="center">
                 <Col span={8}>
                     <Form.Item label="设施设备搬迁费" name='sssbbqf' >
-                        <Input />
+                        <InputNumber onChange={(val) => { setChange(val, 'sssbbqf') }} precision={2} />
                     </Form.Item></Col>
                 <Col span={8}><Form.Item label="失业补助" name='ssbz'>
-                    <Input />
+                    <InputNumber precision={2} onChange={(val) => { setChange(val, 'ssbz') }} />
                 </Form.Item></Col>
                 <Col span={8}><Form.Item label="停产停业损失补助" name='tctyssbc' >
-                    <Input />
+                    <InputNumber precision={2} onChange={(val) => { setChange(val, 'tctyssbc') }} />
                 </Form.Item></Col>
 
 
@@ -449,7 +490,7 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
             <div className='title_public'  > <ProfileOutlined /> 其他补偿事项</div>
 
             <Form.Item labelCol={{ span: 2, }} label="7补偿金额" name='qt_money'>
-                <Input />
+                <InputNumber precision={2} />
             </Form.Item>
             <Form.Item labelCol={{ span: 2, }} label="备注" name='other_moneytary'>
                 <Input type='textarea' />
@@ -457,79 +498,138 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
 
 
             <div className='title_public'  > <ProfileOutlined /> 搬迁费</div>
-            <div style={{ display: hiddenCurrency ? 'block' : 'none' }} >
-                <Row justify="center">
+            {/* <div style={{ display: hiddenCurrency ? 'block' : 'none' }} > */}
+            {
+                hiddenCurrency ? <Row justify="center">
                     <Col span={8}>
                         <Form.Item label="货币补偿搬迁单价" name='jt_monetary_indemnity_removal' >
-                            <InputNumber onChange={() => { jieChange() }} />
+                            <InputNumber precision={2} onChange={() => { jieChange() }} />
                         </Form.Item></Col>
                     <Col span={8}><Form.Item label="搬迁次数" name='jt_monetary_indemnity_removal_times'>
-                        <InputNumber onChange={() => { jieChange() }} />
+                        <InputNumber precision={2} onChange={() => { jieChange() }} />
                     </Form.Item></Col>
                     <Col span={8}><Form.Item label="8计算" name='jt_monetary_total' >
-                        <Input />
+                        <InputNumber precision={2} />
                     </Form.Item></Col>
-                </Row>
-            </div>
-            <div style={{ display: hiddenExchange ? 'block' : 'none' }} >
-                <Row justify="center">
+                </Row> : null
+            }
+            {/* <Row justify="center">
+                    <Col span={8}>
+                        <Form.Item label="货币补偿搬迁单价" name='jt_monetary_indemnity_removal' >
+                            <InputNumber precision={2} onChange={() => { jieChange() }} />
+                        </Form.Item></Col>
+                    <Col span={8}><Form.Item label="搬迁次数" name='jt_monetary_indemnity_removal_times'>
+                        <InputNumber precision={2} onChange={() => { jieChange() }} />
+                    </Form.Item></Col>
+                    <Col span={8}><Form.Item label="8计算" name='jt_monetary_total' >
+                        <InputNumber precision={2} />
+                    </Form.Item></Col>
+                </Row> */}
+            {/* </div> */}
+            {/* <div style={{ display: hiddenExchange ? 'block' : 'none' }} > */}
+            {
+                hiddenExchange ? <Row justify="center">
                     <Col span={8}>
                         <Form.Item label="C产权调换搬迁单价" name='jt_equity_exchange_removal' >
-                            <InputNumber onChange={() => { jieChange() }} />
+                            <InputNumber precision={2} onChange={() => { jieChange() }} />
                         </Form.Item></Col>
                     <Col span={8}><Form.Item label="C搬迁次数" name='jt_equity_exchange_removal_times' >
-                        <InputNumber onChange={() => { jieChange() }} />
+                        <InputNumber precision={2} onChange={() => { jieChange() }} />
                     </Form.Item></Col>
                     <Col span={8}><Form.Item label="9计算 " name='jt_equity_total' >
-                        <Input />
+                        <InputNumber precision={2} />
                     </Form.Item></Col>
-                </Row>
-            </div>
+                </Row> : null
+            }
+            {/* <Row justify="center">
+                    <Col span={8}>
+                        <Form.Item label="C产权调换搬迁单价" name='jt_equity_exchange_removal' >
+                            <InputNumber precision={2} onChange={() => { jieChange() }} />
+                        </Form.Item></Col>
+                    <Col span={8}><Form.Item label="C搬迁次数" name='jt_equity_exchange_removal_times' >
+                        <InputNumber precision={2} onChange={() => { jieChange() }} />
+                    </Form.Item></Col>
+                    <Col span={8}><Form.Item label="9计算 " name='jt_equity_total' >
+                        <InputNumber precision={2} />
+                    </Form.Item></Col>
+                </Row> */}
+            {/* </div> */}
             <div className='title_public'  > <ProfileOutlined /> 临时安置费</div>
-            <div style={{ display: hiddenCurrency ? 'block' : 'none' }} >
-                <Row justify="center">
+            {/* <div style={{ display: hiddenCurrency ? 'block' : 'none' }} > */}
+            {
+                hiddenCurrency ? <Row justify="center">
                     <Col span={8}>
                         <Form.Item label="货币补偿安置单价" name='jt_monetary_indemnity_placement' >
-                            <InputNumber onChange={() => { jieChange() }} />
+                            <InputNumber precision={2} onChange={() => { jieChange() }} />
                         </Form.Item></Col>
                     <Col span={8}><Form.Item label="安置月数" name='jt_monetary_indemnity_placement_months'>
-                        <InputNumber onChange={() => { jieChange() }} />
+                        <InputNumber precision={2} onChange={() => { jieChange() }} />
                     </Form.Item></Col>
                     <Col span={8}><Form.Item label="10计算" name='jt_monetary_indemnity_total'  >
-                        <Input />
+                        <InputNumber precision={2} />
                     </Form.Item></Col>
-                </Row>
-            </div>
-            <div style={{ display: hiddenExchange ? 'block' : 'none' }} >
-                <Row justify="center">
+                </Row> : null
+            }
+            {/* <Row justify="center">
+                    <Col span={8}>
+                        <Form.Item label="货币补偿安置单价" name='jt_monetary_indemnity_placement' >
+                            <InputNumber precision={2} onChange={() => { jieChange() }} />
+                        </Form.Item></Col>
+                    <Col span={8}><Form.Item label="安置月数" name='jt_monetary_indemnity_placement_months'>
+                        <InputNumber precision={2} onChange={() => { jieChange() }} />
+                    </Form.Item></Col>
+                    <Col span={8}><Form.Item label="10计算" name='jt_monetary_indemnity_total'  >
+                        <InputNumber precision={2} />
+                    </Form.Item></Col>
+                </Row> */}
+            {/* </div> */}
+            {/* <div style={{ display: hiddenExchange ? 'block' : 'none' }} > */}
+            {
+                hiddenExchange ? <Row justify="center">
                     <Col span={6}>
                         <Form.Item label="C产权调换安置单价" name='jt_equity_exchange_placement' >
-                            <InputNumber onChange={() => { jieChange() }} />
+                            <InputNumber precision={2} onChange={() => { jieChange() }} />
                         </Form.Item></Col>
                     <Col span={6}><Form.Item label="C过渡期限" name='cgdqx' >
                         <RangePicker />
                     </Form.Item></Col>
                     <Col span={6}><Form.Item label="C安置月数" name='jt_equity_exchange_placement_monthsmax' >
-                        <InputNumber onChange={() => { jieChange() }} />
+                        <InputNumber precision={2} onChange={() => { jieChange() }} />
                     </Form.Item></Col>
                     <Col span={6}><Form.Item label="11计算" name='jt_equity_exchange_total'>
-                        <InputNumber onChange={() => { jieChange() }} />
+                        <InputNumber precision={2} onChange={() => { jieChange() }} />
                     </Form.Item></Col>
-                </Row>
-            </div>
+                </Row> : null
+            }
+            {/* <Row justify="center">
+                    <Col span={6}>
+                        <Form.Item label="C产权调换安置单价" name='jt_equity_exchange_placement' >
+                            <InputNumber precision={2} onChange={() => { jieChange() }} />
+                        </Form.Item></Col>
+                    <Col span={6}><Form.Item label="C过渡期限" name='cgdqx' >
+                        <RangePicker />
+                    </Form.Item></Col>
+                    <Col span={6}><Form.Item label="C安置月数" name='jt_equity_exchange_placement_monthsmax' >
+                        <InputNumber precision={2} onChange={() => { jieChange() }} />
+                    </Form.Item></Col>
+                    <Col span={6}><Form.Item label="11计算" name='jt_equity_exchange_total'>
+                        <InputNumber precision={2} onChange={() => { jieChange() }} />
+                    </Form.Item></Col>
+                </Row> */}
+            {/* </div> */}
             <div className='title_public'  > <ProfileOutlined /> 奖励及补贴条款</div>
             <Row justify="center">
                 <Col span={8}>
                     <Form.Item label="12特殊签约" name='jt_signed' >
-                        <InputNumber />
+                        <InputNumber precision={2} />
                     </Form.Item></Col>
                 <Col span={8}><Form.Item label="13特殊搬家" name='jt_move'>
-                    <InputNumber />
+                    <InputNumber precision={2} />
                 </Form.Item></Col>
                 <Col span={8}>
                     <div style={{ display: hiddenCurrency ? 'block' : 'none' }} >
                         <Form.Item label="14外购住房" name='jt_outsourcing'>
-                            <InputNumber />
+                            <InputNumber precision={2} />
                         </Form.Item>
                     </div  >
                 </Col>
@@ -542,10 +642,10 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
             <Row>
                 <Col span={6}>
                     <Form.Item label="甲补乙金额（元）" name='jy_compensation' >
-                        <Input />
+                        <InputNumber precision={2} />
                     </Form.Item></Col>
                 <Col span={6}><Form.Item label="乙补甲金额（元）" name='yj_compensation'>
-                    <Input />
+                    <InputNumber precision={2} />
                 </Form.Item></Col>
                 <Col span={6}><Form.Item label="是否抵扣" name='if_deduction' rules={[
                     {
@@ -566,7 +666,7 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
             <Row>
                 <Col span={6}>
                     <Form.Item label="抵扣后金额小写" name='rmb_lowercase' >
-                        <Input />
+                        <InputNumber precision={2} />
                     </Form.Item></Col>
                 <Col span={6}><Form.Item label="抵扣后金额大写" name='rmb_capital'>
                     <Input />

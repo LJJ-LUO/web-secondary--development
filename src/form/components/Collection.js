@@ -21,7 +21,7 @@ import qs from "querystringify";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const { Option } = Select;
-const Collection = ({ formid, click, cRef, defaultValue }) => {
+const Collection = ({ updateSet, formid, click, cRef, defaultValue }) => {
     const [form] = Form.useForm();
     const [componentDisabled, setComponentDisabled] = useState(false);
     const [project_name, setProject_name] = useState(['审核项目']);
@@ -36,6 +36,7 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
     const [rights, setRights] = useState([0, 0, 0])
     const [dataTable, setdataTable] = useState([]);
     const [jydata, setjydata] = useState([]);
+    const [formDisabled, setformDisabled] = useState(false);
     const optionsData = ['框架', '砖混', '砖木', '石木结构', '木结构', '钢结构', '其他']
     const options2Data = ['框架', '砖混', '砖木']
     const [provinceAreaList, setProvinceAreaList] = useState([]);
@@ -72,15 +73,6 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
         // changeVal 就是暴露给父组件的方法
         changeVal: (newVal) => {
             let labelArr = document.querySelectorAll('.Collection_  label')
-
-            // try {
-
-
-
-            //     console.log('Success:', values);
-            // } catch (error Info) {
-            //     console.log('Failed:', errorInfo);
-            // }
             form.validateFields()
             // console.log(checkForm(), '===========表单校验');
             let tempaddress = []
@@ -92,20 +84,7 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
                 let key = x.getAttribute('for')
 
                 transformation[key] = valueArr[key]
-                // if (key == 'actual_address_qycj') {
-                //     if (valueArr[key] && !Array.isArray(valueArr[key])) {
-                //         let arr = valueArr[key]?.split('/')
-                //         transformation[key] = valueArr[key]?.split('/').join(',')
 
-                //     } else {
-                //         if (valueArr[key] && valueArr[key]?.join(',') == '贵州省,贵阳市') {
-                //             valueArr[key] = ['f1ca93f21131434fb07ff3a8f256ba64', '3ab6ad06c2174a81a86faf9003445ad3']
-                //         }
-                //         transformation[key] = valueArr[key]?.join(',')
-                //     }
-
-
-                // }
             })
             transformation.childData = []
             transformation.childData.push({ buss_compensation: jydata })
@@ -117,12 +96,13 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
             // click(transformation)
         }
     }));
-    // const checkForm = async () => {
-    //     let waring
-    //     let err = form.validateFields().catch(err => { waring = err })
 
-    //     return waring
-    // }
+    // 监控求和
+    useEffect(() => {
+        if (form.getFieldValue().placement_method == '产权调换') mjSumChange()
+
+    }, [form.getFieldValue().total_confirmed_area, form.getFieldValue().qf_area, form.getFieldValue().xf_area])
+
 
 
     useEffect(() => {
@@ -137,9 +117,6 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
                 tempObj[item] = defaultValue[item]['value']
                 if (item == 'actual_address_qycj') {
                     tempObj[item] = tempObj[item].split(',').join('/')
-
-
-
                 }
             }
 
@@ -181,9 +158,11 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
                     setjydata(x.buss_compensation)
                 }
             })
-            querysplit_infoUpdate(project_name)
-            queryAssetUpdate(project_name)
-
+            querysplit_infoUpdate(form.getFieldValue().project_name)
+            queryAssetUpdate(form.getFieldValue().project_name)
+            if (defaultValue?.process_status == 'processing') {
+                setformDisabled(true)
+            }
         } else {
             form.setFieldsValue({
                 project_name, actual_address_qycj: '贵州省/贵阳市'
@@ -193,10 +172,13 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
             querysplit_info(project_name)
         }
 
-        eventbus.on('settlementDidmount', () => {
+        eventbus.on('settlementDidmount', (key) => {
+
             let collet = JSON.parse(JSON.stringify(form.getFieldValue()))
             eventbus.emit('heji', collet)
         })
+
+
         eventbus.on('didbtn', () => {
 
             let collet = JSON.parse(JSON.stringify(form.getFieldValue()))
@@ -210,16 +192,24 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
 
         // console.log(compensate);
     }, []);
-    //新增时的
-    const queryAsset = (project_name) => {
-        queryAssetById('ae1cb3c5-b29d-bb49-d309-3ac8b7bfa988').then(res => {
-            // console.log(res);
-            let a = formatFn(res.data[0], res.data[1])
-            let b = a.filter(item => {
-                return item.project_name == project_name
-            })
+    //新增时的    
 
-            // console.log(b, '======');
+    const queryAsset = (project_name) => {
+        getDataWithSort('ae1cb3c5-b29d-bb49-d309-3ac8b7bfa988', {
+            filters: [{
+                column: "project_name",
+                compareObj: project_name,
+                datatype: 0,
+                satisfy_type: 0,
+                type: 4,
+                varibleType: "components"
+            }], columnNames: ['jt_frame_jlbz', 'jt_bconcrete_glbz', 'jt_steel_glbz', 'jt_steel_jlbz', 'jt_bconcrete_jlbz', 'jt_bwood_glbz', 'jt_bwood_jlbz', 'jt_stonew_glbz', 'jt_stonew_jlbz', 'jt_wood_glbz', 'jt_wood_jlbz', 'jt_other_glbz', 'jt_other_jlbz',
+                'jt_frame_glbz', 'project_name', 'frame_unitprice_qqfw', 'percent_qqfw', 'bconcrete_unitprice_qqfw', 'bwood_unitprice_qqfw', 'jt_over0price', 'jt_over10price', 'jt_over20price'], sorts: []
+        }).then(res => {
+            // console.log(res);
+            let a = translatePlatformDataToJsonArray(res)
+            let b = a
+
             let c = []
             b.forEach(x => {
                 c.push(x.project_name)
@@ -234,7 +224,7 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
             setProject_name(temp)
             setCompensate(btemp)
             form.setFieldsValue({
-                overarea_0price: a[0].jt_over0price, overarea_10price: a[0].jt_over10price, overarea_20price: a[0].jt_over20price, overarea_0total: 0.00, overarea_10total: 0.00, overarea_20total: 0.00, partyb_to_a: 0.00,
+                overarea_0price: a[0]?.jt_over0price, overarea_10price: a[0]?.jt_over10price, overarea_20price: a[0]?.jt_over20price, overarea_0total: 0.00, overarea_10total: 0.00, overarea_20total: 0.00, partyb_to_a: 0.00,
                 test1: 11111111111, con_frame_price: btemp?.frame_unitprice_qqfw, frame_percent: btemp?.percent_qqfw, con_bconcrete_price: btemp?.bconcrete_unitprice_qqfw, bconcrete_percent: btemp?.percent_qqfw,
                 con_bwood_price: btemp?.bwood_unitprice_qqfw, bwood_percent: btemp?.percent_qqfw
 
@@ -249,64 +239,42 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
     }
     //新增时的
     const querysplit_info = (project_name) => {
-        queryAssetById('52f07736-7d11-a20b-aa22-9ab9162146ec').then(res => {
-            let a = formatFn(res.data[0], res.data[1])
-            let b = a.filter(item => {
-                return item.project_name == project_name
-            })
+        // getDataWithSort('52f07736-7d11-a20b-aa22-9ab9162146ec', {}).then(res => {
+        //     let a = formatFn(res.data[0], res.data[1])
+        //     let b = a.filter(item => {
+        //         return item.project_name == project_name
+        //     })
 
-            setSplit_info(b[0])
+        //     setSplit_info(b[0])
 
-            let c = b[0] || {}
-            form.setFieldsValue({
-                con_frame_area_total: c?.con_frame_area_total, con_bconcrete_area_total: c?.con_bconcrete_area_total, con_bwood_area_total: c?.con_bwood_area_total,
-                total_confirmed_area: c?.con_frame_area_total + c?.con_bconcrete_area_total + c.con_bwood_area_total
-            })
-        })
+        //     let c = b[0] || {}
+        //     // form.setFieldsValue({
+        //     //     con_frame_area_total: c?.con_frame_area_total, con_bconcrete_area_total: c?.con_bconcrete_area_total, con_bwood_area_total: c?.con_bwood_area_total,
+        //     //     total_confirmed_area: c?.con_frame_area_total + c?.con_bconcrete_area_total + c.con_bwood_area_total
+        //     // })
+        // })
         // 项目名称
-        queryAssetById('5e263506-8afa-7646-2277-1734e04bcc08').then((res) => {
-            let resArray = []
-            let resData = translatePlatformDataToJsonArray(res)
-            console.log(resData);
-            resData.forEach((item) => {
-                resArray.push({
-                    project_name: item.project_name,
-                    project_id: item.project_id
-                })
-            })
-            setProjectNameList(resArray)
-        })
+
 
         // 房屋编号
-        queryAssetById('184560aa-1985-01d9-b97e-578368cda381').then((res) => {
-            let resArray = []
+        getDataWithSort('184560aa-1985-01d9-b97e-578368cda381', {
+            filters: [{
+                column: "project_name",
+                compareObj: project_name,
+                datatype: 0,
+                satisfy_type: 0,
+                type: 4,
+                varibleType: "components"
+            }], columnNames: ['house_id']
+        }).then((res) => {
+
             let resData = translatePlatformDataToJsonArray(res)
 
-            resData.forEach((item) => {
 
-                if (project_name == item.project_name) {
-                    resArray.push({
-                        house_id: item.house_id
-                    })
-                }
 
-            })
-
-            setHouseIDList(resArray)
+            setHouseIDList(resData)
         })
-        //安置房
-        // queryAssetById('f5503437-4546-8bf4-cdec-ccf53fd51a50').then((res) => {
-        //     let a = formatFn(res.data[0], res.data[1])
-        //     let sum = 0
-        //     a.forEach(x => {
-        //         sum += x.construction_area
-        //     })
-        //     form.setFieldsValue({
-        //         xf_area: sum
-        //     })
 
-        //     setPlaceTable(a)
-        // })
         getProvinceArea().then((res) => {
             res.data.forEach((item) => { item.isLeaf = false })
             setProvinceAreaList(res.data)
@@ -314,36 +282,34 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
     }
     //编辑时的
     const querysplit_infoUpdate = (project_name) => {
-        queryAssetById('52f07736-7d11-a20b-aa22-9ab9162146ec').then(res => {
-            let a = formatFn(res.data[0], res.data[1])
-            let b = a.filter(item => {
-                return item.project_name == project_name
-            })
 
-            setSplit_info(b[0])
-            // eventbus.on('coll', () => {
-            //     let collet = JSON.parse(JSON.stringify(form.getFieldValue()))
-            //     eventbus.emit('didcoll', collet)
-            // })
-
-        })
         // 项目名称
 
 
         // 房屋编号
-        queryAssetById('184560aa-1985-01d9-b97e-578368cda381').then((res) => {
-            let resArray = []
+        getDataWithSort('184560aa-1985-01d9-b97e-578368cda381', {
+            filters: [{
+                column: "project_name",
+                compareObj: project_name,
+                datatype: 0,
+                satisfy_type: 0,
+                type: 4,
+                varibleType: "components"
+            }], columnNames: ['house_id']
+        }).then((res) => {
+
             let resData = translatePlatformDataToJsonArray(res)
 
-            resData.forEach((item) => {
+            // resData.forEach((item) => {
 
-                if (project_name == item.project_name) {
-                    resArray.push({
-                        house_id: item.house_id
-                    })
-                }
-            })
-            setHouseIDList(resArray)
+            //     if (project_name == item.project_name) {
+            //         resArray.push({
+            //             house_id: item.house_id
+            //         })
+            //     }
+            // })
+
+            setHouseIDList(resData)
         })
         getProvinceArea().then((res) => {
             res.data.forEach((item) => { item.isLeaf = false })
@@ -353,14 +319,20 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
     }
     //编辑时的
     const queryAssetUpdate = (project_name) => {
-        queryAssetById('ae1cb3c5-b29d-bb49-d309-3ac8b7bfa988').then(res => {
-            // console.log(res);
-            let a = formatFn(res.data[0], res.data[1])
-            let b = a.filter(item => {
-                return item.project_name == project_name
-            })
+        getDataWithSort('ae1cb3c5-b29d-bb49-d309-3ac8b7bfa988', {
+            filters: [{
+                column: "project_name",
+                compareObj: project_name,
+                datatype: 0,
+                satisfy_type: 0,
+                type: 4,
+                varibleType: "components"
+            }], columnNames: ['jt_frame_jlbz', 'jt_bconcrete_glbz', 'jt_steel_glbz', 'jt_steel_jlbz', 'jt_bconcrete_jlbz', 'jt_bwood_glbz', 'jt_bwood_jlbz', 'jt_stonew_glbz', 'jt_stonew_jlbz', 'jt_wood_glbz', 'jt_wood_jlbz', 'jt_other_glbz', 'jt_other_jlbz',
+                'jt_frame_glbz', 'project_name', 'frame_unitprice_qqfw', 'percent_qqfw', 'bconcrete_unitprice_qqfw', 'bwood_unitprice_qqfw', 'jt_over0price', 'jt_over10price', 'jt_over20price'], sorts: []
+        }).then(res => {
+            let a = translatePlatformDataToJsonArray(res)
+            let b = a
 
-            // console.log(b, '======');
             let c = []
             b.forEach(x => {
                 c.push(x.project_name)
@@ -371,6 +343,8 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
 
             })
             let btemp = b[0] || {}
+            // console.log(res);
+
 
             setProject_name(temp)
             setCompensate(btemp)
@@ -430,8 +404,27 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
 
         message1.splice(index, 1);
         setjydata(message1);
-
+        sumjyxFn(message1)
     };
+    const sumjyxFn = (arr) => {
+        let sum = 0
+        let measureTotal = 0
+        arr.forEach((x, i) => {
+            let buss = x.buss_total ? x.buss_total : 0
+            let area = x.buss_area ? x.buss_area : 0
+            sum += buss
+            measureTotal += area
+        })
+        if (measureTotal <= 120) {
+            form.setFieldsValue({
+                jyx_sum: sum,
+                operational_sum: measureTotal
+            })
+        } else {
+            message.error('经营性面积有误');
+        }
+
+    }
     //删除
     const deletnegative = (i, record) => {
         // console.log(text, tableData);
@@ -440,12 +433,22 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
         //     if (item.rowId === text.rowId) {
         message1.splice(i, 1);
         setdataTable(message1);
+        submitFn(message1)
         //     index--;
         // }
         // });
     };
-    const submitFn = (a) => {
-        console.log(a);
+    const submitFn = (arr) => {
+        let sum = 0
+        arr.forEach((x, i) => {
+            let buss = x.uncon_total ? x.uncon_total : 0
+
+            sum += buss
+
+        })
+        form.setFieldsValue({
+            wqq_sum: sum
+        })
     }
     //货币补偿合计  
     const compensateChange = (value, a, c, val3) => {
@@ -513,10 +516,16 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
 
     //TODO
     const inputSumChange = () => {
+        let area1 = form.getFieldValue().con_frame_area_total ? form.getFieldValue().con_frame_area_total : 0
+        let area2 = form.getFieldValue().con_bconcrete_area_total ? form.getFieldValue().con_bconcrete_area_total : 0
+        let area3 = form.getFieldValue().con_bwood_area_total ? form.getFieldValue().con_bwood_area_total : 0
+
+
 
 
         form.setFieldsValue({
-            total_confirmed_area: form.getFieldValue().con_frame_area_total + form.getFieldValue().con_bconcrete_area_total + form.getFieldValue().con_bwood_area_total
+            // total_confirmed_area: form.getFieldValue().con_frame_area_total + form.getFieldValue().con_bconcrete_area_total + form.getFieldValue().con_bwood_area_total
+            total_confirmed_area: area1 + area2 + area3
         })
 
         setComponentDisabled(!componentDisabled)
@@ -526,24 +535,27 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
     }
     //补差合计
     const differenceChange = (val, val2, val3) => {
+        let area = form.getFieldValue()[val] ? form.getFieldValue()[val] : 0
+        let price = form.getFieldValue()[val2] ? form.getFieldValue()[val2] : 0
         switch (val3) {
             case 'overarea_0total':
                 form.setFieldsValue({
-                    overarea_0total: form.getFieldValue()[val] * form.getFieldValue()[val2],
+                    overarea_0total: area * price,
                 })
                 break;
 
             case 'overarea_10total':
                 form.setFieldsValue({
-                    overarea_10total: form.getFieldValue()[val] * form.getFieldValue()[val2],
+                    overarea_10total: area * price,
                 })
                 break;
 
             case 'overarea_20total':
                 form.setFieldsValue({
-                    overarea_20total: form.getFieldValue()[val] * form.getFieldValue()[val2],
+                    overarea_20total: area * price,
                 })
         }
+
         form.setFieldsValue({
             partyb_to_a: form.getFieldValue().overarea_0total + form.getFieldValue().overarea_10total + form.getFieldValue().overarea_20total
         })
@@ -635,6 +647,8 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
         message1[i].buss_total = message1[i].buss_area * message1[i].buss_price * (message1[i].percent / 100)
         setjydata(message1);
     }
+
+
     const managementChange = (val, i, key) => {
         let message1 = JSON.parse(JSON.stringify(jydata));
         if (key == 'buss_area') {
@@ -647,10 +661,12 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
 
         let sum = 0
         let measureTotal = 0
+        message1[i].buss_total = message1[i].buss_area * message1[i].buss_price * (message1[i].percent / 100)
         message1.forEach(x => {
             if (typeof x.buss_total == 'number') sum += x.buss_total
             if (typeof x.buss_area == 'number') measureTotal += x.buss_area
         })
+
 
         if (measureTotal <= 120) {
             form.setFieldsValue({
@@ -660,7 +676,7 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
         } else {
             message.error('经营性面积有误');
         }
-        message1[i].buss_total = message1[i].buss_area * message1[i].buss_price * (message1[i].percent / 100)
+
         setjydata(message1)
 
     }
@@ -672,11 +688,14 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
         let sum2 = form.getFieldValue().xf_area ? form.getFieldValue().xf_area : 0
         let sum = sum1 + sum2
 
-        let dh = sum >= form.getFieldValue().total_confirmed_area ? sum : form.getFieldValue().total_confirmed_area
-        console.log(sum >= form.getFieldValue().total_confirmed_area, dh, '============ds');
+        // let dh = ''
+        // if(form.getFieldValue().total_confirmed_area>=45){
+        //         dh=sum <= form.getFieldValue().total_confirmed_area ?sum : form.getFieldValue().total_confirmed_area
+        // }
+        // console.log(sum >= form.getFieldValue().total_confirmed_area, dh, '============ds');
         form.setFieldsValue({
             totalmj: sum,
-            dh_area: form.getFieldValue().xf_area >= form.getFieldValue().total_confirmed_area ? form.getFieldValue().xf_area : form.getFieldValue().total_confirmed_area
+            dh_area: sum <= form.getFieldValue().total_confirmed_area ? sum : form.getFieldValue().total_confirmed_area
         })
         placementChange(form.getFieldValue().placement_method)
 
@@ -749,10 +768,11 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
             } else {
                 let deff = total_confirmed_area - sum
                 if (deff >= 0) {
-                    let { con_frame_area_total, con_bconcrete_area_total, con_bwood_area_total } = form.getFieldValue()
+                    let { con_frame_area_total = 0, con_bconcrete_area_total = 0, con_bwood_area_total = 0 } = form.getFieldValue()
                     let R1 = con_bwood_area_total - sum
                     let R2 = R1 + con_bconcrete_area_total
                     let R3 = R2 + con_frame_area_total
+
                     if (R1 > 0) {
                         form.setFieldsValue({
                             con_frame_area: con_frame_area_total,
@@ -835,6 +855,13 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
                 type: 4,
                 varibleType: "components",
                 compareObj: form.getFieldValue().split_idcard,
+                satisfy_type: 0,
+            }, {
+                column: "listing_status",
+                datatype: 0,
+                type: 4,
+                varibleType: "components",
+                compareObj: 1,
                 satisfy_type: 0
             }],
             columnNames: ["community_name", "building_number", "unit_number", "floor_number", "room_number", "construction_area"],
@@ -888,6 +915,7 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
                         total_confirmed_area: 0.00
                     }}
                     onValuesChange={onFormLayoutChange}
+                    disabled={formDisabled}
                     size='large'
                 >
                     <div className='classitem' >
@@ -1113,17 +1141,17 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
                     <div className='classitem' b={split_info} >
                         <Row>
                             <Col span={6}> <Form.Item label="确权框架（㎡）" name='con_frame_area_total' >
-                                <InputNumber step='1.00' onChange={() => { inputSumChange() }} />
+                                <InputNumber step='1.00' precision={2} onChange={() => { inputSumChange() }} />
                             </Form.Item>
                             </Col>
                             <Col span={6}> <Form.Item label="确权砖混（㎡）" name='con_bconcrete_area_total'>
-                                <InputNumber step='1.00' onChange={() => { inputSumChange() }} />
+                                <InputNumber step='1.00' precision={2} onChange={() => { inputSumChange() }} />
                             </Form.Item></Col>
                             <Col span={6}> <Form.Item label="确权砖木（㎡）" name='con_bwood_area_total'>
-                                <InputNumber step='1.00' onChange={() => { inputSumChange() }} />
+                                <InputNumber step='1.00' precision={2} onChange={() => { inputSumChange() }} />
                             </Form.Item></Col>
                             <Col span={6}> <Form.Item label="合计确权（㎡）" name='total_confirmed_area'>
-                                <InputNumber step='1.00' disabled={true} />
+                                <InputNumber step='1.00' precision={2} disabled={true} />
                             </Form.Item></Col>
 
                         </Row>
@@ -1135,10 +1163,10 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
                                 </Col>
 
                                 <Col span={6} offset={8}> <Form.Item label="期房面积" name='qf_area' >
-                                    <InputNumber step='1.00' onChange={() => { mjSumChange() }} />
+                                    <InputNumber step='1.00' precision={2} onChange={() => { mjSumChange() }} />
                                 </Form.Item></Col>
                                 <Col span={6}> <Form.Item label="选房面积" name='xf_area'  >
-                                    <InputNumber step='1.00' onChange={() => { mjSumChange() }} />
+                                    <InputNumber step='1.00' precision={2} onChange={() => { mjSumChange() }} />
                                 </Form.Item></Col>
 
                             </Row>
@@ -1147,11 +1175,11 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
                             <Row>
 
                                 <Col span={6} offset={12}> <Form.Item label="合计总面积" name='totalmj'>
-                                    <InputNumber step='1.00' disabled={true} />
+                                    <InputNumber step='1.00' precision={2} disabled={true} />
                                 </Form.Item></Col>
 
                                 <Col span={6}>  <div style={{ opacity: form.getFieldValue('placement_method') == '产权调换' ? 1 : 0 }} > <Form.Item label="产权调换面积" name='dh_area'>
-                                    <InputNumber step='1.00' />
+                                    <InputNumber step='1.00' precision={2} />
                                 </Form.Item> </div>
                                 </Col>
 
@@ -1174,7 +1202,7 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
                                 <Table.Column key="room_number" title="房号" dataIndex="room_number" />
                                 <Table.Column key="construction_area" title="建筑面积(m²)" dataIndex="construction_area" render={(text, record, index) => (
                                     <>
-                                        <InputNumber onChange={(text) => { negativeChange(text, index, 'construction_area', record) }} value={text} key={text} />
+                                        <InputNumber precision={2} onChange={(text) => { negativeChange(text, index, 'construction_area', record) }} value={text} key={text} />
                                     </>
                                 )} />
                             </Table>
@@ -1184,14 +1212,14 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
                         <div className='title_public'  > <ProfileOutlined /> 超安补差</div>
                         <Row>
                             <Col span={8}> <Form.Item label="超安面积（0-10㎡）" name='overarea_0' >
-                                <InputNumber step='1.00' onChange={() => differenceChange('overarea_0', 'overarea_0price', 'overarea_0total')} />
+                                <InputNumber step='1.00' precision={2} onChange={() => differenceChange('overarea_0', 'overarea_0price', 'overarea_0total')} />
                             </Form.Item>
                             </Col>
                             <Col span={8}> <Form.Item label="单价（元/m²）" name='overarea_0price' >
-                                <InputNumber onChange={(value) => differenceChange('overarea_0', 'overarea_0price', 'overarea_0total')} />
+                                <InputNumber precision={2} onChange={(value) => differenceChange('overarea_0', 'overarea_0price', 'overarea_0total')} />
                             </Form.Item></Col>
                             <Col span={8}> <Form.Item label="合计" name='overarea_0total' >
-                                <InputNumber disabled={true} />
+                                <InputNumber precision={2} disabled={true} />
                             </Form.Item></Col>
 
 
@@ -1199,35 +1227,35 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
 
                         <Row>
                             <Col span={8}> <Form.Item label="超安面积（10-20㎡）" name='overarea_10'>
-                                <InputNumber step='1.00' onChange={() => differenceChange('overarea_10', 'overarea_10price', 'overarea_10total')} />
+                                <InputNumber step='1.00' precision={2} onChange={() => differenceChange('overarea_10', 'overarea_10price', 'overarea_10total')} />
                             </Form.Item>
                             </Col>
                             <Col span={8}> <Form.Item label="单价（元/m²）" name='overarea_10price' >
-                                <InputNumber onChange={() => differenceChange('overarea_10', 'overarea_10price', 'overarea_10total')} />
+                                <InputNumber precision={2} onChange={() => differenceChange('overarea_10', 'overarea_10price', 'overarea_10total')} />
                             </Form.Item></Col>
                             <Col span={8}> <Form.Item label="合计" name='overarea_10total' >
-                                <InputNumber disabled={true} />
+                                <InputNumber precision={2} disabled={true} />
                             </Form.Item></Col>
 
 
                         </Row>
                         <Row>
                             <Col span={8}> <Form.Item label="超安面积（20㎡以上）" name='overarea_20'  >
-                                <InputNumber step='1.00' onChange={() => differenceChange('overarea_20', 'overarea_20price', 'overarea_20total')} />
+                                <InputNumber precision={2} step='1.00' onChange={() => differenceChange('overarea_20', 'overarea_20price', 'overarea_20total')} />
                             </Form.Item>
                             </Col>
                             <Col span={8}> <Form.Item label="单价（元/m²）" name='overarea_20price' >
-                                <InputNumber onChange={() => differenceChange('overarea_20', 'overarea_20price', 'overarea_20total')} />
+                                <InputNumber precision={2} onChange={() => differenceChange('overarea_20', 'overarea_20price', 'overarea_20total')} />
                             </Form.Item></Col>
                             <Col span={8}> <Form.Item label="合计" name='overarea_20total' >
-                                <InputNumber disabled={true} />
+                                <InputNumber precision={2} disabled={true} />
                             </Form.Item></Col>
                         </Row>
 
                         <Row justify="start">
                             <Col span={19}>
                                 <Form.Item labelCol={{ span: 1.5, offset: 1 }} wrapperCol={{ span: 16 }} label='乙方应付甲方' name='partyb_to_a' >
-                                    <Input disabled={true} />
+                                    <InputNumber precision={2} disabled={true} />
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -1236,17 +1264,17 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
 
                     <Row>
                         <Col span={6}> <Form.Item label="确权框架（㎡）" name='con_frame_area'>
-                            <InputNumber step='1.00' onChange={(value) => compensateChange(value, 'con_frame_price', 'frame_percent', 'con_frame_total')} />
+                            <InputNumber precision={2} step='1.00' onChange={(value) => compensateChange(value, 'con_frame_price', 'frame_percent', 'con_frame_total')} />
                         </Form.Item>
                         </Col>
                         <Col span={6}> <Form.Item label="评估单价" name='con_frame_price' >
-                            <InputNumber onChange={(value) => inputNumberChange(value, 'con_frame_area', 'frame_percent', 'con_frame_total')} a='frame_unitprice_qqfw' />
+                            <InputNumber precision={2} onChange={(value) => inputNumberChange(value, 'con_frame_area', 'frame_percent', 'con_frame_total')} a='frame_unitprice_qqfw' />
                         </Form.Item></Col>
                         <Col span={6}> <Form.Item label="上浮百分比" name='frame_percent' >
-                            <InputNumber onChange={(value) => inputPercentChange(value, 'con_frame_area', 'con_frame_price', 'con_frame_total')} a='percent_qqfw' />
+                            <InputNumber precision={2} onChange={(value) => inputPercentChange(value, 'con_frame_area', 'con_frame_price', 'con_frame_total')} a='percent_qqfw' />
                         </Form.Item></Col>
                         <Col span={6}> <Form.Item label='1计算' name='con_frame_total'>
-                            <Input disabled={true} />
+                            <InputNumber precision={2} disabled={true} />
                         </Form.Item></Col>
 
                     </Row>
@@ -1255,34 +1283,34 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
 
                     <Row>
                         <Col span={6}> <Form.Item label="确权砖混（㎡）" name='con_bconcrete_area'>
-                            <InputNumber step='1.00' onChange={(value) => compensateChange(value, 'con_bconcrete_price', 'bconcrete_percent', 'con_bconcrete_total')} />
+                            <InputNumber precision={2} step='1.00' onChange={(value) => compensateChange(value, 'con_bconcrete_price', 'bconcrete_percent', 'con_bconcrete_total')} />
                         </Form.Item>
                         </Col>
                         <Col span={6}> <Form.Item label="评估单价" name='con_bconcrete_price'  >
-                            <InputNumber onChange={(value) => inputNumberChange(value, 'con_bconcrete_area', 'bconcrete_percent', 'con_bconcrete_total')} a='bconcrete_unitprice_qqfw' />
+                            <InputNumber precision={2} onChange={(value) => inputNumberChange(value, 'con_bconcrete_area', 'bconcrete_percent', 'con_bconcrete_total')} a='bconcrete_unitprice_qqfw' />
                         </Form.Item></Col>
                         <Col span={6}> <Form.Item label="上浮百分比" name='bconcrete_percent'>
-                            <InputNumber onChange={(value) => inputPercentChange(value, 'con_bconcrete_area', 'con_bconcrete_price', 'con_bconcrete_total')} a='percent_qqfw' />
+                            <InputNumber precision={2} onChange={(value) => inputPercentChange(value, 'con_bconcrete_area', 'con_bconcrete_price', 'con_bconcrete_total')} a='percent_qqfw' />
                         </Form.Item></Col>
                         <Col span={6}> <Form.Item label="2计算" name='con_bconcrete_total'>
-                            <Input disabled={true} />
+                            <InputNumber precision={2} disabled={true} />
                         </Form.Item></Col>
 
                     </Row>
 
                     <Row>
                         <Col span={6}> <Form.Item label="确权砖木（㎡）" name='con_bwood_area'>
-                            <InputNumber step='1.00' onChange={(value) => compensateChange(value, 'con_bwood_price', 'bwood_percent', 'con_bwood_total')} />
+                            <InputNumber precision={2} step='1.00' onChange={(value) => compensateChange(value, 'con_bwood_price', 'bwood_percent', 'con_bwood_total')} />
                         </Form.Item>
                         </Col>
                         <Col span={6}> <Form.Item label="评估单价" name='con_bwood_price' >
-                            <InputNumber onChange={(value) => inputNumberChange(value, 'con_bwood_area', 'bwood_percent', 'con_bwood_total')} a='bwood_unitprice_qqfw' />
+                            <InputNumber precision={2} onChange={(value) => inputNumberChange(value, 'con_bwood_area', 'bwood_percent', 'con_bwood_total')} a='bwood_unitprice_qqfw' />
                         </Form.Item></Col>
                         <Col span={6}> <Form.Item label="上浮百分比" name='bwood_percent'>
-                            <InputNumber onChange={(value) => inputPercentChange(value, 'con_bwood_area', 'con_bwood_price', 'con_bwood_total')} a='percent_qqfw' />
+                            <InputNumber precision={2} onChange={(value) => inputPercentChange(value, 'con_bwood_area', 'con_bwood_price', 'con_bwood_total')} a='percent_qqfw' />
                         </Form.Item></Col>
                         <Col span={6}> <Form.Item label="3计算" name='con_bwood_total'>
-                            <Input disabled={true} />
+                            <InputNumber precision={2} disabled={true} />
                         </Form.Item></Col>
 
                     </Row>
@@ -1314,22 +1342,22 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
                             )} />
                             <Table.Column className='wqq  uncon_area' key="uncon_area" title="面积(m²)" dataIndex="uncon_area" render={(text, record, index) => (
                                 <>
-                                    <InputNumber onChange={(text) => { negativeChange(text, index, 'uncon_area') }} value={text} key={index} />
+                                    <InputNumber precision={2} onChange={(text) => { negativeChange(text, index, 'uncon_area') }} value={text} key={index} />
                                 </>
                             )} />
                             <Table.Column className='wqq gl_price' key="gl_price" title="工料补助单价" dataIndex="gl_price" render={(text, record, index) => (
 
-                                <InputNumber onChange={(text) => { negativeChange(text, index, 'gl_price') }} key={index} value={text} />
+                                <InputNumber precision={2} onChange={(text) => { negativeChange(text, index, 'gl_price') }} key={index} value={text} />
 
                             )} />
                             <Table.Column className='wqq jl_price' key="jl_price" title="奖励补助单价" dataIndex="jl_price" render={(text, record, index) => (
                                 <>
-                                    <InputNumber onChange={(text) => { negativeChange(text, index, 'jl_price') }} key={index} value={text} />
+                                    <InputNumber precision={2} onChange={(text) => { negativeChange(text, index, 'jl_price') }} key={index} value={text} />
                                 </>
                             )} />
                             <Table.Column className='wqq uncon_total' key="uncon_total" title="合计" dataIndex="uncon_total" render={(text, record, index) => (
                                 <>
-                                    <Input disabled={true} key={index} value={text} />
+                                    <InputNumber precision={2} disabled={true} key={index} value={text} />
                                 </>
                             )} />
                             <Table.Column key="f" title="操作" dataIndex="f" render={(index, record, i) => (
@@ -1365,12 +1393,12 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
                             )} />
                             <Table.Column className='jyx buss_area' key="buss_area" title="面积(m²)" dataIndex="buss_area" render={(text, record, index) => (
                                 <>
-                                    <InputNumber onChange={(text) => { managementChange(text, index, 'buss_area') }} value={text} key={index} />
+                                    <InputNumber precision={2} onChange={(text) => { managementChange(text, index, 'buss_area') }} value={text} key={index} />
                                 </>
                             )} />
                             <Table.Column className='jyx buss_price' key="buss_price" title="单价(元/m²)" dataIndex="buss_price" render={(text, record, index) => (
                                 <>
-                                    <InputNumber onChange={(text) => { managementChange(text, index, 'buss_price') }} value={text} key={index} />
+                                    <InputNumber precision={2} onChange={(text) => { managementChange(text, index, 'buss_price') }} value={text} key={index} />
                                 </>
                             )} />
                             <Table.Column className='jyx percent' key="percent" title="补贴百分比(%)" dataIndex="percent" render={(text, record, index) => (
@@ -1386,7 +1414,7 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
                             )} />
                             <Table.Column className='jyx buss_total' key="buss_total" title="合计" dataIndex="buss_total" render={(text, record, index) => (
                                 <>
-                                    <Input key={index} value={text} disabled={true} />
+                                    <InputNumber precision={2} key={index} value={text} disabled={true} />
                                 </>
                             )} />
                             <Table.Column key="f" title="操作" dataIndex="f" render={(index, record, i) => (
@@ -1400,7 +1428,7 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
                     <Row justify="start">
                         <Col span={24}>
                             <Form.Item labelCol={{ span: 1.5, pull: 0 }} wrapperCol={{ span: 16 }} label='经营性面积合计' name='operational_sum'>
-                                <Input />
+                                <InputNumber precision={2} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -1411,7 +1439,7 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
 
                             <Form.Item labelCol={{ span: 1.5, offset: 1 }} wrapperCol={{ span: 24 }} label='4合计' name='wqq_sum'>
 
-                                <Input disabled={true} />
+                                <InputNumber precision={2} disabled={true} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -1420,7 +1448,7 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
                         <Col span={20}>
                             <Form.Item labelCol={{ span: 1.5, offset: 1 }} wrapperCol={{ span: 24 }} label='5合计' name='jyx_sum' >
 
-                                <Input disabled={true} />
+                                <InputNumber precision={2} disabled={true} />
                             </Form.Item>
 
                         </Col>
@@ -1429,13 +1457,16 @@ const Collection = ({ formid, click, cRef, defaultValue }) => {
                         <Form.Item labelCol={{ span: 1.5, offset: 1 }} wrapperCol={{ span: 24 }} name='protocal_type'>
                             <Input />
                         </Form.Item>
+                        <Form.Item labelCol={{ span: 1.5, offset: 1 }} wrapperCol={{ span: 24 }} name='is_signed'>
+                            <Input />
+                        </Form.Item>
                     </div>
                 </Form>
                 {/* 弹窗 */}
                 <Modal title="选房" visible={isModalVisible} onCancel={handleCancel} width="90%" footer={[]} maskClosable={false}>
 
                     <iframe
-                        style={{ width: '100%', height: '650px' }}
+                        style={{ width: '100%', height: '650px', display: 'block' }}
 
                         // src={`https://blog.csdn.net/weixin_39994270/article/details/111852159`}
                         // src={`http://140.246.90.106:6058/applicationview/content/view?appid=c0823356-71de-2831-87f7-26a74d0c32ac&type=view&menuId=06dac334-e625-5608-4635-50c54a093534%233&project_name=${form.getFieldValue().project_name}&person_id=${form.getFieldValue().split_idcard}`}

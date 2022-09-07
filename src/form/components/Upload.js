@@ -16,6 +16,7 @@ const Upload1 = ({ cRef, click, defaultValue }) => {
     const [componentDisabled, setComponentDisabled] = useState(false);
     const [photo, setPhoto] = useState({})
     const [photoupdate, setPhotoupdate] = useState({})
+    const [formDisabled, setformDisabled] = useState(false);
     const handleUploadData = (e) => {
         const { file, fileList } = e;
 
@@ -58,10 +59,14 @@ const Upload1 = ({ cRef, click, defaultValue }) => {
                 if (item == 'split_photos') tempObj[item] = JSON.parse(defaultValue[item]['value'])
                 if (item == 'ygryhd_photos') tempObj[item] = JSON.parse(defaultValue[item]['value'])
                 if (item == 'wts_photos') tempObj[item] = JSON.parse(defaultValue[item]['value'])
+                if (item == 'qt_photos') tempObj[item] = JSON.parse(defaultValue[item]['value'])
 
             }
             setPhoto(tempObj)
             setPhotoupdate(tempObj)
+            if (defaultValue?.process_status == 'processing') {
+                setformDisabled(true)
+            }
             // formload.setFieldsValue(tempObj)
         }
 
@@ -119,7 +124,7 @@ const Upload1 = ({ cRef, click, defaultValue }) => {
                 disabled: componentDisabled,
             }}
             onValuesChange={onFormLayoutChange}
-            disabled={componentDisabled}
+            disabled={formDisabled}
         >
             <Row>
 
@@ -273,7 +278,36 @@ const Upload1 = ({ cRef, click, defaultValue }) => {
 
             </Row>
 
+            <Row>
 
+                <Col span={12}>
+                    <Form.Item label="其他" name='qt_photos' >
+                        {
+                            photoupdate.qt_photos && photoupdate.qt_photos.map(x => {
+                                <>
+                                    <img src={x.url} alt='x.name' />
+
+                                </>
+                            })
+
+                        }
+                        <Upload action={`${process.env.REACT_APP_API}/sdata/rest/image/upload`} listType="picture-card" fileList={photoupdate.qt_photos} onChange={(e) => { uploadChange(e, 'qt_photos') }}>
+                            <div>
+                                <PlusOutlined />
+                                <div
+                                    style={{
+                                        marginTop: 8,
+                                    }}
+                                >
+                                    上传
+                                </div>
+                            </div>
+                        </Upload>
+                    </Form.Item>
+                </Col>
+
+
+            </Row>
 
 
 

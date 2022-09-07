@@ -95,6 +95,7 @@ export default class App extends Component {
   }
 
   onChange(key) {
+
     if (key == 3) {
       this.setState({ pro: true })
     } else {
@@ -105,6 +106,7 @@ export default class App extends Component {
     } else {
       this.setState({ temp: false })
     }
+    console.log('============标签', this.state.pro, key);
   };
   componentWillMount() {
     const temp = qs.parse(window.location.search.substring(1))
@@ -207,6 +209,7 @@ export default class App extends Component {
 
   render() {
     const { pro, formid, defaultValue, temp } = this.state
+    console.log(pro, 'pro');
     return (
       <div className='tabs'>
         {defaultValue?.data_id ? <ButtonModal className="button_modal" processStatus={this.props.processStatus} ></ButtonModal> : ''
@@ -215,7 +218,7 @@ export default class App extends Component {
         <Tabs defaultActiveKey="1" onChange={(key) => { this.onChange(key) }}  >
           <TabPane tab="被征收人信息" key="1" forceRender={true}>
             {/* <Collection ref={this.myRef} cRef={this.myRef} formid={formid} click={this.hideTabs} /> */}
-            <Collection ref={this.myRef} cRef={this.myRef} formid={formid} defaultValue={defaultValue} />
+            <Collection updateSet={pro} ref={this.myRef} cRef={this.myRef} formid={formid} defaultValue={defaultValue} />
           </TabPane>
           <TabPane tab="装修及附属工程量" key="2" forceRender={true}>
             {/* <Quantities formid={{ formid }} cRef={this.Quantities} click={this.QuantitiesTabs} /> */}

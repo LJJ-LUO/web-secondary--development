@@ -29,36 +29,31 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
     const [decorateTableF, setDecorateTableF] = useState([])//f工程名
     const [dataTableF, setdataTableF] = useState([]);//f工程表
     const optionsData = ['框架', '砖混', '砖木', '石木结构', '木结构', '钢结构', '其他']
-
+    const [formDisabled, setformDisabled] = useState(false);
     let [rowId, setRowID] = useState(0);
     const onFormLayoutChange = ({ disabled }) => {
         setComponentDisabled(disabled);
     };
     useEffect(() => {
 
-        // let rowKey = JSON.parse(JSON.stringify(rowId));
-        // let message1 = [
-        //     {
-        //         a: "",
-        //         b: "",
-        //         c: "",
-        //         d: "",
-        //         e: "",
-        //         f: "",
-        //     },
 
-        // ];
-        // message1.forEach((item, index) => {
-        //     item.rowId = ++rowKey;
-        // });
-        // setRowID(rowKey);
-        // setdataTable(message1);
         if (defaultValue && defaultValue.data_id) {
             let tempObj = {};
             for (let item in defaultValue) {
                 tempObj[item] = defaultValue[item]['value']
             }
 
+
+            switch (tempObj.zxxz) {
+                case '装修包干金额':
+                    tempObj.zxxz = '1';
+                    break;
+                case '装修实量金额':
+                    tempObj.zxxz = '2'
+                    break;
+                default:
+                    tempObj.zxxz = '3'
+            }
             formquan.setFieldsValue(tempObj)
 
             defaultValue?.childData?.forEach(x => {
@@ -66,8 +61,6 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
                     x.split_info_decorate.forEach(y => {
                         for (const key in y) {
                             if (y[key] && (y[key].value || y[key].value == '')) y[key] = y[key].value
-
-
                         }
                     })
                     setdataTable(x.split_info_decorate)
@@ -86,15 +79,16 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
             })
 
             queryAsset()
+            if (defaultValue?.process_status == 'processing') {
+                setformDisabled(true)
+            }
         } else {
             queryAsset()
         }
         eventbus.on('settlementDidmount', () => {
-
             let collet = JSON.parse(JSON.stringify(formquan.getFieldValue()))
             eventbus.emit('quan', collet)
         })
-
 
         //接受被征收人的信息
         eventbus.on('didcoll', (val) => {
@@ -104,8 +98,6 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
             setSplit_info(val)
         })
         eventbus.emit('coll',)
-
-
         // console.log(compensate);
     }, [temp]);
     useImperativeHandle(cRef, () => ({
@@ -133,13 +125,14 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
     }, [formquan.getFieldValue().attached_shi])
     const queryAsset = () => {
         //z表
-        queryAssetById('2fb7db88-cfa8-a43e-755d-db051aeb2e6d').then(res => {
+        getDataWithSort('818bd818-8902-4e5b-e06b-cc7dd7913183', {
+            columnNames: ['decoration_appurtenance_name', 'unit_price', 'price_min', 'price_max', 'unit']
+        }).then(res => {
             // console.log(res);
             let a = formatFn(res.data[0], res.data[1])
             let tempdecorate = []
             a.map(x => {
-                if (x.decorate_name) tempdecorate.push(x.decorate_name)
-
+                if (x.decoration_appurtenance_name) tempdecorate.push(x.decoration_appurtenance_name)
             })
             let tmep = []
             tempdecorate.forEach(x => {
@@ -149,12 +142,12 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
             setDecorate(tmep)
         })
         //f表
-        queryAssetById('049d9007-0a4e-3008-0329-09e188491d49').then(res => {
+        getDataWithSort('7b4c1a92-63c1-6d0f-cd5e-a78650e482eb', { columnNames: ['decoration_appurtenance_name', 'unit_price', 'price_min', 'price_max', 'unit'] }).then(res => {
             // console.log(res);
             let a = formatFn(res.data[0], res.data[1])
             let tempdecorate = []
             a.map(x => {
-                if (x.decorate_name) tempdecorate.push(x.decorate_name)
+                if (x.decoration_appurtenance_name) tempdecorate.push(x.decoration_appurtenance_name)
             })
             let tmep = []
             tempdecorate.forEach(x => {
@@ -167,32 +160,50 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
 
     }
     const queryHouseId = (val) => {
-        queryAssetById('db23c3f3-cf31-77d0-ff95-180084df0f59').then(res => {
-            console.log(val.house_id);
+        getDataWithSort('db23c3f3-cf31-77d0-ff95-180084df0f59', {
+            filters: [{
+                column: "house_id",
+                compareObj: val.house_id,
+                datatype: 0,
+                satisfy_type: 0,
+                type: 4,
+                varibleType: "components"
+            }], columnNames: ['decorate_money', 'fs_zje']
+        }).then(res => {
+            // console.log(val.house_id);
             let a = formatFn(res.data[0], res.data[1])
-            let tempdecorate = []
-            a.map(x => {
-                if (x.house_id == val.house_id) tempdecorate.push(x)
-            })
+            // let tempdecorate = []
+            // a.map(x => {
+            //     if (x.house_id == val.house_id) tempdecorate.push(x)
+            // })
             formquan.setFieldsValue({
 
-                decorate_pingu: tempdecorate[0]?.decorate_money,
-                compensation_amount: tempdecorate[0]?.fs_zje,
+                decorate_pingu: a[0]?.decorate_money,
+                compensation_amount: a[0]?.fs_zje,
             })
 
 
         })
     }
     const querybaogan = (val) => {
-        queryAssetById('ae1cb3c5-b29d-bb49-d309-3ac8b7bfa988').then(res => {
+        getDataWithSort('ae1cb3c5-b29d-bb49-d309-3ac8b7bfa988', {
+            filters: [{
+                column: "project_name",
+                compareObj: val.project_name,
+                datatype: 0,
+                satisfy_type: 0,
+                type: 4,
+                varibleType: "components"
+            }], columnNames: ['jt_decorate_price']
+        }).then(res => {
 
             let a = formatFn(res.data[0], res.data[1])
-            let tempdecorate = []
-            a.map(x => {
-                if (x.project_name == val.project_name) tempdecorate.push(x)
-            })
+            // let tempdecorate = []
+            // a.map(x => {
+            //     if (x.project_name == val.project_name) tempdecorate.push(x)
+            // })
             formquan.setFieldsValue({
-                decorate_baogan: tempdecorate[0]?.jt_decorate_price * val.total_confirmed_area,
+                decorate_baogan: a[0]?.jt_decorate_price * val.total_confirmed_area,
             })
 
 
@@ -251,6 +262,10 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
         //     if (item.rowId === text.rowId) {
         message1.splice(text, 1);
         setdataTable(message1);
+        let zsum = shiLiangSum(message1)
+        formquan.setFieldsValue({
+            decoration_amount: zsum
+        })
         // index--;
         // }
         // });
@@ -263,6 +278,10 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
         //     if (item.rowId === text.rowId) {
         message1.splice(text, 1);
         setdataTableF(message1);
+        let zsum = shiLiangSum(message1)
+        formquan.setFieldsValue({
+            attached_shi: zsum
+        })
         // index--;
         // }
         // });
@@ -272,13 +291,13 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
         let item
         let tempDatatable = JSON.parse(JSON.stringify(dataTable))
         decorateTable.forEach(x => {
-            if (val == x.decorate_name) item = x
+            if (val == x.decoration_appurtenance_name) item = x
         })
         tempDatatable[index].decorate_name = val
-        tempDatatable[index].min_price = item.min_price
-        tempDatatable[index].max_price = item.max_price
+        tempDatatable[index].min_price = item.price_min
+        tempDatatable[index].max_price = item.price_max
         tempDatatable[index].unit = item.unit
-        tempDatatable[index].evaluation_unit_price = item.evaluation_unit_price
+        tempDatatable[index].evaluation_unit_price = item.unit_price
         setdataTable(tempDatatable)
         let zsum = shiLiangSum(tempDatatable)
         formquan.setFieldsValue({
@@ -290,13 +309,13 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
         let item
         let tempDatatable = JSON.parse(JSON.stringify(dataTableF))
         decorateTableF.forEach(x => {
-            if (val == x.decorate_name) item = x
+            if (val == x.decoration_appurtenance_name) item = x
         })
         tempDatatable[index].decorate_name = val
-        tempDatatable[index].min_price = item.min_price
-        tempDatatable[index].max_price = item.max_price
+        tempDatatable[index].min_price = item.price_min
+        tempDatatable[index].max_price = item.price_max
         tempDatatable[index].unit = item.unit
-        tempDatatable[index].evaluation_unit_price = item.evaluation_unit_price
+        tempDatatable[index].evaluation_unit_price = item.unit_price
         setdataTableF(tempDatatable)
         let fsum = shiLiangSum(tempDatatable)
         formquan.setFieldsValue({
@@ -318,6 +337,12 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
         return fsum
     }
     //装修3选1
+    // useEffect(() => {
+    //     console.log('1111111111');
+    //     renovationChange(formquan.getFieldValue().zxxz)
+    // }, [formquan.getFieldValue().zxxz])
+
+
     const renovationChange = (val) => {
         // console.log(formquan.getFieldValue().compensation_amount);
         let { compensation_amount, decorate_baogan, decoration_amount, decorate_pingu, attached_shi } = formquan.getFieldValue()
@@ -353,6 +378,7 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
     const dedatazBlur = (e, i) => {
 
         let val = e.target.value
+        let biadas = /[\+\-\*/]/
         if (val == '' || val == null || val == undefined || !val) return
         let tempDatatable = JSON.parse(JSON.stringify(dataTable))
         let price = tempDatatable[i].evaluation_unit_price ? tempDatatable[i].evaluation_unit_price : 0
@@ -372,13 +398,15 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
                     message.error('输入正确表达式')
                     return
                 }
-                tempDatatable[i].engineering_total = expressionFn(val)
+                tempDatatable[i].engineering_total =
 
-                tempDatatable[i].estimated_total_price = tempDatatable[i].engineering_total * price
+                    tempDatatable[i].estimated_total_price = tempDatatable[i].engineering_total * price
                 break;
 
             default:
-                tempDatatable[i].engineering_total = val
+                biadas.test(val) ? tempDatatable[i].engineering_total = expressionFn(val) : tempDatatable[i].engineering_total = val
+
+
                 tempDatatable[i].estimated_total_price = tempDatatable[i].engineering_total * price
         }
         tempDatatable[i].decorate_data = val
@@ -576,6 +604,7 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
     const dedatazBlurF = (e, i) => {
 
         let val = e.target.value
+        let biadas = /[\+\-\*/]/
         if (val == '' || val == null || val == undefined || !val) return
         let tempDatatable = JSON.parse(JSON.stringify(dataTableF))
         let price = tempDatatable[i].evaluation_unit_price ? tempDatatable[i].evaluation_unit_price : 0
@@ -597,12 +626,12 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
                     return
                 }
                 tempDatatable[i].engineering_total = expressionFn(val)
-
                 tempDatatable[i].estimated_total_price = tempDatatable[i].engineering_total * price
                 break;
 
             default:
-                tempDatatable[i].engineering_total = val
+
+                biadas.test(val) ? tempDatatable[i].engineering_total = expressionFn(val) : tempDatatable[i].engineering_total = val
                 tempDatatable[i].estimated_total_price = tempDatatable[i].engineering_total * price
         }
         tempDatatable[i].decorate_data = val
@@ -746,6 +775,7 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
                 disabled: componentDisabled,
             }}
             onValuesChange={onFormLayoutChange}
+            disabled={formDisabled}
         >
             <Row justify="center">
                 <Col span={24} offset={1} >
@@ -764,7 +794,7 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
                 <Col span={6}>
                     <div style={{ opacity: formquan.getFieldValue().zxxz == '1' ? 1 : 0 }}  >
                         <Form.Item labelCol={{ span: 6, }} wrapperCol={{ span: 18, }} label="装修包干金额" name='decorate_baogan'>
-                            <Input />
+                            <InputNumber precision={2} />
                         </Form.Item>
                     </div>
                 </Col>
@@ -772,14 +802,14 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
                 <Col span={6}>
                     <div style={{ opacity: formquan.getFieldValue().zxxz == '2' ? 1 : 0 }}  >
                         <Form.Item wrapperCol={{ span: 18, }} label="装修实量金额" name='decoration_amount' >
-                            <Input />
+                            <InputNumber precision={2} />
                         </Form.Item>
                     </div>
                 </Col>
                 <Col span={6}>
                     <div style={{ opacity: formquan.getFieldValue().zxxz == '3' ? 1 : 0 }}  >
                         <Form.Item wrapperCol={{ span: 18, }} label="装修评估金额" name='decorate_pingu'>
-                            <Input />
+                            <InputNumber precision={2} />
                         </Form.Item>
                     </div>
                 </Col>
@@ -792,7 +822,7 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
 
             <Row justify="center">
                 <Col span={24} offset={1}> <Form.Item labelCol={{ span: 1, }} wrapperCol={{ span: 20, }} label="备注" name='decoration_remark'>
-                    <Input />
+                    <InputNumber precision={2} />
                 </Form.Item>
                 </Col>
 
@@ -805,20 +835,20 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
                 <Col span={6} >
                     <div style={{ opacity: formquan.getFieldValue().zxxz == '2' ? 1 : 0 }}  >
                         <Form.Item wrapperCol={{ span: 14, }} label="附属实量金额" name='attached_shi'   >
-                            <Input />
+                            <InputNumber precision={2} />
                         </Form.Item>
                     </div>
                 </Col>
                 <Col span={6} >   <div style={{ opacity: formquan.getFieldValue().zxxz == '3' ? 1 : 0 }} >
                     <Form.Item wrapperCol={{ span: 14, }} label="附属评估金额" name='compensation_amount'>
-                        <Input />
+                        <InputNumber precision={2} />
                     </Form.Item>
                 </div>
                 </Col>
 
 
                 <Col span={12} > <Form.Item labelCol={{ span: 3, }} wrapperCol={{ span: 6, }} name='total_amount' label="6装修附属合计金额">
-                    <Input disabled={true} />
+                    <InputNumber precision={2} disabled={true} />
                 </Form.Item>
                 </Col>
 
@@ -835,7 +865,7 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
                     }
                 >
 
-                    <Table.Column key="decorate_name" title="工程名称" dataIndex="decorate_name" render={(text, record, index) => (
+                    <Table.Column key="decorate_name" title="工程名称" width='200px' dataIndex="decorate_name" render={(text, record, index) => (
                         <Select value={text} key={index} showSearch onChange={(text) => { decorateChange(text, index) }} filterOption={true} optionFilterProp="children" >{
                             decorate.map((x, i) => {
                                 return (<Select.Option value={x}>{x}</Select.Option>)
@@ -850,20 +880,20 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
                         <Input value={text} onBlur={(val) => { dedatazBlur(val, index) }} onChange={(val) => { dedatazChange(val, index) }} onPressEnter={(val) => { dedatazBlur(val, index) }} />
                     )} />
                     <Table.Column key="engineering_total" title="Z工程量" dataIndex="engineering_total" render={(text, record, index) => (
-                        <InputNumber value={text} onChange={(val) => { totalChange(val, index) }} />
+                        <InputNumber precision={2} value={text} onChange={(val) => { totalChange(val, index) }} />
                     )} />
                     <Table.Column key="evaluation_unit_price" title="Z单价" dataIndex="evaluation_unit_price" render={(text, record, index) => (
-                        <InputNumber onChange={(val) => { priceChange(val, index) }} value={text} onBlur={(val) => { priceBlur(val, index) }} />
+                        <InputNumber precision={2} onChange={(val) => { priceChange(val, index) }} value={text} onBlur={(val) => { priceBlur(val, index) }} />
                     )} />
                     <Table.Column key="min_price" title="单价最小值" dataIndex="min_price" render={(text, record, index) => (
-                        <InputNumber disabled={true} value={text} />
+                        <InputNumber precision={2} disabled={true} value={text} />
                     )} />
                     <Table.Column key="max_price" title="单价最大值" dataIndex="max_price" render={(text, record, index) => (
 
-                        <InputNumber disabled={true} value={text} />
+                        <InputNumber precision={2} disabled={true} value={text} />
                     )} />
                     <Table.Column key="estimated_total_price" title="Z总价" dataIndex="estimated_total_price" render={(text, record, index) => (
-                        <InputNumber value={text} />
+                        <InputNumber precision={2} value={text} />
                     )} />
                     <Table.Column key="upload_photos" title="图片上传" dataIndex="upload_photos" render={(text, record, index) => (
                         <Upload action={`${process.env.REACT_APP_API}/sdata/rest/image/upload`} listType="picture-card" maxCount={1} fileList={text ? JSON.parse(text) : null} onChange={(e) => { uploadChange(e, index, 'upload_photos') }}  >
@@ -901,7 +931,7 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
                     </Button>)
                     }
                 >
-                    <Table.Column key="decorate_name" title="工程名称" dataIndex="decorate_name" render={(text, record, index) => (
+                    <Table.Column key="decorate_name" title="工程名称" width='200px' dataIndex="decorate_name" render={(text, record, index) => (
                         <Select value={text} key={index} showSearch filterOption={true} optionFilterProp="children" onChange={(text) => { decorateFChange(text, index) }} >{
                             decorateF.map((x, i) => {
                                 return (<Select.Option value={x}>{x}</Select.Option>)
@@ -916,17 +946,17 @@ const Quantities = ({ cRef, click, defaultValue, temp }) => {
                         <Input value={text} onBlur={(val) => { dedatazBlurF(val, index) }} onChange={(val) => { dedatazChangeF(val, index) }} onPressEnter={(val) => { dedatazBlurF(val, index) }} />
                     )} />
                     <Table.Column key="engineering_total" title="F工程量" dataIndex="engineering_total" render={(text, record, index) => (
-                        <InputNumber value={text} onChange={(val) => { totalChangeF(val, index) }} />
+                        <InputNumber precision={2} value={text} onChange={(val) => { totalChangeF(val, index) }} />
                     )} />
                     <Table.Column key="evaluation_unit_price" title="F单价" dataIndex="evaluation_unit_price" render={(text, record, index) => (
-                        <InputNumber value={text} onChange={(val) => { priceChangeF(val, index) }} onBlur={(val) => { priceBlurF(val, index) }} />
+                        <InputNumber precision={2} value={text} onChange={(val) => { priceChangeF(val, index) }} onBlur={(val) => { priceBlurF(val, index) }} />
                     )} />
                     <Table.Column key="min_price" title="单价最小值" dataIndex="min_price" render={(text, record, index) => (
-                        <InputNumber disabled={true} value={text} />
+                        <InputNumber precision={2} disabled={true} value={text} />
                     )} />
                     <Table.Column key="max_price" title="单价最大值" dataIndex="max_price" render={(text, record, index) => (
 
-                        <InputNumber disabled={true} value={text} />
+                        <InputNumber precision={2} disabled={true} value={text} />
                     )} />
                     <Table.Column key="estimated_total_price" title="F总价" dataIndex="estimated_total_price" render={(text, record, index) => (
                         <InputNumber value={text} />

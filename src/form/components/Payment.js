@@ -13,6 +13,7 @@ const Payment = ({ cRef, click, defaultValue }) => {
     let [rowId, setRowID] = useState(0);
     let [tableData, setTableData] = useState([]);
     let [totalMoney, setTotalMoney] = useState([]);
+    const [formDisabled, setformDisabled] = useState(false);
     useEffect(() => {
 
         if (defaultValue && defaultValue.data_id) {
@@ -22,15 +23,10 @@ const Payment = ({ cRef, click, defaultValue }) => {
             }
 
             formpay.setFieldsValue(tempObj)
-            // let tempArr=[]
+
             defaultValue?.childData?.forEach(x => {
                 if (Object.keys(x)[0] == 'evaluation_plan1jt') {
 
-                    // x.evaluation_plan1jt.map(item => {
-                    //     item['payment_time'] = moment(item['payment_time']?.value)
-
-                    //     item['application_money'] = item['application_money']?.value
-                    // })
                     x.evaluation_plan1jt.forEach(y => {
 
                         for (const key in y) {
@@ -45,33 +41,11 @@ const Payment = ({ cRef, click, defaultValue }) => {
                     setTableData(x.evaluation_plan1jt)
                 }
             })
-
+            if (defaultValue?.process_status == 'processing') {
+                setformDisabled(true)
+            }
         }
-        // let rowKey = JSON.parse(JSON.stringify(rowId));
-        // let message = [
-        //     {
-        //         payment: "",
-        //         paymentTime: "",
-        //     },
-        //     {
-        //         payment: "",
-        //         paymentTime: "",
-        //     },
-        //     {
-        //         payment: "",
-        //         paymentTime: "",
-        //     },
-        //     {
-        //         payment: "",
-        //         paymentTime: "",
-        //     },
-        // ];
-        // message.forEach((item, index) => {
-        //     item.rowId = ++rowKey;
-        // });
-        // setRowID(rowKey);
-        // setTableData(message);
-        // queryAsset()
+
     }, []);
     useImperativeHandle(cRef, () => ({
         // changeVal 就是暴露给父组件的方法
@@ -91,7 +65,6 @@ const Payment = ({ cRef, click, defaultValue }) => {
             transformation.childData.push({ evaluation_plan1jt: tableData })
             // jydata
             return transformation
-            click(transformation)
         }
     }));
 
@@ -215,7 +188,7 @@ const Payment = ({ cRef, click, defaultValue }) => {
             <Form
                 form={formpay}
                 className='formpay'
-
+                disabled={formDisabled}
             >
 
 

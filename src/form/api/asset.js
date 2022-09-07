@@ -9,7 +9,7 @@ import request from "../../api/request";
 
 
 export const queryAssetById = id =>
-  request.post(`/asset/getAssetData?asset_id=${id}`, []);
+  request.post(`/asset/getAssetData?asset_id=${id}&count=10000&form_id=6f33cabca75e4e6594e1b9c0394f169c`, []);
 /**
  * 查询省份
  */

@@ -42,10 +42,11 @@ class ButtonModal extends Component {
   }
 
   change = () => {
-    let type, idCard
+    let type, idCard, is_signed;
     eventbus.on('btntype', (val) => {
       type = val.richman_type === '个人' ? 4 : val.richman_type === '单位' ? 5 : 6
       idCard = val.split_idcard
+      is_signed = val.is_signed
     })
     eventbus.emit('didbtn', {})
     let search =
@@ -77,7 +78,7 @@ class ButtonModal extends Component {
         viewId: viewId || "",
         type: type || "4",
         idCard: idCard,
-        isGenerate: processStatus === "pendingApply" ? "Y" : "N",
+        isGenerate: processStatus === is_signed === '1' ? 'N' : "pendingApply" ? "Y" : "N",
       })
         .then((res) => {
           let arr = [];
@@ -262,6 +263,18 @@ class ButtonModal extends Component {
       opacity: "0.8",
     };
     this.callbackDoThing();
+    let contentData = [];
+    this.state.contentData.map(item => {
+      let arr1 = []
+      item.url.map(ele => {
+        var tempArr = ele.split('/');
+        tempArr[2] = window.location.host;
+        ele = tempArr.join('/');
+        arr1.push(ele)
+      })
+      item['url'] = arr1;
+      contentData.push(item)
+    })
     return (
       <div className="jiti_qianz">
         <div>
@@ -305,6 +318,7 @@ class ButtonModal extends Component {
               </div>
               <div style={bigStyle}>
                 <div
+                  className="Siping"
                   style={{
                     flex: 1,
                     borderRight: "1px solid #ccc",
@@ -329,13 +343,13 @@ class ButtonModal extends Component {
                   })}
                 </div>
                 <div style={{ flex: 4, position: "relative" }}>
-                  {this.state.contentData.map((item, index) => {
+                  {contentData.map((item, index) => {
                     return this.state.currentIndex === index ? (
                       <div
                         key={index}
                         style={{ width: "100%", height: "100%" }}
                       >
-                        <h1 style={{ textAlign: "center" }}>{item.name}</h1>
+                        {/* <h1 style={{ textAlign: "center" }}>{item.name}</h1> */}
                         <div
                           style={{
                             overflow: "scroll",
