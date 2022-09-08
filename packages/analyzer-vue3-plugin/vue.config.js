@@ -7,7 +7,7 @@ module.exports = defineConfig({
   devServer: {
     proxy: {
       "/api": {
-        target: "http://10.15.111.9:12245",
+        target: "http://10.15.111.9:12254",
         logLevel: "debug",
         changeOrigin: true,
         pathRewrite: {
@@ -19,6 +19,7 @@ module.exports = defineConfig({
   configureWebpack: {
     plugins: [
       AutoImport({
+        imports: ["vue", "vue-router"],
         resolvers: [ElementPlusResolver()],
       }),
       Components({

@@ -1,6 +1,6 @@
 <template>
   <!-- 定义外层容器标识，宽高百分百 不可删除 -->
-  <div :id="identification" style="width: 100%;height: 100%" :ref="identification">
+  <div :id="id" style="width: 100%;height: 100%" :ref="id">
     <!-- -->
     <el-radio-group
       v-model="selected"
@@ -50,14 +50,14 @@ export default {
       let themeColor = theme_global_config["--theme-public-pinPai-color"]
       let textColor = theme_global_config["--theme-public-text-color-1"]
       this.$nextTick(() => {
-        let style = `#${this.identification} .el-radio-button__inner:hover{
+        let style = `#${this.id} .el-radio-button__inner:hover{
                       color:${this.theme.themeColor};
                       }
-                     #${this.identification} .el-radio-button.is-active .el-radio-button__inner:hover{
+                     #${this.id} .el-radio-button.is-active .el-radio-button__inner:hover{
                       color: #FFF;
                       }
                       `
-        if (this.$refs[this.identification]) {
+        if (this.$refs[this.id]) {
           this.styleEle = document.createElement("style")
           document.head.appendChild(this.styleEle)
           this.styleEle.innerText = style
@@ -72,7 +72,7 @@ export default {
   data() {
     return {
       //必需，不可删除
-      identification: "",
+      id: "",
       //业务代码
       selected: "",
       buttons: [],
@@ -92,7 +92,7 @@ export default {
     );
     let {buttons, id} = this.customConfig
     let componentName = this.$vnode.tag.split("-").pop().toLowerCase()
-    this.identification = id ? `secondary_${componentName}_${id}` : `secondary_${componentName}_${utils.generateUUID()}`
+    this.id = id ? `secondary_${componentName}_${id}` : `secondary_${componentName}_${utils.generateUUID()}`
     //用于定义接收用户输入
     this.buttons = JSON.parse(buttons).data;
     this.defaultValue = JSON.parse(buttons).defaultValue;
@@ -130,7 +130,7 @@ export default {
     },
     //必需，不可删除
     Event_Center_getName() {
-      return this.identification;
+      return this.id;
     },
     //与msgCompConfig.js文件actions相对应，组件动作，依据定义加上do_message前缀
     do_message_setValue(value) {

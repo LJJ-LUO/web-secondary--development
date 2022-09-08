@@ -83,8 +83,6 @@ if (dom) {
         if (dom.childNodes.length > 0) {
           dom.removeChild(dom.childNodes[0]);
         }
-        const div = document.createElement("div");
-        dom.appendChild(div);
         createApp(h(App, props)).mount(div);
       }
     );

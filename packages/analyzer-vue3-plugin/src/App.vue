@@ -1,5 +1,5 @@
 <template>
-  <div className="analyzer-vue-demo">
+  <div class="analyzer-vue-demo">
     <div @click="clickBt">点这里测试逻辑控制</div>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column
@@ -15,7 +15,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed } from "vue";
 import eventActionDefine from "@/msgCompConfig";
 
 interface Props {
