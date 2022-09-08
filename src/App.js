@@ -4,6 +4,9 @@ import * as applicationsService from './api/asset';
 // import { Icon } from 'sdata-ui';
 import qs from 'querystringify';
 import ErrMessage from './errMessage';
+import {
+  getContentData,
+} from "./form/api/asset";
 import { getDefaultValues, getSaveDefaultValues, formatError, ErrorCode } from './utils'
 import Form from './form';
 import "./app.less";
@@ -203,6 +206,25 @@ export default class App extends Component {
       }
     }
   };
+  changeURLPar = (uri, par, par_value) => {
+    let pattern = par + '=([^&]*)';
+    let replaceText = par + '=' + par_value;
+    if (uri.match(pattern)) {//如果连接中带这个参数
+      var tmp = '/\\' + par + '=[^&]*/';
+      tmp = uri.replace(eval(tmp), replaceText);
+      return (tmp);
+    }
+    else {
+      if (uri.match('[\?]')) {//如果链接中不带这个参数但是有其他参数
+        return uri + '&' + replaceText;
+      }
+      else {//如果链接中没有带任何参数
+        return uri + '?' + replaceText;
+      }
+    }
+
+    return uri + '\n' + par + '\n' + par_value;
+  };
 
   onAddEvent = async (type, button, process_status) => {
     const { data, saveloading, defaultValues, components } = this.state;
@@ -285,15 +307,18 @@ export default class App extends Component {
     }
 
 
-
-
-
-
     let formData = getSaveDefaultValues(components, collectivevariable, type !== 'save');
-    console.log('===', formData)
+    if (type === 'saveAndApply' && formData.queryCondition) {
+      delete formData.queryCondition;
+      let masterColumnList = formData.masterColumnList.filter(item => {
+        return item.col_name !== "data_id"
+      });
+      formData.masterColumnList = masterColumnList
+    }
+    console.log('===', this.query.data_id)
     let flowComponentList;
     try {
-      await applicationsService.apply(!process_status && !this.query.data_id ? {
+      const { data: data_id } = await applicationsService.customizeApply(!process_status && !this.query.data_id ? {
         applyType: type,
         formData,
         flow_id: this.query.data_id
@@ -320,7 +345,33 @@ export default class App extends Component {
           ? button.prompt
           : messageString
       );
+
+      if (type === "save" && data_id) {
+        console.log('AAAAAAAAAAAAAAA')
+        let newHref = window.location.href + '&data_id=' + data_id
+        window.location.href = newHref;
+      }
+
+      if (type === "update") {
+        console.log('BBBBBBBBBBBBBBB')
+        let search =
+          window.location && window.location.search
+            ? qs.parse(window.location?.search)
+            : {};
+        getContentData({
+          dataId: search.data_id,
+          formId: search.formid || search.form_id,
+          viewId: "",
+          type: collectivevariable.protocal_type || "2",
+          isGenerate: "Y",
+          idCard: collectivevariable.idcard,
+        })
+      }
+
       this.setState({ saveloading: false });
+      if (type !== "save") {
+        window.history.back(-1)
+      }
       if (data?.backList) {
         this.closeFunction();
       }
@@ -349,70 +400,6 @@ export default class App extends Component {
 
 
   };
-
-  // temptestFn = async (data, saveloading, components, collectivevariable) => {
-  //   let formData = getSaveDefaultValues(components, collectivevariable, type !== 'save');
-
-
-
-
-
-  //   console.log('===', formData)
-  //   let flowComponentList;
-  //   try {
-  //     await applicationsService.apply(!process_status && !this.query.data_id ? {
-  //       applyType: type,
-  //       formData,
-  //       flow_id: this.query.data_id
-  //         ? data?.flowInstance?.id
-  //         : data?.id,
-  //       flowComponentItemId: button.id,
-  //     } : {
-  //       applyType: type,
-  //       flow_inst_id: this.query.data_id
-  //         ? data?.flowInstance?.id
-  //         : this.state.objectId,
-  //       updateFormData: formData,
-  //       flowComponentList,
-  //       flowComponentItemId: button.id,
-  //     });
-
-  //     let messageString =
-  //       type !== 'save'
-  //         ? '发起成功'
-  //         : '保存成功';
-
-  //     message.success(
-  //       button.prompt && button.prompt !== ''
-  //         ? button.prompt
-  //         : messageString
-  //     );
-  //     this.setState({ saveloading: false });
-  //     if (data?.backList) {
-  //       this.closeFunction();
-  //     }
-  //   } catch (err) {
-  //     if (err.data.code === 10130009) {
-  //       let messages = formatError(err);
-  //       this.setState({ saveloading: false });
-  //       return message.error(
-  //         <span dangerouslySetInnerHTML={{ __html: messages }} />
-  //       );
-  //     }
-  //     this.setState({ saveloading: false }, () => {
-  //       if (
-  //         err &&
-  //         err.data &&
-  //         err.data.code &&
-  //         err.data.code >= 10130000 &&
-  //         err.data.code <= 10139999 &&
-  //         err.data.code !== 10130009
-  //       ) {
-  //         message.error(ErrorCode[err]);
-  //       }
-  //     });
-  //   }
-  // }
 
 
   onChangeForm = async (type, button, flow, reporting) => {
@@ -538,6 +525,7 @@ export default class App extends Component {
             ? prompt
             : '执行成功'
         );
+        window.history.back(-1)
       } catch (err) {
         this.setState({ saveloading: false });
         if (

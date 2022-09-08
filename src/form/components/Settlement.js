@@ -105,7 +105,9 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
                 let djcs = { jt_monetary_indemnity_removal: formlement.getFieldsValue().jt_monetary_indemnity_removal, jt_monetary_indemnity_removal_times: formlement.getFieldsValue().jt_monetary_indemnity_removal_times, jt_monetary_indemnity_placement: formlement.getFieldsValue().jt_monetary_indemnity_placement, jt_monetary_indemnity_placement_months: formlement.getFieldsValue().jt_monetary_indemnity_placement_months }
                 formlement.setFieldsValue({
                     qt_money: maxdj * bc,
+                    jt_monetary_indemnity_removal_area:a,
                     jt_monetary_total: a * djcs.jt_monetary_indemnity_removal * djcs.jt_monetary_indemnity_removal_times,
+                    jt_monetary_indemnity_placement_area:a,
                     jt_monetary_indemnity_total: a * djcs.jt_monetary_indemnity_placement * djcs.jt_monetary_indemnity_placement_months
                 })
 
@@ -121,15 +123,21 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
                     console.log(111, '======true');
                     let deff = val.total_confirmed_area - tmepsum
                     formlement.setFieldsValue({
+                        jt_monetary_indemnity_removal_area:deff,
                         jt_monetary_total: deff * djcs.jt_monetary_indemnity_removal * djcs.jt_monetary_indemnity_removal_times,
+                        jt_equity_exchange_removal_area:tmepsum,
                         jt_equity_total: tmepsum * cqcs.jt_monetary_indemnity_removal * cqcs.jt_monetary_indemnity_removal_times,
+                        jt_monetary_indemnity_placement_area:deff,
                         jt_monetary_indemnity_total: deff * djcs.jt_monetary_indemnity_placement * djcs.jt_monetary_indemnity_placement_months,
+                        jt_equity_exchange_placement_area:tmepsum,
                         jt_equity_exchange_total: tmepsum * cqcs.jt_monetary_indemnity_placement * cqcs.jt_monetary_indemnity_placement_months,
                     })
 
                 } else {
                     formlement.setFieldsValue({
+                        jt_equity_exchange_removal_area:val.total_confirmed_area,
                         jt_equity_total: val.total_confirmed_area * cqcs.jt_monetary_indemnity_removal * cqcs.jt_monetary_indemnity_removal_times,
+                        jt_equity_exchange_placement_area:val.total_confirmed_area,
                         jt_equity_exchange_total: val.total_confirmed_area * cqcs.jt_monetary_indemnity_placement * cqcs.jt_monetary_indemnity_placement_months,
                     })
                     setHiddenCurrency(false)
@@ -137,7 +145,6 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
                 }
                 formlement.setFieldsValue({ qt_money: 0 })
             }
-
 
             formlement.setFieldsValue({
                 yj_compensation: val.partyb_to_a,
@@ -267,6 +274,8 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
             }
 
         }
+<<<<<<< HEAD
+=======
         // Arr.forEach(x => {
         //     if (x) {
         //         sum += x
@@ -274,6 +283,7 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
         //         sum += 0
         //     }
         // })
+>>>>>>> e79b816440559eb1d83fda5535b95a67ef7efbe8
         return sum
     }
 
@@ -406,9 +416,12 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
 
             let a = val.total_confirmed_area <= 45 ? 45 : val.total_confirmed_area
             let djcs = { jt_monetary_indemnity_removal: formlement.getFieldsValue().jt_monetary_indemnity_removal, jt_monetary_indemnity_removal_times: formlement.getFieldsValue().jt_monetary_indemnity_removal_times, jt_monetary_indemnity_placement: formlement.getFieldsValue().jt_monetary_indemnity_placement, jt_monetary_indemnity_placement_months: formlement.getFieldsValue().jt_monetary_indemnity_placement_months }
+            
             formlement.setFieldsValue({
                 qt_money: maxdj * bc,
+                jt_monetary_indemnity_removal_area:a,
                 jt_monetary_total: a * djcs.jt_monetary_indemnity_removal * djcs.jt_monetary_indemnity_removal_times,
+                jt_monetary_indemnity_placement_area:a,
                 jt_monetary_indemnity_total: a * djcs.jt_monetary_indemnity_placement * djcs.jt_monetary_indemnity_placement_months
             })
 
@@ -423,15 +436,23 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
             if (val.total_confirmed_area > tmepsum) {
                 let deff = val.total_confirmed_area - tmepsum
                 formlement.setFieldsValue({
+                    jt_monetary_indemnity_removal_area:deff,
                     jt_monetary_total: deff * djcs.jt_monetary_indemnity_removal * djcs.jt_monetary_indemnity_removal_times,
+                    jt_equity_exchange_removal_area:tmepsum,
                     jt_equity_total: tmepsum * cqcs.jt_monetary_indemnity_removal * cqcs.jt_monetary_indemnity_removal_times,
+                    jt_monetary_indemnity_placement_area:deff,
                     jt_monetary_indemnity_total: deff * djcs.jt_monetary_indemnity_placement * djcs.jt_monetary_indemnity_placement_months,
+                
+                
+                    jt_equity_exchange_placement_area:tmepsum,
                     jt_equity_exchange_total: tmepsum * cqcs.jt_monetary_indemnity_placement * cqcs.jt_monetary_indemnity_placement_months,
                 })
 
             } else {
                 formlement.setFieldsValue({
+                    jt_equity_exchange_removal_area:val.total_confirmed_area,
                     jt_equity_total: val.total_confirmed_area * cqcs.jt_monetary_indemnity_removal * cqcs.jt_monetary_indemnity_removal_times,
+                    jt_equity_exchange_placement_area:val.total_confirmed_area,
                     jt_equity_exchange_total: val.total_confirmed_area * cqcs.jt_monetary_indemnity_placement * cqcs.jt_monetary_indemnity_placement_months,
                 })
                 setHiddenCurrency(false)
@@ -501,6 +522,59 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
             {/* <div style={{ display: hiddenCurrency ? 'block' : 'none' }} > */}
             {
                 hiddenCurrency ? <Row justify="center">
+<<<<<<< HEAD
+                    <Col span={6}>
+                        <Form.Item label="货币补偿搬迁单价" name='jt_monetary_indemnity_removal' >
+                            <InputNumber precision={2} onChange={() => { jieChange() }} />
+                        </Form.Item></Col>
+                    <Col span={6}><Form.Item label="面积" name='jt_monetary_indemnity_removal_area'>
+                        <InputNumber precision={2} onChange={() => { jieChange() }} />
+                    </Form.Item></Col>
+                    <Col span={6}><Form.Item label="搬迁次数" name='jt_monetary_indemnity_removal_times'>
+                        <InputNumber precision={2} onChange={() => { jieChange() }} />
+                    </Form.Item></Col>
+                    <Col span={6}><Form.Item label="8计算" name='jt_monetary_total' >
+                        <InputNumber precision={2} />
+                    </Form.Item></Col>
+                </Row> : null
+            }
+            {
+                hiddenExchange ? <Row justify="center">
+                    <Col span={6}>
+                        <Form.Item label="C产权调换搬迁单价" name='jt_equity_exchange_removal' >
+                            <InputNumber precision={2} onChange={() => { jieChange() }} />
+                        </Form.Item></Col>
+                        <Col span={6}><Form.Item label="面积" name='jt_equity_exchange_removal_area'>
+                        <InputNumber precision={2} onChange={() => { jieChange() }} />
+                    </Form.Item></Col>
+                    <Col span={6}><Form.Item label="C搬迁次数" name='jt_equity_exchange_removal_times' >
+                        <InputNumber precision={2} onChange={() => { jieChange() }} />
+                    </Form.Item></Col>
+                    <Col span={6}><Form.Item label="9计算 " name='jt_equity_total' >
+                        <InputNumber precision={2} />
+                    </Form.Item></Col>
+                </Row> : null
+            }
+            <div className='title_public'  > <ProfileOutlined /> 临时安置费</div>
+            {
+                hiddenCurrency ? <Row justify="center">
+                    <Col span={6}>
+                        <Form.Item label="货币补偿安置单价" name='jt_monetary_indemnity_placement' >
+                            <InputNumber precision={2} onChange={() => { jieChange() }} />
+                        </Form.Item></Col>
+                        <Col span={6}>
+                    <Form.Item label="面积" name='jt_monetary_indemnity_placement_area' >
+                        <InputNumber precision={2} onChange={() => { jieChange() }} />
+                    </Form.Item></Col>
+                    <Col span={6}><Form.Item label="安置月数" name='jt_monetary_indemnity_placement_months'>
+                        <InputNumber precision={2} onChange={() => { jieChange() }} />
+                    </Form.Item></Col>
+                    <Col span={6}><Form.Item label="10计算" name='jt_monetary_indemnity_total'  >
+                        <InputNumber precision={2} />
+                    </Form.Item></Col>
+                </Row> : null
+            }
+=======
                     <Col span={8}>
                         <Form.Item label="货币补偿搬迁单价" name='jt_monetary_indemnity_removal' >
                             <InputNumber precision={2} onChange={() => { jieChange() }} />
@@ -584,12 +658,17 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
                 </Row> */}
             {/* </div> */}
             {/* <div style={{ display: hiddenExchange ? 'block' : 'none' }} > */}
+>>>>>>> e79b816440559eb1d83fda5535b95a67ef7efbe8
             {
                 hiddenExchange ? <Row justify="center">
                     <Col span={6}>
                         <Form.Item label="C产权调换安置单价" name='jt_equity_exchange_placement' >
                             <InputNumber precision={2} onChange={() => { jieChange() }} />
                         </Form.Item></Col>
+                        <Col span={6}>
+                    <Form.Item label="面积" name='jt_equity_exchange_placement_area' >
+                        <InputNumber precision={2} onChange={() => { jieChange() }} />
+                    </Form.Item></Col>
                     <Col span={6}><Form.Item label="C过渡期限" name='cgdqx' >
                         <RangePicker />
                     </Form.Item></Col>
@@ -601,6 +680,8 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
                     </Form.Item></Col>
                 </Row> : null
             }
+<<<<<<< HEAD
+=======
             {/* <Row justify="center">
                     <Col span={6}>
                         <Form.Item label="C产权调换安置单价" name='jt_equity_exchange_placement' >
@@ -617,6 +698,7 @@ const Settlement = ({ updateSet, cRef, click, defaultValue }) => {
                     </Form.Item></Col>
                 </Row> */}
             {/* </div> */}
+>>>>>>> e79b816440559eb1d83fda5535b95a67ef7efbe8
             <div className='title_public'  > <ProfileOutlined /> 奖励及补贴条款</div>
             <Row justify="center">
                 <Col span={8}>

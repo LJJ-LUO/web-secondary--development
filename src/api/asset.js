@@ -8,6 +8,11 @@ export const queryBasicInfoById = (id, listType) => request.get(
   `/flow/instance/queryBasicInfoById?id=${id}&listType=${listType}`
 );
 
+export const customizeApply = (params) => request.post(
+  `flow/instance/customizeApply`, params
+);
+
+
 export const queryBasicInfo4Form = params =>
   request.post(`/flow/instance/queryBasicInfo4Form`, params);
 

@@ -4,9 +4,9 @@ import Pako from "pako";
 let apiContextPath = "";
 if (process.env.NODE_ENV === "development") {
   document.cookie =
-    "token=eyJhbGciOiJIUzI1NiJ9.eyJsb2dpblRpbWVzdGFtcCI6MTY1OTkzNzAwNjg2NywidXNlcklkIjoiMTIzNDU2Nzg5MCJ9.J7mQm2u-qPcp23oXSk_ZS3wc2Vi_vLPBhdNV4TH-wic";
+    "token=eyJhbGciOiJIUzI1NiJ9.eyJsb2dpblRpbWVzdGFtcCI6MTY2MjM2ODcxMjcwNiwidXNlcklkIjoiMTIzNDU2Nzg5MCJ9.mzVl3phOYFlh5o8FyTtSlr5NQ67BwJUirAE5pwVy4Vs";
   document.cookie =
-    "refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJsb2dpblRpbWVzdGFtcCI6MTY1OTkzNzAwNjg3M30.RZ_yBBlEYDz2izYp9POxY9If2Irit2tF_uGP3xSPUHE";
+    "refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJsb2dpblRpbWVzdGFtcCI6MTY2MjM2ODcxMjcwN30.IlLLzwcngx00sRq_HcR-_hhNPVuLOAE6V60uHbpClDc";
   document.cookie = "username=admin";
   document.cookie = "windowOnline=true";
   apiContextPath = "/api";

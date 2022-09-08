@@ -17,6 +17,7 @@ import { queryAssetById, getProvinceArea, getAreaByParent, getDataWithSort } fro
 import eventbus from '../uilts/eventbus'
 import formatFn from '../uilts/uilt.js';
 import qs from "querystringify";
+import { cloneDeep, filter } from 'lodash';
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -437,6 +438,8 @@ const Collection = ({ updateSet, formid, click, cRef, defaultValue }) => {
         //     index--;
         // }
         // });
+        houseNumChange();//计算房屋总面积
+        conAreaChange(message1);//计算结构面积
     };
     const submitFn = (arr) => {
         let sum = 0
@@ -514,24 +517,30 @@ const Collection = ({ updateSet, formid, click, cRef, defaultValue }) => {
     }
 
 
-    //TODO
+    //确权面积填写
     const inputSumChange = () => {
         let area1 = form.getFieldValue().con_frame_area_total ? form.getFieldValue().con_frame_area_total : 0
         let area2 = form.getFieldValue().con_bconcrete_area_total ? form.getFieldValue().con_bconcrete_area_total : 0
         let area3 = form.getFieldValue().con_bwood_area_total ? form.getFieldValue().con_bwood_area_total : 0
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> e79b816440559eb1d83fda5535b95a67ef7efbe8
 
 
+        
         form.setFieldsValue({
             // total_confirmed_area: form.getFieldValue().con_frame_area_total + form.getFieldValue().con_bconcrete_area_total + form.getFieldValue().con_bwood_area_total
             total_confirmed_area: area1 + area2 + area3
         })
-
+        
         setComponentDisabled(!componentDisabled)
-
+        
         placementChange(form.getFieldValue().placement_method)
-
+        
+        houseNumChange()
+        conAreaChange()
     }
     //补差合计
     const differenceChange = (val, val2, val3) => {
@@ -602,13 +611,14 @@ const Collection = ({ updateSet, formid, click, cRef, defaultValue }) => {
         message1[i].uncon_structure = val
         message1[i].gl_price = temp[0]
         message1[i].jl_price = temp[1]
-        message1[i].uncon_total = message1[i].uncon_area * (message1[i].gl_price + message1[i].jl_price)
+        message1[i].uncon_total = message1[i].uncon_area * (message1[i].gl_price + message1[i].jl_price) || 0
         setdataTable(message1);
+        console.log('1',message1);
+        conAreaChange(message1);//计算结构面积
     }
     //未确权面积     uncon_structure: "",
 
     const negativeChange = (val, i, key, record) => {
-
         let message1 = JSON.parse(JSON.stringify(dataTable));
         message1[i][key] = val
         message1[i].uncon_total = message1[i].uncon_area * (message1[i].gl_price + message1[i].jl_price)
@@ -616,10 +626,16 @@ const Collection = ({ updateSet, formid, click, cRef, defaultValue }) => {
         message1.forEach(x => {
             if (typeof x.uncon_total == 'number') sum += x.uncon_total
         })
+        // 合计面积
+        let wqq_area_sum = message1.reduce((total,item)=> total + item.uncon_area,0)
         form.setFieldsValue({
-            wqq_sum: sum
+            wqq_sum: sum,
+            wqq_area_sum
         })
         setdataTable(message1)
+
+        houseNumChange();//计算房屋总面积
+        conAreaChange(message1);//计算结构面积
 
     }
     //经营性选择框   ['框架', '砖混', '砖木']
@@ -894,6 +910,57 @@ const Collection = ({ updateSet, formid, click, cRef, defaultValue }) => {
     const onChange = (value, selectedOptions) => {
         console.log(value, selectedOptions);
     };
+
+    // 房屋总面积合计
+    const houseNumChange =()=>{
+        let total_confirmed_area = form.getFieldValue().total_confirmed_area ?? 0
+        let wqq_area_sum = form.getFieldValue().wqq_area_sum ?? 0
+        let total_sum = total_confirmed_area + wqq_area_sum
+        // 设置房屋总面积
+        form.setFieldsValue({
+            house_area_sum: total_sum
+        })
+    }
+    // 触发计算确权相关面积合计
+    const conAreaChange = (obj)=>{
+        let arr = obj ?? cloneDeep(dataTable)
+        let formData = {};
+
+        formData.frame_area_sum = getArea(arr,'con_frame_area_total','框架') 
+
+        formData.bconcrete_area_sum = getArea(arr,'con_bconcrete_area_total','砖混') 
+
+        formData.bwood_area_sum = getArea(arr,'con_bwood_area_total','砖木') 
+        
+        // 其他面积
+        formData.other_area_sum = filterArea(arr,'other')
+        
+        form.setFieldsValue(formData)
+        
+    }
+    // 计算未确权的面积
+    const filterArea = (obj,key)=>{
+        if (key != 'other') {
+           return obj.filter(item=>item.uncon_structure == key)?.reduce((total,item)=>total + item.uncon_area,0);
+        } else {
+            let list = obj.filter(item=>!options2Data.includes(item.uncon_structure))
+            if (list.length === 0) return null
+            return list.reduce((total,item)=>total + item.uncon_area,0);
+        }
+    }
+    // 获取有值的面积
+    const getArea = (obj,areaName,key)=>{
+        let result = null;
+        let area1 = form.getFieldValue()[areaName];
+        let area2 = filterArea(obj,key)
+        if (area1 && area2) {
+            result = area1 + area2
+        }else{
+            if(area1) result = area1
+            if(area2) result = area2
+        }
+        return result
+    }
     return (
         <div className='Collection'>
             <div className='Collection_form'>
@@ -1334,7 +1401,7 @@ const Collection = ({ updateSet, formid, click, cRef, defaultValue }) => {
 
                                 <Select key={index} value={text} onChange={(text) => { negativeSelect(text, index) }} >{
                                     optionsData.map((x, i) => {
-                                        return (<Select.Option value={x}>{x}</Select.Option>)
+                                        return (<Select.Option value={x} key={i}>{x}</Select.Option>)
                                     })
                                 }
                                 </Select>
@@ -1385,7 +1452,7 @@ const Collection = ({ updateSet, formid, click, cRef, defaultValue }) => {
                                     <Select key={index} value={text} onChange={(text) => { managementSelect(text, index) }}>
                                         {
                                             options2Data.map((x, i) => {
-                                                return (<Select.Option value={x}>{x}</Select.Option>)
+                                                return (<Select.Option value={x} key={i}>{x}</Select.Option>)
                                             })
                                         }
                                     </Select>
@@ -1406,7 +1473,7 @@ const Collection = ({ updateSet, formid, click, cRef, defaultValue }) => {
                                     <Select key={index} value={text} onChange={(text) => { managementChange(text, index, 'percent') }}>
                                         {
                                             [20, 40].map((x, i) => {
-                                                return (<Select.Option value={x}>{x}</Select.Option>)
+                                                return (<Select.Option value={x} key={i}>{x}</Select.Option>)
                                             })
                                         }
                                     </Select>
@@ -1426,13 +1493,66 @@ const Collection = ({ updateSet, formid, click, cRef, defaultValue }) => {
                     </Form.Item>
 
                     <Row justify="start">
-                        <Col span={24}>
-                            <Form.Item labelCol={{ span: 1.5, pull: 0 }} wrapperCol={{ span: 16 }} label='经营性面积合计' name='operational_sum'>
-                                <InputNumber precision={2} />
+                        <Col span={16}>
+                            <Form.Item labelCol={{ span: 1.5, pull: 0 }} wrapperCol={{ span: 16 }} label='房屋总面积合计' name='house_area_sum'>
+                                <InputNumber precision={2} disabled={true} />
                             </Form.Item>
                         </Col>
                     </Row>
+                    <Row justify="start">
+                        <Col span={6}>
+                            <Form.Item labelCol={{ span: 1.5, pull: 0 }} wrapperCol={{ span: 16 }} label='总框架面积' name='frame_area_sum'>
+                                <InputNumber precision={2} disabled={true} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={6}>
+                            <Form.Item labelCol={{ span: 1.5, pull: 0 }} wrapperCol={{ span: 16 }} label='总砖混面积' name='bconcrete_area_sum'>
+                                <InputNumber precision={2} disabled={true} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={6}>
+                            <Form.Item labelCol={{ span: 1.5, pull: 0 }} wrapperCol={{ span: 16 }} label='总砖木面积' name='bwood_area_sum'>
+                                <InputNumber precision={2} disabled={true} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={6}>
+                            <Form.Item labelCol={{ span: 1.5, pull: 0 }} wrapperCol={{ span: 16 }} label='其他总面积' name='other_area_sum'>
+                                <InputNumber precision={2} disabled={true} />
+                            </Form.Item>
+                        </Col>
+                        
+                    </Row>
+                    <Row justify="start">
+                        <Col span={10}>
+                            <Form.Item labelCol={{ span: 1.5, pull: 0 }} wrapperCol={{ span: 16 }} label='未确权面积合计' name='wqq_area_sum'>
+                                <InputNumber precision={2} disabled={true} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={10}>
 
+                            <Form.Item labelCol={{ span: 1.5, offset: 1 }} wrapperCol={{ span: 24 }} label='4未确权合计' name='wqq_sum'>
+
+                                <InputNumber precision={2} disabled={true} />
+                            </Form.Item>
+                        </Col>
+                        
+                    </Row>
+
+                    <Row justify="start">
+                        <Col span={10}>
+                            <Form.Item labelCol={{ span: 1.5, pull: 0 }} wrapperCol={{ span: 16 }} label='经营性面积合计' name='operational_sum'>
+<<<<<<< HEAD
+                                <InputNumber precision={2} disabled={true} />
+=======
+                                <InputNumber precision={2} />
+>>>>>>> e79b816440559eb1d83fda5535b95a67ef7efbe8
+                            </Form.Item>
+                        </Col>
+                        <Col span={10}>
+                            <Form.Item labelCol={{ span: 1.5, offset: 1 }} wrapperCol={{ span: 24 }} label='5经营性合计' name='jyx_sum' >
+
+<<<<<<< HEAD
+=======
 
                     <Row justify="start">
                         <Col span={20}>
@@ -1448,6 +1568,7 @@ const Collection = ({ updateSet, formid, click, cRef, defaultValue }) => {
                         <Col span={20}>
                             <Form.Item labelCol={{ span: 1.5, offset: 1 }} wrapperCol={{ span: 24 }} label='5合计' name='jyx_sum' >
 
+>>>>>>> e79b816440559eb1d83fda5535b95a67ef7efbe8
                                 <InputNumber precision={2} disabled={true} />
                             </Form.Item>
 
