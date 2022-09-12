@@ -3,27 +3,23 @@ import qs from "querystringify";
 
 let apiContextPath = "";
 if (process.env.NODE_ENV === "development") {
-  document.cookie = "token=";
-  apiContextPath = '/api'
+  document.cookie = "token=eyJhbGciOiJIUzI1NiJ9.eyJsb2dpblRpbWVzdGFtcCI6MTY2MjY4NjY3ODA1NiwidXNlcklkIjoiMTIzNDU2Nzg5MCJ9.txTjdVlZNFnoANlMUOLflwtNS1Xby2RQRUpkV_6484E";
+  apiContextPath = "/api";
 }
 
 const instance = axios.create({
-  baseURL: `/sdata/rest`,
+  baseURL: `${apiContextPath}/sdata/rest`,
   timeout: 60000,
   validateStatus: function (status) {
     return status >= 200 && status < 300; // default
   },
-  headers:
-    (window.location.search && qs.parse(window.location.search).token) ||
-    window.token
-      ? { token: qs.parse(window.location.search).token || window.token }
-      : {},
+  headers: (window.location.search && qs.parse(window.location.search).token) || window.token ? { token: qs.parse(window.location.search).token || window.token } : {},
 });
 
 instance.defaults.headers.post["Content-Type"] = "application/json";
 
 instance.interceptors.response.use(
-  response => {
+  (response) => {
     let { data } = response;
     if (typeof data === "string") {
       data = JSON.parse(data);
@@ -39,7 +35,7 @@ instance.interceptors.response.use(
     response.data = data && data.result;
     return response;
   },
-  error => {
+  (error) => {
     if (error.response && error.response.status === 401) {
       return;
     }
