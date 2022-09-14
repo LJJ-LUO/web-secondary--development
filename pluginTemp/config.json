@@ -1,7 +1,7 @@
 {
-  "id": "c27272a0-1f79-4bd5-92f5-bb4cae98d933",
+  "id": "6637be90-16d5-4e11-a7ed-dc7ec6f0ca46",
   "type": "app",
-  "main": "app.46162945.js",
+  "main": "app.0869f7a7.js",
   "version": "2",
   "props": {
     "type": "customize",
@@ -14,6 +14,8 @@
       "assetId",
       "speedTime",
       "imgField",
+      "sidebar",
+      "pictureTile",
       "titleField",
       "detailsUrl",
       "keyField"

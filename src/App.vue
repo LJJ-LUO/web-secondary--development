@@ -2,23 +2,47 @@
   <!-- 定义外层容器标识，宽高百分百 不可删除 -->
   <div class="lunb_28" :id="identification" style="width: 100%;height: 100%" :ref="identification">
     <!-- -->
-    <div class="lb_img">
-      <el-carousel class="lbzj" ref="carousel" height="100%" :interval="speedTime" indicator-position="none"
-        @change="carouselChange" arrow="always">
-        <el-carousel-item v-for="(item, inx) in jqReports" :key="inx">
-          <a :href="`${detailsUrl}?${keyField}=${item[keyField]}`">
-            <img :src="item[imgField]" width="100%" height="100%" />
-            <div class="title_text" :title="item[titleField]">
-              {{ item[titleField] }}
-            </div>
-          </a>
+    <div class="lb_right" style="width: 100%;height: 100%">
+      <div class="lb_img" :style="{width:sOption=='right'?'76%':'100%'}">
+        <el-carousel class="lbzj" ref="carousel" height="100%" :interval="speedTime" indicator-position="none"
+          @change="carouselChange" arrow="always">
+          <el-carousel-item v-for="(item, inx) in jqReports" :key="inx">
+            <a :href="`${detailsUrl}?${keyField}=${item[keyField]}`">
+              <img :src="item[imgField]" width="100%" height="100%" :style="{objectFit:Picture}" />
+              <div class="title_text" :title="item[titleField]">
+                {{ item[titleField] }}
+              </div>
+            </a>
 
-        </el-carousel-item>
-      </el-carousel>
+          </el-carousel-item>
+        </el-carousel>
+      </div>
+      <div class="lb_list" v-if="sOption=='right'">
+        <div :class="{ icon_top: true, icon_bottom: scrollDirection }" v-if="jqReports.length > 5" @click="scorllBotFn">
+          <i :class="scrollDirection ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"></i>
+        </div>
+        <div :class="{ list_body: true, trFive: jqReports.length > 5 }">
+          <ul class="scroll_ul">
+            <li :class="{ scroll_li: true }" v-for="(item, inx) in jqReports" :key="inx" :title="item[titleField]"
+              @click="thumbnailClick(inx)">
+              <div class="temp">
+                <img class="tempI" :src="item[imgField]" alt="">
+                <div :class="{ bof: true, exhibit: curIndex === inx }">
+                  <i class="el-icon-caret-left"></i>
+                </div>
+
+              </div>
+
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
-    <div class="lb_list">
-      <div :class="{ icon_top: true, icon_bottom: scrollDirection }" v-if="jqReports.length > 5" @click="scorllBotFn"><i
-          :class="scrollDirection ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"></i></div>
+
+    <div class="lb_bottom" v-if="sOption=='bottom'">
+      <div :class="{ icon_left: true, icon_bottom: scrollDirection }" v-if="jqReports.length > 5" @click="scorllBotFn">
+        <i :class="scrollDirection ? 'el-icon-arrow-left' : 'el-icon-arrow-right'"></i>
+      </div>
       <div :class="{ list_body: true, trFive: jqReports.length > 5 }">
         <ul class="scroll_ul">
           <li :class="{ scroll_li: true }" v-for="(item, inx) in jqReports" :key="inx" :title="item[titleField]"
@@ -35,6 +59,7 @@
         </ul>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -122,6 +147,29 @@ export default {
     keyField() {
       let keyField = this.customConfig?.keyField || 'data_id'
       return keyField
+    },
+    sidebar() {
+      let sidebar = this.customConfig?.sidebar == 'bottom' ? ['scrollLeft', 'clientWidth', 'scrollWidth'] : ['scrollTop', 'clientHeight', 'scrollHeight']
+      return sidebar
+    },
+    Picture() {
+      let temp = this.customConfig?.pictureTile
+      let value
+      switch (temp) {
+        case '填充':
+          value = 'fill'
+          break;
+
+        case '原比填充':
+          value = 'contain'
+          break;
+        case '裁剪':
+          value = 'cover'
+          break;
+        default:
+          value = 'fill'
+      }
+      return value
     }
   },
   data() {
@@ -140,6 +188,7 @@ export default {
         { imgUrl: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F016de95b82c3f5a80120577da70e3a.jpg%403000w_1l_0o_100sh.jpg&refer=http%3A%2F%2Fimg.zcool.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1663316034&t=069db11f2b65eae370968134656825a3', titleTrans: '55' },
         { imgUrl: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F016de95b82c3f5a80120577da70e3a.jpg%403000w_1l_0o_100sh.jpg&refer=http%3A%2F%2Fimg.zcool.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1663316034&t=069db11f2b65eae370968134656825a3', titleTrans: '55' },
       ],
+      sOption: this.customConfig?.sidebar == 'bottom' ? 'bottom' : 'right',
       //必需，不可删除
       identification: "",
       //业务代码
@@ -165,7 +214,7 @@ export default {
     //用于注册事件定义，不可删除
     let a = document.querySelector('.scroll_ul');
     a.addEventListener('scroll', this.handleScroll, true)
-    console.log(document.querySelectorAll('.tempI'));
+    console.log(a);
 
     let { componentId } = this.customConfig || {};
     componentId &&
@@ -197,14 +246,20 @@ export default {
     // }
   },
   methods: {
-    scorllBotFn(index) {
-
+    scorllBotFn(index, e) {
+      let scroll = this.sidebar[0]
+      let client = this.sidebar[1]
+      // console.log(document.querySelector('.scroll_ul').scrollTop == document.querySelector('.scroll_ul')[scroll]);
+      // console.log('scrollTop' == scroll);
       typeof index == 'number' ? this.scrollCount = index : this.scrollCount++
       if (!this.scrollDirection) {
-        document.querySelector('.scroll_ul').scrollTop = this.scrollCount * document.querySelector('.scroll_li').clientHeight
+        //   document.querySelector(`.scroll_ul .scroll_li:nth-of-type(${e})`).scrollIntoView()
+        document.querySelector('.scroll_ul')[scroll] = this.scrollCount * document.querySelector('.scroll_li')[client]
+        // document.querySelector('.scroll_ul').scrollTop = this.scrollCount * document.querySelector('.scroll_li').clientHeight
       } else {
-
-        document.querySelector('.scroll_ul').scrollTop = (this.jqReports.length - 5 - this.scrollCount) * document.querySelector('.scroll_li').clientHeight
+        // document.querySelector(`.scroll_ul .scroll_li:nth-of-type(${e})`).scrollIntoView()
+        document.querySelector('.scroll_ul')[scroll] = (this.jqReports.length - 5 - this.scrollCount) * document.querySelector('.scroll_li')[client]
+        // document.querySelector('.scroll_ul').scrollTop = (this.jqReports.length - 5 - this.scrollCount) * document.querySelector('.scroll_li').clientHeight
       }
       if (this.scrollCount >= (this.jqReports.length - 5)) {
 
@@ -213,17 +268,41 @@ export default {
       }
 
     },
+    // scorllRigFn(index) {
+
+    //   typeof index == 'number' ? this.scrollCount = index : this.scrollCount++
+    //   if (!this.scrollDirection) {
+    //     document.querySelector('.scroll_ul_right').scrollLeft = this.scrollCount * document.querySelector('.scroll_li_R').clientWidth
+    //   } else {
+
+    //     document.querySelector('.scroll_ul_right').scrollLeft = (this.jqReports.length - 5 - this.scrollCount) * document.querySelector('.scroll_li_R').clientWidth
+    //   }
+    //   if (this.scrollCount >= (this.jqReports.length - 5)) {
+
+    //     this.scrollCount = 0
+    //     this.scrollDirection = !this.scrollDirection
+    //   }
+
+    // },
     carouselChange(e) {
+      let scroll = this.sidebar[0]
+      let client = this.sidebar[1]
+      let scrH = this.sidebar[2]
       this.curIndex = e
       let indx = e + 1 - 5
-      e == 0 ? document.querySelector('.scroll_ul').scrollTop = 0 : null
+      e == 0 ? document.querySelector('.scroll_ul')[scroll] = 0 : null
+
       let sty = document.querySelector('.scroll_ul')
-      let scrollH = sty.scrollHeight - sty.clientHeight - sty.scrollTop
+
+
+
+      let scrollH = sty?.[scrH] - sty?.[client] - sty?.[scroll]
+
 
       if (scrollH <= 3) return
       if (indx > 0) {
 
-        this.scorllBotFn(indx)
+        this.scorllBotFn(indx, e)
       }
 
     },
@@ -235,17 +314,20 @@ export default {
       )
     },
     handleScroll(e) {
-
+      let scroll = this.sidebar[0]
+      let client = this.sidebar[1]
+      let scrH = this.sidebar[2]
       if (this.temp) clearTimeout(this.temp);
       this.temp = setTimeout(() => {
+
         let temp
         if (!this.scrollDirection) {
-          temp = parseInt(e.target.scrollTop / document.querySelector('.scroll_li').clientHeight)
+          temp = parseInt(e.target[scroll] / document.querySelector('.scroll_li')[client])
         } else {
-          temp = (this.jqReports.length - 5) - Math.ceil(e.target.scrollTop / document.querySelector('.scroll_li').clientHeight)
+          temp = (this.jqReports.length - 5) - Math.ceil(e.target[scroll] / document.querySelector('.scroll_li')[client])
         }
 
-        let scrollH = e.target.scrollHeight - e.target.clientHeight - e.target.scrollTop
+        let scrollH = e.target[scrH] - e.target[client] - e.target[scroll]
 
         if (scrollH <= 3) {
           this.scrollCount = 0
@@ -323,7 +405,9 @@ export default {
 
 <style lang="less" scoped>
 .lunb_28 {
+
   display: flex;
+  flex-direction: column;
   caret-color: rgba(0, 0, 0, 0);
 
   .lbzj {
@@ -336,48 +420,213 @@ export default {
     }
   }
 
-  .lb_img {
+  .lb_right {
+    display: flex;
 
-    width: 76%;
-    // height: 100%;
-    box-sizing: border-box;
-    padding-bottom: 0.5%;
-    position: relative;
-    border-radius: 10px;
+    .lb_img {
 
-    .lbzj {
-      width: 100%;
-      height: 100%;
+      width: 76%;
+      // height: 100%;
+      box-sizing: border-box;
+      padding-bottom: 0.5%;
+      position: relative;
+      border-radius: 10px;
+
+      .lbzj {
+        width: 100%;
+        height: 100%;
 
 
+      }
+
+      .title_text {
+        width: 100%;
+        height: 100px;
+        font-weight: 700;
+        font-size: 36px;
+        line-height: 100px;
+        color: #ffffff;
+        background: rgba(0, 0, 0, 0.4);
+        padding-left: 40px;
+        position: absolute;
+        bottom: 0;
+        box-sizing: border-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
 
-    .title_text {
-      width: 100%;
-      height: 100px;
-      font-weight: 700;
-      font-size: 36px;
-      line-height: 100px;
-      color: #ffffff;
-      background: rgba(0, 0, 0, 0.4);
-      padding-left: 40px;
-      position: absolute;
-      bottom: 0;
+    .lb_list {
+      width: 24%;
+      height: 100%;
+      padding: 0 0 0 3.2%;
       box-sizing: border-box;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      position: relative;
+
+      .icon_top {
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        border-radius: 40px;
+        line-height: 40px;
+        background: rgba(77, 76, 76, .7);
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        z-index: 999;
+        color: #fff;
+        cursor: pointer;
+
+      }
+
+      .icon_bottom {
+        bottom: none;
+        top: 0;
+      }
+
+      .list_body {
+        width: 100%;
+        // height: calc(100% - 15px);
+        height: 100%;
+
+        ul {
+          margin: 0;
+          height: 100%;
+          padding: 0px 12px 0px 0;
+          overflow-y: scroll;
+
+          &::-webkit-scrollbar {
+            display: none;
+          }
+
+          scroll-behavior: smooth;
+        }
+
+        li {
+
+          // padding-left: 24px;
+          height: 20%;
+          font-weight: 400;
+          font-size: 18px;
+          line-height: 25px;
+          color: #00effe;
+          list-style: none;
+
+          padding: 1%;
+          padding-bottom: 3%;
+          border-radius: 10px;
+          // overflow: hidden;
+          box-sizing: border-box;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          cursor: pointer;
+
+
+          // position: relative;
+
+          .temp {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            position: relative;
+          }
+
+          img {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+            border-radius: 10px;
+          }
+
+          .bof {
+            width: 30%;
+            height: 100%;
+            background: rgba(26, 128, 102, .8);
+            border-radius: 10px 0 0 10px;
+            // float: left;
+
+
+            position: absolute;
+            top: 0;
+            z-index: 9;
+            display: none;
+
+            .el-icon-caret-left {
+              color: #fff;
+              font-size: 30px
+            }
+
+            // .sanj {
+            //   width: 0;
+            //   height: 0;
+
+
+            //   border: 10px solid;
+            //   border-color: transparent transparent transparent #fff
+            // }
+
+            // left: 1%;
+          }
+
+          .exhibit {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            // width: 30%;
+            // transition: all 1s;
+            // border-radius: 10px 0 0 10px;
+            animation-name: bounce_left;
+            animation-duration: 1000ms;
+            animation-fill-mode: forwards;
+          }
+
+          @keyframes bounce_left {
+            0% {
+              width: 0;
+              animation-timing-function: ease-in;
+              opacity: 1;
+            }
+
+
+            100% {
+              width: 30%;
+              // transform: translateX(0px);
+              animation-timing-function: ease-out;
+              opacity: 1;
+            }
+          }
+        }
+
+        // .brak {
+
+        //   text-shadow: 0px 0px 14px rgba(182, 224, 255, 0.3);
+        //   position: relative;
+
+        //   &:before {
+        //     content: "";
+        //     display: block;
+        //     position: absolute;
+        //     width: 3px;
+        //     height: 25px;
+
+        //     border-radius: 1px;
+        //     left: 5px;
+        //   }
+        // }
+      }
     }
   }
 
-  .lb_list {
-    width: 24%;
-    height: 100%;
-    padding: 0 0 0 3.2%;
+  .lb_bottom {
+    width: 100%;
+    height: 20%;
+    // padding: 0 0 0 3.2%;
     box-sizing: border-box;
     position: relative;
 
-    .icon_top {
+    .icon_left {
       width: 40px;
       height: 40px;
       text-align: center;
@@ -385,8 +634,8 @@ export default {
       line-height: 40px;
       background: rgba(77, 76, 76, .7);
       position: absolute;
-      left: 50%;
-      bottom: 0;
+      right: 0;
+      bottom: 40%;
       z-index: 999;
       color: #fff;
       cursor: pointer;
@@ -394,8 +643,8 @@ export default {
     }
 
     .icon_bottom {
-      bottom: none;
-      top: 0;
+      right: none;
+      left: 0;
     }
 
     .list_body {
@@ -407,7 +656,8 @@ export default {
         margin: 0;
         height: 100%;
         padding: 0px 12px 0px 0;
-        overflow-y: scroll;
+        overflow-x: scroll;
+        display: flex;
 
         &::-webkit-scrollbar {
           display: none;
@@ -419,15 +669,17 @@ export default {
       li {
 
         // padding-left: 24px;
-        height: 20%;
+        width: 20%;
+        height: 100%;
         font-weight: 400;
         font-size: 18px;
         line-height: 25px;
         color: #00effe;
         list-style: none;
-
-        padding: 1%;
-        padding-bottom: 3%;
+        flex: none;
+        // float: left;
+        padding: 0.8%;
+        // padding-bottom: 3%;
         border-radius: 10px;
         // overflow: hidden;
         box-sizing: border-box;
