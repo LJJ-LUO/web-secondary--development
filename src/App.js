@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Table, Button, message } from "antd";
 import "./app.less";
-
+import L from 'leaflet'
 const events = [
   {
     key: "onClick",
@@ -29,7 +29,7 @@ const actions = [
     ],
   },
 ];
-
+let key = 'OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77'
 export default class App extends Component {
   state = {
     dataSource: [],
@@ -84,44 +84,26 @@ export default class App extends Component {
     });
     updateProcess && updateProcess();
 
+    var map = L.map('myMap').setView([39.74739, -105], 13);
+
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: "",
+      id: 'mapbox.light'
+    }).addTo(map)
+
     this.Event_Center_getName = () => {
-      return "Demo实例";
+      return "滨海地图";
     };
   }
+
 
   do_EventCenter_messageSuccess(param) {
     console.log(param);
     alert("动作执行成功！");
   }
 
-  moveToTop = () => {
-    if (this.isSelected()) {
-      const { rowId, dataSource } = this.state;
-      if (rowId === 0) {
-        message.warn("已在第一行，不能再置顶！");
-      } else {
-        let data = dataSource;
-        let temporaryData = data.splice(rowId, 1)[0];
-        data.unshift(temporaryData);
-        this.setState({ dataSource: [...data], rowId: 0 });
-      }
-    }
-  };
 
-  moveUp = () => {
-    if (this.isSelected()) {
-      const { rowId, dataSource } = this.state;
-      if (rowId === 0) {
-        message.warn("已在第一行，不能再上移！");
-      } else {
-        let data = dataSource;
-        let temporaryData = data[rowId];
-        data[rowId] = data[rowId - 1];
-        data[rowId - 1] = temporaryData;
-        this.setState({ dataSource: [...data], rowId: rowId - 1 });
-      }
-    }
-  };
 
   moveDown = () => {
     if (this.isSelected()) {
@@ -169,64 +151,11 @@ export default class App extends Component {
     const { headerBGColor = "#0f2437" } = externalVariables;
     return (
       <div className="analyzer-demo" style={{ width: "100%", height: "100%" }}>
-        <div className="func-area" style={{ backgroundColor: headerBGColor }}>
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              paddingRight: "20px",
-            }}
-          >
-            <label
-              style={{ color: "white", fontSize: "18px", fontWeight: "bold" }}
-            >
-              优先级调整
-            </label>
-            <Button onClick={this.moveToTop} size="small">
-              置顶
-            </Button>
-            <Button onClick={this.moveUp} size="small">
-              上移
-            </Button>
-            <Button onClick={this.moveDown} size="small">
-              下移
-            </Button>
-            <Button onClick={this.moveToBottom} size="small">
-              置底
-            </Button>
-          </div>
+        <div className="func-area" style={{ backgroundColor: headerBGColor, width: "100%", height: "100%" }}>
+
+          <div id="myMap" />
         </div>
-        <Table
-          columns={columns}
-          dataSource={dataSource}
-          pagination={false}
-          size="small"
-          rowClassName={this.setRowClassName}
-          onRow={(_, index) => {
-            return {
-              onClick: () => {
-                this.setState({ rowId: rowId === index ? "" : index });
-                window?.eventCenter?.triggerEvent(componentId, "onClick", {
-                  name: "二开插件",
-                });
-              },
-            };
-          }}
-          scroll={{ y: "calc(100% - 39px)" }}
-          style={{ height: "calc(100% - 63px)" }}
-        />
-        <div
-          className="card-bg"
-          onClick={() => {
-            window?.eventCenter?.triggerEvent(componentId, "onClick", {
-              name: "二开插件",
-            });
-          }}
-        >
-          点这里
-        </div>
+
       </div>
     );
   }
