@@ -1,45 +1,140 @@
-.infoCard {
-  width: 24%;
-  min-width: 260px;
-  border-radius: 16px !important;
-  padding: 2vw !important;
-  .ant-card-head {
-    padding: 0;
-    .ant-card-head-title {
-      padding: 0;
-      .card-title {
-        color: white;
-        position: relative;
-        font-weight: bold;
-        font-size: 28px;
-        line-height: 39px;
-        z-index: 10;
+.calender_timeline {
+  padding: 15px 20px;
+  width: 100%;
+  // width: 350px;
+  height: 100%;
+  background: #ffffff;
+  // 日历头部
+  .calendar_header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 3%;
+    // 日历标题
+    .calendar_title {
+      font-size: 16px;
+      width: 20%;
+      text-align: center;
+      margin-right: 10%;
+    }
+    // 日历切换年月
+    .calendar_date {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 60%;
+      // 左右箭头
+      .anticon-left,
+      .anticon-right {
+        font-size: 12px;
       }
     }
-    .ant-card-extra {
-      padding: 0;
+    // 增加按钮
+    .calendar_add {
+      cursor: pointer;
+      width: 20%;
+      text-align: center;
+      margin-left: 10%;
+      background-color: #e7f0f7;
+      .anticon-plus {
+        color: #3885be;
+      }
     }
   }
-  .ant-card-body {
-    padding: 0 !important;
-    .card-desc {
-      color: white;
-      position: relative;
-      font-size: 14px;
-      line-height: 20px;
-      color: #ffffffb3;
-      margin: 1vw 0;
-      z-index: 10;
+  // 日历星期标题行
+  .ant-picker-content {
+    thead {
+      font-size: 12px;
     }
   }
-  .ant-btn-background-ghost {
-    border-color: #fff8;
-    width: 100px;
+  // 日历单元格
+  .ant-picker-cell {
+    padding-top: 10px;
   }
-  @media (max-width: 1680px) {
-    .card-title {
-      font-size: 26px;
-      line-height: 37px;
+  // 日历单元格文字区域
+  .ant-picker-cell-inner.ant-picker-calendar-date {
+    width: 100%;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+  // 日历单元格文字区域悬浮样式
+  .ant-picker-cell-inner:hover {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+  // 日历单元格文字区域选中
+  .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+  // 日历当日日期
+  .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+    border: none !important;
+  }
+
+  // 展开按钮
+  .open_calendar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid #f0f0f0;
+    // 展开按钮
+    .anticon-down,
+    .anticon-up {
+      cursor: pointer;
+      font-size: 10px;
+      width: 40%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 15px;
+      line-height: 15px;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      background: rgb(236, 236, 236);
     }
+  }
+
+  // 时间轴
+  .timeline {
+    padding-top: 8%;
+  }
+  // 时间轴左边
+  .ant-timeline-item-label {
+    width: 27% !important;
+    top: -6px !important;
+    color: #808080;
+  }
+  // 轴线
+  .ant-timeline-item-tail {
+    left: 33% !important;
+  }
+  // 轴线点
+  .ant-timeline-item-head {
+    left: 33% !important;
+  }
+  // 时间轴右边
+  .ant-timeline-item-content {
+    width: 56% !important;
+    left: 40% !important;
+    top: -6px !important;
+    margin: 0 !important;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  // 暂无数据
+  .no_data {
+    width: 100%;
+    text-align: center;
+    margin-top: 10%;
+    color: #bdbdbd;
   }
 }

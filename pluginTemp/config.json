@@ -1,7 +1,7 @@
 {
-  "id": "17364516-8468-4dda-93c2-4940200765d2",
+  "id": "34080ed7-f186-45a2-a101-76d1e90ed501",
   "type": "app",
-  "main": "main.30dcaf4f.js",
+  "main": "main.172692d9.js",
   "version": "2",
   "props": {
     "type": "customize",
@@ -11,9 +11,11 @@
     "lib": [],
     "css_script": [],
     "customconf": [
-      "title",
-      "url",
-      "desc"
+      "资产ID",
+      "时间字段",
+      "任务字段",
+      "标题",
+      "跳转地址"
     ]
   }
 }
