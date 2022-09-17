@@ -1,22 +1,5 @@
 <template>
-  <el-input
-    placeholder="请输入内容"
-    v-model="data[1]"
-    class="input-with-select"
-    @input="inputChange"
-    size="small"
-  >
-    <el-select
-      v-model="data[0]"
-      @change="selectChange"
-      slot="prepend"
-      placeholder="请选择"
-    >
-      <el-option label="餐厅名" value="1" />
-      <el-option label="订单号" value="2" />
-      <el-option label="用户电话" value="3" />
-    </el-select>
-  </el-input>
+  <el-input placeholder="请输入内容" v-model="data[1]" class="input-with-select" @input="inputChange" size="small"> </el-input>
 </template>
 
 <script>

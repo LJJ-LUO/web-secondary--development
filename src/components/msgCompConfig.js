@@ -7,7 +7,7 @@ export const events = [
       {
         name: "内容",
         key: "value",
-        dataType: "string",
+        dataType: "objectArrary",
       },
     ],
   },
@@ -16,27 +16,13 @@ export const events = [
 // 组件可接收事件
 export const actions = [
   {
-    key: "setValue",
-    name: "设值",
-    isSupportChild: true, // 是否支持子表
+    key: "dataFilter",
+    name: "过滤数据",
     params: [
       {
         key: "value",
-        name: "值",
-        dataType: "string",
-      },
-    ],
-  },
-  {
-    key: "getValue",
-    name: "取值",
-    isSupportChild: true, // 是否支持子表
-    hasReturn: true,
-    returns: [
-      {
-        key: "value",
-        name: "值",
-        dataType: "string",
+        name: "过滤条件",
+        dataType: "object",
       },
     ],
   },
