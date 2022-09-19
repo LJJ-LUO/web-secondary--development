@@ -1,47 +1,55 @@
-// import axios from "axios";
-// import qs from "querystringify";
+import axios from "axios";
+import qs from "querystringify";
 
-// // const apiContextPath = "http://192.168.1.240:43214";
+let apiContextPath = "";
+if (process.env.NODE_ENV === "development") {
+    document.cookie =
+        "token=eyJhbGciOiJIUzI1NiJ9.eyJsb2dpblRpbWVzdGFtcCI6MTY2MzI5Mzc0OTE5NSwidXNlcklkIjoiMTIzNDU2Nzg5MCJ9.6eQq4FgThOk9PqqgEtaCh18jlGWCFneqjcpeyVipYrI";
 
-// const instance = axios.create({
-//   baseURL: `/sdata/rest`,
-//   timeout: 60000,
-//   validateStatus: function (status) {
-//     return status >= 200 && status < 300; // default
-//   },
-//   headers:
-//     (window.location.search && qs.parse(window.location.search).token) ||
-//     window.token
-//       ? { token: qs.parse(window.location.search).token || window.token }
-//       : {},
-// });
+    document.cookie = "username=admin";
+    document.cookie = "windowOnline=true";
+    apiContextPath = "/api";
+}
 
-// instance.defaults.headers.post["Content-Type"] = "application/json";
+const instance = axios.create({
+    baseURL: `${apiContextPath}/sdata/rest`,
+    timeout: 60000,
+    validateStatus: function (status) {
+        return status >= 200 && status < 300; // default
+    },
+    headers:
+        (window.location.search && qs.parse(window.location.search).token) ||
+            window.token
+            ? { token: qs.parse(window.location.search).token || window.token }
+            : {},
+});
 
-// instance.interceptors.response.use(
-//   response => {
-//     let { data } = response;
-//     if (typeof data === "string") {
-//       data = JSON.parse(data);
-//     }
-//     if (data && data.status !== 200 && !(data instanceof Blob)) {
-//       return Promise.reject(response);
-//     }
-//     if (data instanceof Blob) {
-//       response.data = data;
-//       return response;
-//     }
+instance.defaults.headers.post["Content-Type"] = "application/json";
 
-//     response.data = data && data.result;
-//     return response;
-//   },
-//   error => {
-//     if (error.response && error.response.status === 401) {
-//       return;
-//     }
+instance.interceptors.response.use(
+    response => {
+        let { data } = response;
+        if (typeof data === "string") {
+            data = JSON.parse(data);
+        }
+        if (data && data.status !== 200 && !(data instanceof Blob)) {
+            return Promise.reject(response);
+        }
+        if (data instanceof Blob) {
+            response.data = data;
+            return response;
+        }
 
-//     return Promise.reject(error.response);
-//   }
-// );
+        response.data = data && data.result;
+        return response;
+    },
+    error => {
+        if (error.response && error.response.status === 401) {
+            return;
+        }
 
-// export default instance;
+        return Promise.reject(error.response);
+    }
+);
+
+export default instance;

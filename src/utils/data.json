@@ -1,0 +1,1496 @@
+[
+    {
+        "data": {
+            "id": "605755",
+            "idInt": 605755,
+            "name": "PCNA"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "611408",
+            "idInt": 611408,
+            "name": "FEN1"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "612341",
+            "idInt": 612341,
+            "name": "RAD9A"
+        },
+        "position": {
+            "x": 455.8128125018193,
+            "y": 555.4591537139819
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "608473",
+            "idInt": 608473,
+            "name": "RAD9B"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "611560",
+            "idInt": 611560,
+            "name": "APEX2"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "600585",
+            "idInt": 600585,
+            "name": "POLD3"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "599889",
+            "idInt": 599889,
+            "name": "RAD51"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "602299",
+            "idInt": 602299,
+            "name": "LIG1"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "603070",
+            "idInt": 603070,
+            "name": "RFC5"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "610236",
+            "idInt": 610236,
+            "name": "RFC4"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "605365",
+            "idInt": 605365,
+            "name": "GADD45G"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "599863",
+            "idInt": 599863,
+            "name": "RFC2"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "603700",
+            "idInt": 603700,
+            "name": "MSH6"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "605846",
+            "idInt": 605846,
+            "name": "RFC3"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "600535",
+            "idInt": 600535,
+            "name": "UNG"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "599724",
+            "idInt": 599724,
+            "name": "RFC1"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "602279",
+            "idInt": 602279,
+            "name": "BABAM1"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "600046",
+            "idInt": 600046,
+            "name": "POLD1"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "609734",
+            "idInt": 609734,
+            "name": "POLR3K"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "612326",
+            "idInt": 612326,
+            "name": "PPP1CA"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "id": "606768",
+            "idInt": 606768,
+            "name": "DNA2"
+        },
+        "group": "nodes"
+    },
+    {
+        "data": {
+            "source": "611408",
+            "target": "605755",
+            "weight": 0.012590342,
+            "group": "coexp",
+            "id": "e0"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "602299",
+            "target": "600585",
+            "weight": 0.012590342,
+            "group": "coexp",
+            "id": "e1"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "605755",
+            "weight": 0.0055292076,
+            "group": "coexp",
+            "rIntnId": 5,
+            "id": "e3"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "611408",
+            "weight": 0.005184464,
+            "group": "coexp",
+            "rIntnId": 6,
+            "id": "e4"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "612341",
+            "weight": 0.008174375,
+            "group": "coexp",
+            "rIntnId": 7,
+            "id": "e5"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "603070",
+            "weight": 0.0073378147,
+            "group": "coexp",
+            "rIntnId": 8,
+            "id": "e6"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "605846",
+            "target": "605755",
+            "weight": 0.010978148,
+            "group": "coexp",
+            "rIntnId": 9,
+            "id": "e7"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "605846",
+            "target": "611408",
+            "weight": 0.009477927,
+            "group": "coexp",
+            "rIntnId": 10,
+            "id": "e8"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "605846",
+            "target": "610236",
+            "weight": 0.009086159,
+            "group": "coexp",
+            "rIntnId": 11,
+            "id": "e9"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600535",
+            "target": "600585",
+            "weight": 0.008661902,
+            "group": "coexp",
+            "rIntnId": 12,
+            "id": "e10"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600535",
+            "target": "602299",
+            "weight": 0.0050190594,
+            "group": "coexp",
+            "rIntnId": 13,
+            "id": "e11"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600535",
+            "target": "603700",
+            "weight": 0.00814378,
+            "group": "coexp",
+            "rIntnId": 14,
+            "id": "e12"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600046",
+            "target": "600585",
+            "weight": 0.0065156803,
+            "group": "coexp",
+            "rIntnId": 15,
+            "id": "e13"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600046",
+            "target": "603700",
+            "weight": 0.0066020666,
+            "group": "coexp",
+            "rIntnId": 16,
+            "id": "e14"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600046",
+            "target": "600535",
+            "weight": 0.0030451824,
+            "group": "coexp",
+            "rIntnId": 17,
+            "id": "e15"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "612326",
+            "target": "611408",
+            "weight": 0.0069189603,
+            "group": "coexp",
+            "rIntnId": 18,
+            "id": "e16"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "606768",
+            "target": "605755",
+            "weight": 0.007888168,
+            "group": "coexp",
+            "rIntnId": 19,
+            "id": "e17"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "606768",
+            "target": "611408",
+            "weight": 0.0066891047,
+            "group": "coexp",
+            "rIntnId": 20,
+            "id": "e18"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "606768",
+            "target": "610236",
+            "weight": 0.006453997,
+            "group": "coexp",
+            "rIntnId": 21,
+            "id": "e19"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "606768",
+            "target": "605846",
+            "weight": 0.013474658,
+            "group": "coexp",
+            "rIntnId": 22,
+            "id": "e20"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600585",
+            "target": "611408",
+            "weight": 0.010655156,
+            "group": "coexp",
+            "networkId": 1228,
+            "rIntnId": 23,
+            "id": "e21"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600535",
+            "target": "605846",
+            "weight": 0.01614795,
+            "group": "coexp",
+            "networkId": 1228,
+            "rIntnId": 25,
+            "id": "e23"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "602299",
+            "target": "611408",
+            "weight": 0.013897292,
+            "group": "coexp",
+            "networkId": 1094,
+            "rIntnId": 27,
+            "id": "e25"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "611408",
+            "weight": 0.014722961,
+            "group": "coexp",
+            "networkId": 1094,
+            "rIntnId": 30,
+            "id": "e28"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "599863",
+            "target": "605755",
+            "weight": 0.01798934,
+            "group": "coexp",
+            "networkId": 1094,
+            "rIntnId": 31,
+            "id": "e29"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "599863",
+            "target": "611408",
+            "weight": 0.014232373,
+            "group": "coexp",
+            "networkId": 1094,
+            "rIntnId": 32,
+            "id": "e30"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "605846",
+            "target": "610236",
+            "weight": 0.015419611,
+            "group": "coexp",
+            "networkId": 1094,
+            "rIntnId": 34,
+            "id": "e32"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "605846",
+            "target": "599863",
+            "weight": 0.018117689,
+            "group": "coexp",
+            "networkId": 1094,
+            "rIntnId": 35,
+            "id": "e33"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "612326",
+            "target": "612341",
+            "weight": 0.0197734,
+            "group": "coexp",
+            "networkId": 1094,
+            "rIntnId": 36,
+            "id": "e34"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600585",
+            "target": "605755",
+            "weight": 0.012193555,
+            "group": "coexp",
+            "networkId": 1205,
+            "rIntnId": 38,
+            "id": "e36"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "602299",
+            "target": "605755",
+            "weight": 0.008944319,
+            "group": "coexp",
+            "networkId": 1205,
+            "rIntnId": 40,
+            "id": "e38"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "603070",
+            "target": "599889",
+            "weight": 0.023106916,
+            "group": "coexp",
+            "networkId": 1205,
+            "rIntnId": 43,
+            "id": "e41"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "603070",
+            "target": "602299",
+            "weight": 0.013864683,
+            "group": "coexp",
+            "networkId": 1205,
+            "rIntnId": 44,
+            "id": "e42"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "600585",
+            "weight": 0.011782279,
+            "group": "coexp",
+            "networkId": 1205,
+            "rIntnId": 47,
+            "id": "e45"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "602299",
+            "weight": 0.009479035,
+            "group": "coexp",
+            "networkId": 1205,
+            "rIntnId": 48,
+            "id": "e46"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "599863",
+            "target": "603070",
+            "weight": 0.02076845,
+            "group": "coexp",
+            "networkId": 1205,
+            "rIntnId": 50,
+            "id": "e48"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "599863",
+            "target": "610236",
+            "weight": 0.014548145,
+            "group": "coexp",
+            "networkId": 1205,
+            "rIntnId": 51,
+            "id": "e49"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "603700",
+            "target": "602299",
+            "weight": 0.018761018,
+            "group": "coexp",
+            "networkId": 1205,
+            "rIntnId": 52,
+            "id": "e50"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "605846",
+            "target": "611408",
+            "weight": 0.006622242,
+            "group": "coexp",
+            "networkId": 1205,
+            "rIntnId": 54,
+            "id": "e52"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "605846",
+            "target": "602299",
+            "weight": 0.01073685,
+            "group": "coexp",
+            "networkId": 1205,
+            "rIntnId": 55,
+            "id": "e53"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "605846",
+            "target": "603070",
+            "weight": 0.013705722,
+            "group": "coexp",
+            "networkId": 1205,
+            "rIntnId": 56,
+            "id": "e54"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600535",
+            "target": "605755",
+            "weight": 0.007519171,
+            "group": "coexp",
+            "networkId": 1205,
+            "rIntnId": 57,
+            "id": "e55"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600535",
+            "target": "611408",
+            "weight": 0.00589999,
+            "group": "coexp",
+            "networkId": 1205,
+            "rIntnId": 58,
+            "id": "e56"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600535",
+            "target": "610236",
+            "weight": 0.007695786,
+            "group": "coexp",
+            "networkId": 1205,
+            "rIntnId": 61,
+            "id": "e59"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600046",
+            "target": "611560",
+            "weight": 0.012538481,
+            "group": "coexp",
+            "networkId": 1205,
+            "rIntnId": 63,
+            "id": "e61"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "600585",
+            "weight": 0.010655146,
+            "group": "coexp",
+            "networkId": 1103,
+            "rIntnId": 68,
+            "id": "e66"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "599889",
+            "weight": 0.0053057605,
+            "group": "coexp",
+            "networkId": 1103,
+            "rIntnId": 69,
+            "id": "e67"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "603070",
+            "weight": 0.005323636,
+            "group": "coexp",
+            "networkId": 1103,
+            "rIntnId": 70,
+            "id": "e68"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "599863",
+            "target": "599889",
+            "weight": 0.010297667,
+            "group": "coexp",
+            "networkId": 1103,
+            "rIntnId": 73,
+            "id": "e71"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "603700",
+            "target": "599889",
+            "weight": 0.0030997663,
+            "group": "coexp",
+            "networkId": 1103,
+            "rIntnId": 75,
+            "id": "e73"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "603700",
+            "target": "610236",
+            "weight": 0.0021416117,
+            "group": "coexp",
+            "networkId": 1103,
+            "rIntnId": 76,
+            "id": "e74"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "599724",
+            "target": "610236",
+            "weight": 0.011675352,
+            "group": "coexp",
+            "networkId": 1103,
+            "rIntnId": 77,
+            "id": "e75"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600046",
+            "target": "602299",
+            "weight": 0.007548246,
+            "group": "coexp",
+            "networkId": 1103,
+            "rIntnId": 78,
+            "id": "e76"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "609734",
+            "target": "605755",
+            "weight": 0.011033994,
+            "group": "coexp",
+            "networkId": 1103,
+            "rIntnId": 79,
+            "id": "e77"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "612326",
+            "target": "602279",
+            "weight": 0.0054105376,
+            "group": "coexp",
+            "networkId": 1103,
+            "rIntnId": 80,
+            "id": "e78"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "606768",
+            "target": "605846",
+            "weight": 0.015214647,
+            "group": "coexp",
+            "networkId": 1103,
+            "rIntnId": 81,
+            "id": "e79"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "606768",
+            "target": "600535",
+            "weight": 0.007762454,
+            "group": "coexp",
+            "networkId": 1103,
+            "rIntnId": 82,
+            "id": "e80"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "599889",
+            "target": "605755",
+            "weight": 0.00786129,
+            "group": "coexp",
+            "networkId": 1219,
+            "rIntnId": 88,
+            "id": "e86"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "602299",
+            "weight": 0.0057260455,
+            "group": "coexp",
+            "networkId": 1219,
+            "rIntnId": 89,
+            "id": "e87"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "605846",
+            "target": "603700",
+            "weight": 0.009317383,
+            "group": "coexp",
+            "networkId": 1219,
+            "rIntnId": 93,
+            "id": "e91"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "602299",
+            "target": "605755",
+            "weight": 0.013028561,
+            "group": "coexp",
+            "networkId": 991,
+            "rIntnId": 97,
+            "id": "e95"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "602299",
+            "target": "599889",
+            "weight": 0.0139607005,
+            "group": "coexp",
+            "networkId": 991,
+            "rIntnId": 98,
+            "id": "e96"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "603070",
+            "target": "611408",
+            "weight": 0.00802425,
+            "group": "coexp",
+            "networkId": 991,
+            "rIntnId": 99,
+            "id": "e97"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "611408",
+            "weight": 0.006611009,
+            "group": "coexp",
+            "networkId": 991,
+            "rIntnId": 100,
+            "id": "e98"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "599863",
+            "target": "611408",
+            "weight": 0.004236914,
+            "group": "coexp",
+            "networkId": 991,
+            "rIntnId": 101,
+            "id": "e99"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "605846",
+            "target": "611408",
+            "weight": 0.0073252246,
+            "group": "coexp",
+            "networkId": 991,
+            "rIntnId": 103,
+            "id": "e101"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600046",
+            "target": "611408",
+            "weight": 0.0031254988,
+            "group": "coexp",
+            "networkId": 991,
+            "rIntnId": 104,
+            "id": "e102"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600046",
+            "target": "612341",
+            "weight": 0.0068017747,
+            "group": "coexp",
+            "networkId": 991,
+            "rIntnId": 105,
+            "id": "e103"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "602299",
+            "target": "612341",
+            "weight": 0.0029230819,
+            "group": "coexp",
+            "networkId": 948,
+            "rIntnId": 107,
+            "id": "e105"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "603070",
+            "target": "600585",
+            "weight": 0.013878305,
+            "group": "coexp",
+            "networkId": 948,
+            "rIntnId": 109,
+            "id": "e107"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "603070",
+            "weight": 0.008862467,
+            "group": "coexp",
+            "networkId": 948,
+            "rIntnId": 113,
+            "id": "e111"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "599863",
+            "target": "599889",
+            "weight": 0.02020582,
+            "group": "coexp",
+            "networkId": 948,
+            "rIntnId": 115,
+            "id": "e113"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "599863",
+            "target": "603070",
+            "weight": 0.01389255,
+            "group": "coexp",
+            "networkId": 948,
+            "rIntnId": 116,
+            "id": "e114"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600535",
+            "target": "599863",
+            "weight": 0.0065266574,
+            "group": "coexp",
+            "networkId": 948,
+            "rIntnId": 120,
+            "id": "e118"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "602279",
+            "target": "611560",
+            "weight": 0.0072178333,
+            "group": "coexp",
+            "networkId": 948,
+            "rIntnId": 123,
+            "id": "e121"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600046",
+            "target": "612341",
+            "weight": 0.0019152164,
+            "group": "coexp",
+            "networkId": 948,
+            "rIntnId": 124,
+            "id": "e122"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "609734",
+            "target": "611408",
+            "weight": 0.0074162656,
+            "group": "coexp",
+            "networkId": 948,
+            "rIntnId": 126,
+            "id": "e124"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "599889",
+            "weight": 0.008408555,
+            "group": "coexp",
+            "networkId": 1160,
+            "rIntnId": 136,
+            "id": "e134"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "605846",
+            "target": "611408",
+            "weight": 0.006252843,
+            "group": "coexp",
+            "networkId": 1160,
+            "rIntnId": 142,
+            "id": "e140"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "605846",
+            "target": "600585",
+            "weight": 0.008764523,
+            "group": "coexp",
+            "networkId": 1160,
+            "rIntnId": 143,
+            "id": "e141"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "605846",
+            "target": "602299",
+            "weight": 0.0077429856,
+            "group": "coexp",
+            "networkId": 1160,
+            "rIntnId": 144,
+            "id": "e142"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "606768",
+            "target": "605755",
+            "weight": 0.0063784183,
+            "group": "coexp",
+            "networkId": 1160,
+            "rIntnId": 150,
+            "id": "e148"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "606768",
+            "target": "611408",
+            "weight": 0.007974974,
+            "group": "coexp",
+            "networkId": 1160,
+            "rIntnId": 151,
+            "id": "e149"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "602299",
+            "weight": 0.008945865,
+            "group": "coexp",
+            "networkId": 1112,
+            "rIntnId": 156,
+            "id": "e154"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "603070",
+            "weight": 0.0123492405,
+            "group": "coexp",
+            "networkId": 1112,
+            "rIntnId": 157,
+            "id": "e155"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "599863",
+            "target": "611560",
+            "weight": 0.011177457,
+            "group": "coexp",
+            "networkId": 1112,
+            "rIntnId": 158,
+            "id": "e156"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "612326",
+            "target": "611560",
+            "weight": 0.0070169745,
+            "group": "coexp",
+            "networkId": 1112,
+            "rIntnId": 162,
+            "id": "e160"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "612326",
+            "target": "599863",
+            "weight": 0.013198467,
+            "group": "coexp",
+            "networkId": 1112,
+            "rIntnId": 163,
+            "id": "e161"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "602299",
+            "target": "599889",
+            "weight": 0.006426068,
+            "group": "coexp",
+            "networkId": 1058,
+            "rIntnId": 164,
+            "id": "e162"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "599889",
+            "weight": 0.0071076,
+            "group": "coexp",
+            "networkId": 1058,
+            "rIntnId": 167,
+            "id": "e165"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "602299",
+            "target": "605755",
+            "weight": 0.005950518,
+            "group": "coexp",
+            "networkId": 939,
+            "rIntnId": 170,
+            "id": "e168"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "602299",
+            "target": "599889",
+            "weight": 0.010287272,
+            "group": "coexp",
+            "networkId": 939,
+            "rIntnId": 171,
+            "id": "e169"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "599889",
+            "weight": 0.0070424364,
+            "group": "coexp",
+            "networkId": 939,
+            "rIntnId": 175,
+            "id": "e173"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "602299",
+            "weight": 0.0033553005,
+            "group": "coexp",
+            "networkId": 939,
+            "rIntnId": 176,
+            "id": "e174"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "603070",
+            "weight": 0.00446657,
+            "group": "coexp",
+            "networkId": 939,
+            "rIntnId": 177,
+            "id": "e175"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "603700",
+            "target": "605755",
+            "weight": 0.010436626,
+            "group": "coexp",
+            "networkId": 939,
+            "rIntnId": 179,
+            "id": "e177"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "603700",
+            "target": "603070",
+            "weight": 0.010232103,
+            "group": "coexp",
+            "networkId": 939,
+            "rIntnId": 180,
+            "id": "e178"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "605846",
+            "target": "602299",
+            "weight": 0.010975428,
+            "group": "coexp",
+            "networkId": 939,
+            "rIntnId": 181,
+            "id": "e179"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600535",
+            "target": "602299",
+            "weight": 0.008797756,
+            "group": "coexp",
+            "networkId": 939,
+            "rIntnId": 185,
+            "id": "e183"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "602279",
+            "target": "599863",
+            "weight": 0.0048371204,
+            "group": "coexp",
+            "networkId": 939,
+            "rIntnId": 188,
+            "id": "e186"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "599889",
+            "target": "611408",
+            "weight": 0.010843052,
+            "group": "coexp",
+            "networkId": 987,
+            "rIntnId": 192,
+            "id": "e190"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "602299",
+            "target": "605755",
+            "weight": 0.007012607,
+            "group": "coexp",
+            "networkId": 987,
+            "rIntnId": 193,
+            "id": "e191"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "602299",
+            "target": "612341",
+            "weight": 0.021436332,
+            "group": "coexp",
+            "networkId": 987,
+            "rIntnId": 194,
+            "id": "e192"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "603070",
+            "weight": 0.009086173,
+            "group": "coexp",
+            "networkId": 987,
+            "rIntnId": 199,
+            "id": "e197"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "603700",
+            "target": "611408",
+            "weight": 0.009551385,
+            "group": "coexp",
+            "networkId": 987,
+            "rIntnId": 205,
+            "id": "e203"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "602299",
+            "weight": 0.013894426,
+            "group": "coexp",
+            "networkId": 1211,
+            "rIntnId": 215,
+            "id": "e213"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "599724",
+            "target": "602299",
+            "weight": 0.021771252,
+            "group": "coexp",
+            "networkId": 1221,
+            "rIntnId": 224,
+            "id": "e222"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "600046",
+            "target": "611408",
+            "weight": 0.008810265,
+            "group": "coexp",
+            "networkId": 1221,
+            "rIntnId": 225,
+            "id": "e223"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "602299",
+            "target": "605755",
+            "weight": 0.019584121,
+            "group": "coexp",
+            "networkId": 1141,
+            "rIntnId": 229,
+            "id": "e227"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "602299",
+            "target": "611408",
+            "weight": 0.01921773,
+            "group": "coexp",
+            "networkId": 1141,
+            "rIntnId": 230,
+            "id": "e228"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "612326",
+            "target": "603070",
+            "weight": 0.012148044,
+            "group": "coexp",
+            "networkId": 1141,
+            "rIntnId": 236,
+            "id": "e234"
+        },
+        "group": "edges"
+    },
+    {
+        "data": {
+            "source": "610236",
+            "target": "599889",
+            "weight": 0.013262892,
+            "group": "coexp",
+            "networkId": 1040,
+            "rIntnId": 238,
+            "id": "e236"
+        },
+        "group": "edges"
+    }
+]

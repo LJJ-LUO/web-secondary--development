@@ -1,5 +1,5 @@
 <template>
-  <div class="table-root">{{ data }}</div>
+  <div class="table-root"></div>
 </template>
 
 <script>
