@@ -19,26 +19,48 @@ if (process.env.NODE_ENV !== "production") {
   let customConfig = {};
 
   new Vue({
-    render: h => {
+    render: (h) => {
       return <App customConfig={customConfig} />;
     },
   }).$mount("#app");
 } else {
+  // if (!window.CUSTOM_PLUGIN) {
+  //   window.CUSTOM_PLUGIN = new Map();
+  // }
+  // window.CUSTOM_PLUGIN.set(process.env.VUE_APP_CUSTOM_PLUGIN_ID, (dom, props) => {
+  //   if (dom.childNodes.length > 0) {
+  //     dom.removeChild(dom.childNodes[0]);
+  //   }
+  //   const div = document.createElement("div");
+  //   dom.appendChild(div);
+  //   new Vue({
+  //     render: (h) => <App {...{ props }} />,
+  //   }).$mount(div);
+  // });
+
   if (!window.CUSTOM_PLUGIN) {
     window.CUSTOM_PLUGIN = new Map();
   }
 
-  window.CUSTOM_PLUGIN.set(
-    process.env.VUE_APP_CUSTOM_PLUGIN_ID,
-    (dom, props) => {
+  window.CUSTOM_PLUGIN.set(process.env.VUE_APP_CUSTOM_PLUGIN_ID, (dom, props) => {
+    if (dom.childNodes.length > 0) {
+      dom.removeChild(dom.childNodes[0]);
+    }
+    const div = document.createElement("div");
+    dom.appendChild(div);
+    new Vue({
+      render: (h) => <App {...{ props }} />,
+    }).$mount(div);
+
+    props.setSetPluginProps((props) => {
       if (dom.childNodes.length > 0) {
         dom.removeChild(dom.childNodes[0]);
       }
-      const div = document.createElement("div");
-      dom.appendChild(div);
+      const divs = document.createElement("div");
+      dom.appendChild(divs);
       new Vue({
-        render: h => <App {...{ props }} />,
-      }).$mount(div);
-    }
-  );
+        render: (h) => <App {...{ props }} />,
+      }).$mount(divs);
+    });
+  });
 }
