@@ -27,7 +27,7 @@
               @click="thumbnailClick(inx)">
               <div class="temp">
                 <img class="tempI" :src="item[imgField]" alt="">
-                <div :class="{ bof: true, exhibit: curIndex === inx }">
+                <div :class="{ bof: true, exhibitr: curIndex === inx }">
                   <i class="el-icon-caret-left"></i>
                 </div>
 
@@ -50,7 +50,7 @@
             <div class="temp">
               <img class="tempI" :src="item[imgField]" alt="">
               <div :class="{ bof: true, exhibit: curIndex === inx }">
-                <i class="el-icon-caret-left"></i>
+                <i class="el-icon-caret-bottom"></i>
               </div>
 
             </div>
@@ -570,7 +570,7 @@ export default {
             // left: 1%;
           }
 
-          .exhibit {
+          .exhibitr {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -706,10 +706,10 @@ export default {
         }
 
         .bof {
-          width: 30%;
-          height: 100%;
+          width: 100%;
+          height: 40%;
           background: rgba(26, 128, 102, .8);
-          border-radius: 10px 0 0 10px;
+          border-radius: 10px 10px 0 0;
           // float: left;
 
 
@@ -718,7 +718,7 @@ export default {
           z-index: 9;
           display: none;
 
-          .el-icon-caret-left {
+          .el-icon-caret-bottom {
             color: #fff;
             font-size: 30px
           }
@@ -742,21 +742,21 @@ export default {
           // width: 30%;
           // transition: all 1s;
           // border-radius: 10px 0 0 10px;
-          animation-name: bounce_left;
+          animation-name: bounce_botom;
           animation-duration: 1000ms;
           animation-fill-mode: forwards;
         }
 
-        @keyframes bounce_left {
+        @keyframes bounce_botom {
           0% {
-            width: 0;
+            height: 0;
             animation-timing-function: ease-in;
             opacity: 1;
           }
 
 
           100% {
-            width: 30%;
+            height: 40%;
             // transform: translateX(0px);
             animation-timing-function: ease-out;
             opacity: 1;
