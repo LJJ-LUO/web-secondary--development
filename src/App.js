@@ -72,6 +72,8 @@ const App = (props) => {
     const { data: res } = await ReportingService.queryList({
       pageNum: pagin.current,
       pageSize: pagin.pageSize,
+      orderBy: "last_modify_time",
+      orderSort: "DESC",
       queryParams: [
         {
           colName: "service_type",
@@ -341,14 +343,14 @@ const App = (props) => {
       key: "dianzhanName",
       dataIndex: "dianzhanName",
       width: "158px",
-      sorter: (a, b) => a.dianzhanName - b.dianzhanName,
+      sorter: (a, b) =>  a.dianzhanName.localeCompare( b.dianzhanName,"zh"),
       align: "center", //头部单元格和列内容水平居中
     },
     {
       title: "设备名称",
       key: "shebeiName",
       dataIndex: "shebeiName",
-      sorter: (a, b) => a.shebeiName - b.shebeiName,
+      sorter: (a, b) =>  a.shebeiName.localeCompare( b.shebeiName,"zh"),
       align: "center", //头部单元格和列内容水平居中
       width: "113px",
     },
@@ -356,9 +358,16 @@ const App = (props) => {
       title: "事件内容",
       key: "content",
       dataIndex: "content",
-      sorter: (a, b) => a.content - b.content,
+      sorter: (a, b) =>  a.content.localeCompare( b.content,"zh"),
       align: "center", //头部单元格和列内容水平居中
       width: "323px",
+      render: (text) => (
+        <span
+        style={{marginLeft:"15px"}}
+        >
+          {text}
+        </span>
+      ),
     },
     {
       title: "操作",
