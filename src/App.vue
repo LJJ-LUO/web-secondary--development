@@ -163,7 +163,6 @@ export default {
               fontSize: 90,
               color: '#00f0ff',
               foontWeight: '500',
-
             },
           },
           {
@@ -431,17 +430,11 @@ export default {
       })
     }
     let accuracy = this.accuracy
-    this.optionsE.title[1].text = sum
+    let sumT = String(sum).indexOf('.') == -1 ? sum : sum.toFixed(2)
+    this.optionsE.title[1].text = sumT
     this.optionsE.title[0].text = this.titleText.titleT
     this.optionsE.title[2].text = this.titleText.titleB
-    this.optionsE.series[0].label.formatter = function (name) {
 
-      // const item = scaleData.find((i) => {
-      //   return i.name === name;
-      // });
-      const p = ((name.value / sum) * 100).toFixed(accuracy);
-      return `{d| ${p}%} `
-    }
     let that = this
     scaleData.forEach((x, i) => {
       let temD = JSON.parse(JSON.stringify(scaleData))
@@ -487,13 +480,15 @@ export default {
     })
     this.optionsE.series[cd].labelLine.show = true
     this.optionsE.series[cd].zlevel = -1
+    this.optionsE.series[0].label.formatter = function (name) {
+
+
+      const p = ((name.value / sum) * 100).toFixed(accuracy);
+      console.log(p);
+      return `{d| ${p}%} `
+    }
     // this.optionsE.series[0].data = scaleData
     // this.optionsE.series[1].data = scaleData
-<<<<<<< HEAD
-
-=======
-    console.log(this.optionsE.series);
->>>>>>> 829372445edfd860457719d890c6eb930a078e6b
     // this.optionsE.series[0].itemStyle.normal.borderWidth = this.spacing
     // this.optionsE.series[1].itemStyle.normal.borderWidth = this.spacing
 
@@ -559,11 +554,8 @@ export default {
     dataFn(arr) {
       let a = {}
       let b = []
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 829372445edfd860457719d890c6eb930a078e6b
       arr.forEach(x => {
         let key = x[0]
         if (a[key] >= 0) {

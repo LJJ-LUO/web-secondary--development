@@ -8,7 +8,7 @@
  */
 import Vue from "vue";
 import App from "./App.vue";
-
+import './index.css'
 import { Table, TableColumn } from "element-ui";
 
 Vue.config.productionTip = false;
@@ -42,6 +42,7 @@ if (dom) {
     const options = {
       externalVariables: {
         fontSize: "20px",
+        精确度: '2'
       },
     };
     const props = {
