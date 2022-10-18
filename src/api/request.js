@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 const instance = axios.create({
-  baseURL: `${process.env.REACT_APP_API}/sdata/rest`,
+  baseURL: `${process.env.REACT_APP_API}/dtyq/pngf/sdata/rest`,
   timeout: 60000,
   validateStatus: function (status) {
     return status >= 200 && status < 300; // default

@@ -305,7 +305,7 @@ export default class App extends Component {
     }
     axios
       .post(
-        "/sdata/rest/electricitySettlement/export",
+        "/dtyq/pngf/sdata/rest/electricitySettlement/export",
         {
           type: tabValue,
           customerServiceUnitId: id,
